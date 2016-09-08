@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="StorageBox.Additions.Views.AdditionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StorageBox.Additions.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="690" d:DesignWidth="1000">
+    <Grid Margin="5 0 5 5">
+        <DockPanel>
+            <Border BorderBrush="Black" BorderThickness="1" SnapsToDevicePixels="True" Margin="0,0,0,0" Width="250" Background="White">
+                <DockPanel>
+                    <Button Name="AddCategory" DockPanel.Dock="Top" Content="Kategorie" VerticalAlignment="Top" Margin="5"/>
+                    <Button Name="AddProduct" DockPanel.Dock="Top" Content="Produkty" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="AddSKU" DockPanel.Dock="Top" Content="SKU" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                </DockPanel>
+            </Border>
+            <Border>
+                <ContentControl Name="ActiveItem"/>
+            </Border>
+        </DockPanel>
+    </Grid>
+</UserControl>

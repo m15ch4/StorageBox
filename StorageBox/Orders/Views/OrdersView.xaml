@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="StorageBox.Orders.Views.OrdersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StorageBox.Orders.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <Grid Background="White">
+        <DockPanel LastChildFill="True">
+
+            <Border BorderBrush="DarkGray" BorderThickness="1" DockPanel.Dock="Left" SnapsToDevicePixels="True" Margin="5,0,5,5" Width="320" CornerRadius="5">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Gray" Offset="0"/>
+                        <GradientStop Color="LightGray" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <DockPanel LastChildFill="True" >
+                    <Label Content="Kategoria:" DockPanel.Dock="Top" Margin="5,5,5,5" FontSize="16"/>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
+                    <Label Content="Przedmiot:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
+                    <ListBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" DockPanel.Dock="Top" Height="250" Margin="5,0,5,5" FontSize="16"/>
+                    <Label Content="SKU:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
+                    <Button Content="Dodaj do kolejki" DockPanel.Dock="Bottom" Background="Green" Margin="5,0,5,5" FontSize="16">
+
+                    </Button>
+                    <ListBox Name="ProductVariants" DisplayMemberPath="Description" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
+                </DockPanel>
+            </Border>
+            <Border BorderBrush="DarkGray" BorderThickness="1" DockPanel.Dock="Top" SnapsToDevicePixels="True" Margin="0,0,5,5" CornerRadius="5">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Gray" Offset="0"/>
+                        <GradientStop Color="LightGray" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <DockPanel>
+                    <Label DockPanel.Dock="Top" FontSize="16">Opis przedmiotu</Label>
+                    <DockPanel DockPanel.Dock="Bottom" Margin="5">
+                        <DockPanel DockPanel.Dock="Right" Width="320" Height="320">
+                            <Button DockPanel.Dock="Bottom" Content="Realizuj" Margin="0 5 0 0" FontSize="16" Background="Yellow"></Button>
+                            <Label DockPanel.Dock="Top" FontSize="16">Kolejka zamówienia</Label>
+                            <ListBox DockPanel.Dock="Top" Name="OrderQueue" ></ListBox>
+                        </DockPanel>
+
+                        <Image Source="{Binding ProductImage}" DockPanel.Dock="Left" Height="250" Width="250"/>
+
+                    </DockPanel>
+                    <Label DockPanel.Dock="Top" Content="{Binding ItemDescription}"/>
+                </DockPanel>
+            </Border>
+        </DockPanel>
+    </Grid>
+</UserControl>
