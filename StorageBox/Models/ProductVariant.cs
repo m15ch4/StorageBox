@@ -8,6 +8,7 @@ namespace StorageBox.Models
         private Product _product;
         private ProductSKU _productSKU;
         public Dictionary<Option, OptionValue> _optionValues;
+        public static int reserved = 0;
 
         public ProductVariant()
         {
@@ -26,7 +27,9 @@ namespace StorageBox.Models
             set { _productSKU = value; }
         }
 
-        public string Description
+
+
+        public string ProductVariantDescriptionNoNumber
         {
             get
             {
@@ -35,23 +38,25 @@ namespace StorageBox.Models
                 foreach (KeyValuePair<Option, OptionValue> ov in _optionValues)
                 {
                     _description += " " + ov.Key.OptionName + ": " + ov.Value.ValueName;
-                    Trace.WriteLine("1");
                 }
-                //var enumerator = _optionValues.GetEnumerator();
-                //bool hasNext = enumerator.MoveNext();
-                //while (hasNext)
-                //{
-                //    _description += enumerator.Current.Key.OptionName + ": " + enumerator.Current.Value.ValueName;
-                //    hasNext = enumerator.MoveNext();
-                //    if (hasNext)
-                //    {
-                //        _description += ", ";
-                //    }
-                //    Trace.WriteLine("1");
-                //}
-                Trace.WriteLine(_description);
+
+
                 return _description;
             }
+        }
+
+        public string ProductVariantDescriptionWithNumber
+        {
+            get
+            {
+                return (ProductVariantDescriptionNoNumber + " Ilość: " + Available);
+            }
+        }
+
+        // TODO: zliczanie ile jeszcze jest dostępnych przedmiotów
+        public int Available
+        {
+            get { return ProductSKU.Boxes.Count; }
         }
 
     }

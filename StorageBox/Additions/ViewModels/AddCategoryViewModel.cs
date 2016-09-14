@@ -15,6 +15,7 @@ namespace StorageBox.Additions.ViewModels
         private ICategoryService _categoryService;
         private BindableCollection<Category> _categories;
         private string _categoryName;
+        private Category _categoriesSelecteItem;
 
         public AddCategoryViewModel(ICategoryService categoryService)
         {
@@ -46,6 +47,25 @@ namespace StorageBox.Additions.ViewModels
             {
                 _categoryName = value;
                 NotifyOfPropertyChange(() => CategoryName);
+            }
+        }
+
+        public Category CategoriesSelectedItem
+        {
+            get { return _categoriesSelecteItem; }
+            set
+            {
+                _categoriesSelecteItem = value;
+                NotifyOfPropertyChange(() => CategoriesSelectedItem);
+            }
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            if (_categoriesSelecteItem != null)
+            {
+                _categoryService.Delete(_categoriesSelecteItem);
+                Categories.Remove(_categoriesSelecteItem);
             }
         }
     }

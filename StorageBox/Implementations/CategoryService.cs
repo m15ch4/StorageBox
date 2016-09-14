@@ -5,16 +5,23 @@ using StorageBox.Models;
 
 namespace StorageBox.Implementations
 {
-    public class CategoryService : BaseService, ICategoryService
+    public class CategoryService : ICategoryService
     {
-        public CategoryService() : base()
+        private MyDBContext _context;
+        public CategoryService(MyDBContext context)
         {
-
+            _context = context;
         }
         public void Add(string categoryName)
         {
             Category category = new Category() { CategoryName = categoryName };
             _context.Categories.Add(category);
+            _context.SaveChanges();
+        }
+
+        public void Delete(Category category)
+        {
+            _context.Categories.Remove(category);
             _context.SaveChanges();
         }
 

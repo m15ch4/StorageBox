@@ -1,14 +1,15 @@
-﻿using System.Data.Entity;
+﻿using StorageBox.Framework;
+using System.Data.Entity;
 
 namespace StorageBox.Models
 {
-    public class MyDBContext : DbContext
+    public class MyDBContext : DbContext, IMyDBContext
     {
         public MyDBContext() : base("StorageBox.Properties.Settings.StorageBoxDBConnectionString")
         {
             
         }
-        public MyDBContext(string connectionString = "StorageBox.Properties.Settings.StorageBoxDBConnectionString") : base(connectionString)
+        public MyDBContext(string connectionString = "StorageBox.Properties.Settings.StorageBoxDBConnectionString") : base("StorageBox.Properties.Settings.StorageBoxDBConnectionString")
         {
 
         }
@@ -21,5 +22,7 @@ namespace StorageBox.Models
         public DbSet<SKUValue> SKUValues { get; set; }
         public DbSet<Box> Boxes { get; set; }
         public DbSet<BoxSize> BoxSizes { get; set; }
+        public DbSet<SBTask> SBTasks { get; set; }
+        public DbSet<SBUser> SBUsers { get; set; }
     }
 }

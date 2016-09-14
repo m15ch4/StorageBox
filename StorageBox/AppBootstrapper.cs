@@ -10,6 +10,9 @@ namespace StorageBox {
     using Contracts;
     using Implementations;
     using Additions.ViewModels;
+    using Orders.Dialogs;
+    using Models;
+    using Login;
 
     public class AppBootstrapper : BootstrapperBase {
         SimpleContainer container;
@@ -23,17 +26,25 @@ namespace StorageBox {
 
             container.Singleton<IWindowManager, WindowManager>();
             container.Singleton<IEventAggregator, EventAggregator>();
+
+            container.Singleton<MyDBContext, MyDBContext>();
+
             container.PerRequest<IShell, Shell.ViewModels.ShellViewModel>();
 
+            container.PerRequest<IWorkspace, LoginViewModel>();
             container.PerRequest<IWorkspace, OrdersViewModel>();
             container.PerRequest<IWorkspace, AdditionsViewModel>();
 
             container.PerRequest<IAddition, AddCategoryViewModel>();
+            container.PerRequest<IDialog, ProcessOrderViewModel>();
 
             container.PerRequest<ICategoryService, CategoryService>();
             container.PerRequest<IProductService, ProductService>();
             container.PerRequest<IProductSKUService, ProductSKUService>();
             container.PerRequest<IProductVariantService, ProductVariantService>();
+            container.PerRequest<IBoxService, BoxService>();
+            container.PerRequest<ISBTaskService, SBTaskService>();
+            container.PerRequest<ILoginService, LoginService>();
         }
 
         protected override object GetInstance(Type service, string key) {

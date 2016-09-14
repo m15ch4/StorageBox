@@ -3,7 +3,7 @@ namespace StorageBox.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialWithoutTasks : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -14,12 +14,25 @@ namespace StorageBox.Migrations
                         ProductID = c.Int(),
                         ProductSKUID = c.Int(),
                         BoxID = c.Int(nullable: false, identity: true),
-                        AddressRow = c.Byte(nullable: false),
-                        AddressCol = c.Byte(nullable: false),
+                        AddressRow = c.Short(nullable: false),
+                        AddressCol = c.Short(nullable: false),
+                        Status = c.Int(nullable: false),
+                        BoxSize_BoxSizeID = c.Int(),
                     })
                 .PrimaryKey(t => t.BoxID)
+                .ForeignKey("dbo.BoxSizes", t => t.BoxSize_BoxSizeID)
                 .ForeignKey("dbo.ProductSKUs", t => new { t.ProductID, t.ProductSKUID })
-                .Index(t => new { t.ProductID, t.ProductSKUID });
+                .Index(t => new { t.ProductID, t.ProductSKUID })
+                .Index(t => t.BoxSize_BoxSizeID);
+            
+            CreateTable(
+                "dbo.BoxSizes",
+                c => new
+                    {
+                        BoxSizeID = c.Int(nullable: false, identity: true),
+                        BoxSizeName = c.String(),
+                    })
+                .PrimaryKey(t => t.BoxSizeID);
             
             CreateTable(
                 "dbo.ProductSKUs",
@@ -42,6 +55,7 @@ namespace StorageBox.Migrations
                         ProductID = c.Int(nullable: false, identity: true),
                         ProductName = c.String(maxLength: 200),
                         ProductDescription = c.String(),
+                        ProductImage = c.String(),
                         Category_CategoryID = c.Int(),
                     })
                 .PrimaryKey(t => t.ProductID)
@@ -93,12 +107,27 @@ namespace StorageBox.Migrations
                         OptionValueID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.ProductID, t.ProductSKUID, t.OptionID })
-                .ForeignKey("dbo.Options", t => new { t.ProductID, t.OptionID }, cascadeDelete: false)
+                .ForeignKey("dbo.Options", t => new { t.ProductID, t.OptionID }, cascadeDelete: true)
                 .ForeignKey("dbo.OptionValues", t => new { t.ProductID, t.OptionID, t.OptionValueID }, cascadeDelete: false)
-                .ForeignKey("dbo.ProductSKUs", t => new { t.ProductID, t.ProductSKUID }, cascadeDelete: true)
+                .ForeignKey("dbo.ProductSKUs", t => new { t.ProductID, t.ProductSKUID }, cascadeDelete: false)
                 .Index(t => new { t.ProductID, t.OptionID })
                 .Index(t => new { t.ProductID, t.OptionID, t.OptionValueID })
                 .Index(t => new { t.ProductID, t.ProductSKUID });
+            
+            CreateTable(
+                "dbo.SBTasks",
+                c => new
+                    {
+                        SBTaskID = c.Int(nullable: false, identity: true),
+                        SBTaskStatus = c.Int(nullable: false),
+                        SBTaskType = c.Int(nullable: false),
+                        DateAdded = c.DateTime(nullable: false),
+                        DateEnded = c.DateTime(nullable: false),
+                        BoxID = c.Int(nullable: false),
+                        ProductSKUID = c.Int(nullable: false),
+                        ProductID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.SBTaskID);
             
         }
         
@@ -112,6 +141,7 @@ namespace StorageBox.Migrations
             DropForeignKey("dbo.Options", "ProductID", "dbo.Products");
             DropForeignKey("dbo.OptionValues", new[] { "ProductID", "OptionID" }, "dbo.Options");
             DropForeignKey("dbo.Products", "Category_CategoryID", "dbo.Categories");
+            DropForeignKey("dbo.Boxes", "BoxSize_BoxSizeID", "dbo.BoxSizes");
             DropIndex("dbo.SKUValues", new[] { "ProductID", "ProductSKUID" });
             DropIndex("dbo.SKUValues", new[] { "ProductID", "OptionID", "OptionValueID" });
             DropIndex("dbo.SKUValues", new[] { "ProductID", "OptionID" });
@@ -121,13 +151,16 @@ namespace StorageBox.Migrations
             DropIndex("dbo.Products", new[] { "ProductName" });
             DropIndex("dbo.ProductSKUs", new[] { "ProductSKUID" });
             DropIndex("dbo.ProductSKUs", new[] { "ProductID" });
+            DropIndex("dbo.Boxes", new[] { "BoxSize_BoxSizeID" });
             DropIndex("dbo.Boxes", new[] { "ProductID", "ProductSKUID" });
+            DropTable("dbo.SBTasks");
             DropTable("dbo.SKUValues");
             DropTable("dbo.OptionValues");
             DropTable("dbo.Options");
             DropTable("dbo.Categories");
             DropTable("dbo.Products");
             DropTable("dbo.ProductSKUs");
+            DropTable("dbo.BoxSizes");
             DropTable("dbo.Boxes");
         }
     }

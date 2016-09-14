@@ -7,13 +7,13 @@ namespace StorageBox.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialWithoutTasks : IMigrationMetadata
+    public sealed partial class Initial2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialWithoutTasks));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201608231830164_Initial. Without Tasks"; }
+            get { return "201609111125083_Initial2"; }
         }
         
         string IMigrationMetadata.Source

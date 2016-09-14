@@ -7,6 +7,7 @@ namespace StorageBox.Contracts
     {
         BindableCollection<Category> GetAll();
         void Add(string categoryName);
+        void Delete(Category category);
 
     }
 }

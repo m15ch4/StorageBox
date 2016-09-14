@@ -8,10 +8,12 @@ using System.Linq;
 
 namespace StorageBox.Implementations
 {
-    class ProductVariantService : BaseService, IProductVariantService
+    class ProductVariantService : IProductVariantService
     {
-        public ProductVariantService() : base() {
+        private MyDBContext _context;
 
+        public ProductVariantService(MyDBContext context) {
+            _context = context;
         }
 
         public BindableCollection<ProductVariant> Get(Product product)
@@ -25,7 +27,6 @@ namespace StorageBox.Implementations
                 foreach (SKUValue skuval in sku.SKUValues)
                 {
                     productVariant._optionValues.Add(skuval.Option, skuval.OptionValue);
-                    Trace.WriteLine("x");
                 }
 
                 result.Add(productVariant);

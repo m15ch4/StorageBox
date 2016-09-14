@@ -7,13 +7,13 @@ namespace StorageBox.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddedBoxSize : IMigrationMetadata
+    public sealed partial class Initial4 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedBoxSize));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial4));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609080602284_Added BoxSize"; }
+            get { return "201609111701421_Initial4"; }
         }
         
         string IMigrationMetadata.Source

@@ -1,5 +1,6 @@
 namespace StorageBox.Shell.ViewModels
 {
+    using Login;
     using StorageBox.Framework;
     using System.Collections.Generic;
     using System.Composition;
@@ -16,16 +17,23 @@ namespace StorageBox.Shell.ViewModels
 
             Items.AddRange(workspaces);
             ActivateItem(Items[0]);
+            ((LoginViewModel)Items[0]).Shell = this;
         }
 
-        public void Orders()
+
+        public void Login()
         {
             ActivateItem(Items[0]);
         }
 
-        public void Additions()
+        public void Orders()
         {
             ActivateItem(Items[1]);
+        }
+
+        public void Additions()
+        {
+            ActivateItem(Items[2]);
         }
 
     }

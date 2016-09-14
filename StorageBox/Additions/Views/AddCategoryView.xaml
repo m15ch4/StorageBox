@@ -24,8 +24,16 @@
                 </Button>
             </DockPanel>
             <DockPanel DockPanel.Dock="Right" Margin="20 0 0 0">
-                <Button Content="Usuń kategorię" DockPanel.Dock="Bottom" Margin="0 5 0 0"></Button>
-                <ListBox Name="Categories" DockPanel.Dock="Top" HorizontalAlignment="Stretch"  DisplayMemberPath="CategoryName"></ListBox>
+                <Button Content="Usuń kategorię" DockPanel.Dock="Bottom" Margin="0 5 0 0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="DeleteCategory">
+                                <cal:Parameter Value="{Binding ElementName=CategoriesSelectedItem}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <ListBox Name="Categories" DockPanel.Dock="Top" HorizontalAlignment="Stretch"  DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}"></ListBox>
             </DockPanel>
             
         </DockPanel>

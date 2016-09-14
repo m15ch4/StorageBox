@@ -3,7 +3,7 @@ namespace StorageBox.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class enabledlazyloading : DbMigration
+    public partial class Initial3 : DbMigration
     {
         public override void Up()
         {

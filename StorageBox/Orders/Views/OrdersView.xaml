@@ -19,15 +19,21 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <DockPanel LastChildFill="True" >
-                    <Label Content="Kategoria:" DockPanel.Dock="Top" Margin="5,5,5,5" FontSize="16"/>
+                    <Label Content="Kategoria:" DockPanel.Dock="Top" Margin="5,5,5,5" FontSize="16" FontWeight="Bold"/>
                     <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
-                    <Label Content="Przedmiot:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
+                    <Label Content="Przedmiot:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" FontWeight="Bold"/>
                     <ListBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" DockPanel.Dock="Top" Height="250" Margin="5,0,5,5" FontSize="16"/>
-                    <Label Content="SKU:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
-                    <Button Content="Dodaj do kolejki" DockPanel.Dock="Bottom" Background="Green" Margin="5,0,5,5" FontSize="16">
-
+                    <Label Content="SKU:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" FontWeight="Bold"/>
+                    <Button Content="Dodaj do kolejki" DockPanel.Dock="Bottom" Background="LightGreen" Margin="5,0,5,5" FontSize="16">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="AddToWishList">
+                                    <cal:Parameter Value="{Binding ElementName=ProductsVariantSelectedItem}" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </Button>
-                    <ListBox Name="ProductVariants" DisplayMemberPath="Description" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
+                    <ListBox Name="ProductVariants" SelectedItem="{Binding ProductsVariantSelectedItem}" DisplayMemberPath="ProductVariantDescriptionWithNumber" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" />
                 </DockPanel>
             </Border>
             <Border BorderBrush="DarkGray" BorderThickness="1" DockPanel.Dock="Top" SnapsToDevicePixels="True" Margin="0,0,5,5" CornerRadius="5">
@@ -38,15 +44,25 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <DockPanel>
-                    <Label DockPanel.Dock="Top" FontSize="16">Opis przedmiotu</Label>
+                    <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Opis przedmiotu</Label>
                     <DockPanel DockPanel.Dock="Bottom" Margin="5">
                         <DockPanel DockPanel.Dock="Right" Width="320" Height="320">
-                            <Button DockPanel.Dock="Bottom" Content="Realizuj" Margin="0 5 0 0" FontSize="16" Background="Yellow"></Button>
-                            <Label DockPanel.Dock="Top" FontSize="16">Kolejka zamówienia</Label>
-                            <ListBox DockPanel.Dock="Top" Name="OrderQueue" ></ListBox>
+                            <DockPanel DockPanel.Dock="Bottom" Margin="0 5 0 0" >
+                                
+                                <Button Name="RemoveFromWishList" Content="Usuń z listy" FontSize="16" HorizontalAlignment="Left" Width="150" Background="Orange" ></Button>
+                                <Button Name="Order" Content="Realizuj zamówienie" FontSize="16" Background="LightGreen" HorizontalAlignment="Right" Width="150"></Button>
+                            </DockPanel>
+                            <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Kolejka zamówienia</Label>
+                            <ListBox DockPanel.Dock="Top" Name="OrderQueue" FontSize="16" SelectedItem="{Binding OrderQueueSelectedItem}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding WishListItemDescription}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </DockPanel>
 
-                        <Image Source="{Binding ProductImage}" DockPanel.Dock="Left" Height="250" Width="250"/>
+                        <Image Source="{Binding ProductImage}" DockPanel.Dock="Left" Height="270" Width="270" />
 
                     </DockPanel>
                     <Label DockPanel.Dock="Top" Content="{Binding ItemDescription}"/>

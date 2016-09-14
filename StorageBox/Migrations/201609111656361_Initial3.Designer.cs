@@ -7,13 +7,13 @@ namespace StorageBox.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class enabledlazyloading : IMigrationMetadata
+    public sealed partial class Initial3 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(enabledlazyloading));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial3));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609061211344_enabled lazy loading"; }
+            get { return "201609111656361_Initial3"; }
         }
         
         string IMigrationMetadata.Source

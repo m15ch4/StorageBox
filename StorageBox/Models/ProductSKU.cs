@@ -27,6 +27,7 @@
         public virtual Product Product { get; set; }
         public virtual ICollection<SKUValue> SKUValues { get; set; }
         public virtual ICollection<Box> Boxes { get; set; }
+        public virtual ICollection<SBTask> SBTasks { get; set; }
 
     }
 }

@@ -2,10 +2,15 @@
 {
     using Caliburn.Micro;
     using Contracts;
+    using Dialogs;
     using Models;
     using StorageBox.Framework;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Dynamic;
     using System.IO;
+    using System.Linq;
+    using System.Windows;
     using System.Windows.Media.Imaging;
 
     public class OrdersViewModel : Conductor<object>.Collection.OneActive, IWorkspace
@@ -15,19 +20,26 @@
         private Category _categoriesSelectedItem;
         private BindableCollection<Product> _products;
         private IProductService _productService;
-        private BindableCollection<ProductSKU> _skus;
         private Product _productsSelectedItem;
         private IProductSKUService _productSKUService;
         private IProductVariantService _productVariantService;
-        private BindableCollection<ProductVariant> _productVarians;
-        private ProductVariant _productsVariantSelectedItem;
+        private BindableCollection<ProductVariant> _productVariants;
+        private ProductVariant _productsVariantSelectedItem = null;
+        private BindableCollection<WishListItem> _orderQueue = new BindableCollection<WishListItem>();
+        private WishListItem _orderQueueSelectedItem;
+        private IWindowManager _windowManager;
+        private IBoxService _boxService;
+        private ISBTaskService _sbTaskService;
 
-        public OrdersViewModel(ICategoryService categoryService, IProductService productService, IProductSKUService productSKUService, IProductVariantService productVariantService)
+        public OrdersViewModel(IWindowManager windowManager, ICategoryService categoryService, IProductService productService, IProductSKUService productSKUService, IProductVariantService productVariantService, IBoxService boxService, ISBTaskService sbTaskService)
         {
+            _windowManager = windowManager;
             _categoryService = categoryService;
             _productService = productService;
             _productSKUService = productSKUService;
             _productVariantService = productVariantService;
+            _boxService = boxService;
+            _sbTaskService = sbTaskService;
 
             _categories = _categoryService.GetAll();
             CategoriesSelectedItem = Categories[0];
@@ -102,11 +114,12 @@
 
         public BindableCollection<ProductVariant> ProductVariants
         {
-            get { return _productVarians; }
+            get { return _productVariants; }
             set
             {
-                _productVarians = value;
+                _productVariants = value;
                 NotifyOfPropertyChange(() => ProductVariants);
+                NotifyOfPropertyChange(() => CanAddToQueue);
             }
         }
 
@@ -118,6 +131,7 @@
             {
                 _productsVariantSelectedItem = value;
                 NotifyOfPropertyChange(() => ProductsVariantSelectedItem);
+                NotifyOfPropertyChange(() => CanAddToQueue);
             }
         }
 
@@ -135,9 +149,91 @@
             }
         }
 
-        public void AddToQueue(string productName)
+        // ORDER: AddToWishList
+        public void AddToWishList(ProductVariant productVariant)
         {
-            
+            if (ProductsVariantSelectedItem != null)
+            {
+                int inBoxCount = _boxService.Count(_productsVariantSelectedItem.ProductSKU);
+                WishListItem wishListItem = null;
+                wishListItem = OrderQueue.SingleOrDefault(i => i._productVariant.ProductSKU.ProductSKUID == _productsVariantSelectedItem.ProductSKU.ProductSKUID);
+                if (wishListItem == null)
+                {
+                    wishListItem = new WishListItem();
+                    wishListItem.ProductVariant = _productsVariantSelectedItem;
+                    wishListItem.Count = 0;
+                    //wishListItem.Count = 1;
+                    OrderQueue.Add(wishListItem);
+                }
+                else
+                {
+                    //wishListItem.Count += 1;
+                }
+
+                if (inBoxCount > wishListItem.Count)
+                {
+                    wishListItem.Count += 1;
+                }
+
+                NotifyOfPropertyChange(() => wishListItem.WishListItemDescription);
+                NotifyOfPropertyChange(() => OrderQueue);
+                NotifyOfPropertyChange(() => CanOrder);
+            }
+        }
+
+        // ORDER: RemoveFromWishList
+        public void RemoveFromWishList(WishListItem wishListItem)
+        {
+            if (OrderQueueSelectedItem != null)
+            {
+                if (OrderQueueSelectedItem.Count > 1)
+                {
+                    OrderQueueSelectedItem.Count -= 1;
+                    NotifyOfPropertyChange(() => OrderQueueSelectedItem.WishListItemDescription);
+                }
+                else
+                {
+                    OrderQueue.Remove(_orderQueueSelectedItem);
+                }
+
+                NotifyOfPropertyChange(() => OrderQueue);
+                NotifyOfPropertyChange(() => CanOrder);
+            }
+        }
+
+        public bool CanRemoveFromWishList
+        {
+            get { return _orderQueueSelectedItem != null; }
+        }
+
+
+        public bool CanAddToQueue
+        {
+            get { return _productsVariantSelectedItem != null; }
+        }
+
+
+        // TODO: tutaj trzeba zmienić żeby wartości budował na podstawie wishlist 
+        public BindableCollection<WishListItem> OrderQueue
+        {
+            get { return _orderQueue; }
+            set
+            {
+                _orderQueue = value;
+                NotifyOfPropertyChange(() => OrderQueue);
+                NotifyOfPropertyChange(() => CanOrder);
+            }
+        }
+
+        public WishListItem OrderQueueSelectedItem
+        {
+            get { return _orderQueueSelectedItem; }
+            set
+            {
+                _orderQueueSelectedItem = value;
+                NotifyOfPropertyChange(() => OrderQueueSelectedItem);
+                NotifyOfPropertyChange(() => CanRemoveFromWishList);
+            }
         }
 
         public string ProductImage
@@ -147,6 +243,22 @@
                 return Path.Combine("E:/", "myimage.jpg");
             }
 
+        }
+
+        public void Order()
+        {
+            dynamic mysettings = new ExpandoObject();
+            mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            //mysettings.ResizeMode = ResizeMode.NoResize;
+           // mysettings.WindowStyle = WindowStyle.None;
+           // mysettings.ShowInTaskbar = false;
+
+            _windowManager.ShowDialog(new ProcessOrderViewModel(OrderQueue, _boxService, _sbTaskService),null,mysettings);
+        }
+
+        public bool CanOrder
+        {
+            get { return (OrderQueue.Count != 0); }
         }
 
     }

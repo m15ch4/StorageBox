@@ -9,12 +9,12 @@ using StorageBox.Models;
 
 namespace StorageBox.Implementations
 {
-    class ProductSKUService : BaseService, IProductSKUService
+    class ProductSKUService : IProductSKUService
     {
-
-        public ProductSKUService() : base()
+        private MyDBContext _context;
+        public ProductSKUService(MyDBContext context)
         {
-
+            _context = context;
         }
 
         public BindableCollection<ProductSKU> Get(Product product)

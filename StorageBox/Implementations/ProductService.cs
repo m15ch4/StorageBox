@@ -7,12 +7,13 @@ using System.Collections.Generic;
 
 namespace StorageBox.Implementations
 {
-    public class ProductService : BaseService, IProductService
+    public class ProductService : IProductService
     {
+        private MyDBContext _context;
 
-        public ProductService() : base()
+        public ProductService(MyDBContext context) 
         {
-
+            _context = context;
         }
         public BindableCollection<Product> Get(Category category)
         {
