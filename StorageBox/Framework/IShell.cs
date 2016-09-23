@@ -3,5 +3,6 @@ namespace StorageBox {
         void Login();
         void Orders();
         void Additions();
+        void setUserName();
     }
 }

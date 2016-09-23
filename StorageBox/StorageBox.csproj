@@ -112,21 +112,56 @@
     </ApplicationDefinition>
     <Compile Include="Additions\ViewModels\AddCategoryViewModel.cs" />
     <Compile Include="Additions\ViewModels\AdditionsViewModel.cs" />
+    <Compile Include="Additions\ViewModels\BoxesViewModel.cs" />
+    <Compile Include="Additions\ViewModels\FillBoxesViewModel.cs" />
+    <Compile Include="Additions\ViewModels\OptionsViewModel.cs" />
+    <Compile Include="Additions\ViewModels\OptionValuesViewModel.cs" />
+    <Compile Include="Additions\ViewModels\ProductsViewModel.cs" />
+    <Compile Include="Additions\ViewModels\SKUsViewModel.cs" />
+    <Compile Include="Additions\ViewModels\SKUValueViewModel.cs" />
+    <Compile Include="Additions\ViewModels\UsersViewModel.cs" />
     <Compile Include="Additions\Views\AddCategoryView.xaml.cs">
       <DependentUpon>AddCategoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Additions\Views\AdditionsView.xaml.cs">
       <DependentUpon>AdditionsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Additions\Views\BoxesView.xaml.cs">
+      <DependentUpon>BoxesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Additions\Views\FillBoxesView.xaml.cs">
+      <DependentUpon>FillBoxesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Additions\Views\OptionsView.xaml.cs">
+      <DependentUpon>OptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Additions\Views\OptionValuesView.xaml.cs">
+      <DependentUpon>OptionValuesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Additions\Views\ProductsView.xaml.cs">
+      <DependentUpon>ProductsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Additions\Views\SKUsView.xaml.cs">
+      <DependentUpon>SKUsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Additions\Views\SKUValueView.xaml.cs">
+      <DependentUpon>SKUValueView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Additions\Views\UsersView.xaml.cs">
+      <DependentUpon>UsersView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Contracts\IBoxService.cs" />
     <Compile Include="Contracts\ICategoryService.cs" />
-    <Compile Include="Contracts\ILoginService.cs" />
+    <Compile Include="Contracts\IAuthenticationService.cs" />
+    <Compile Include="Contracts\IOptionService.cs" />
+    <Compile Include="Contracts\IOptionValueService.cs" />
     <Compile Include="Contracts\IProductService.cs" />
     <Compile Include="Contracts\IProductSKUService.cs" />
     <Compile Include="Contracts\IProductVariantService.cs" />
     <Compile Include="Contracts\ISBTaskService.cs" />
     <Compile Include="Contracts\ISBUserService.cs" />
+    <Compile Include="Contracts\ISKUValueService.cs" />
     <Compile Include="Framework\IAddition.cs" />
     <Compile Include="Framework\IDialog.cs" />
     <Compile Include="Framework\IMyDBContext.cs" />
@@ -135,39 +170,42 @@
     <Compile Include="Implementations\BaseService.cs" />
     <Compile Include="Implementations\BoxService.cs" />
     <Compile Include="Implementations\CategoryService.cs" />
-    <Compile Include="Implementations\LoginService.cs" />
+    <Compile Include="Implementations\AuthenticateService.cs" />
+    <Compile Include="Implementations\OptionService.cs" />
+    <Compile Include="Implementations\OptionValueService.cs" />
     <Compile Include="Implementations\ProductService.cs" />
     <Compile Include="Implementations\ProductSKUService.cs" />
     <Compile Include="Implementations\ProductVariantService.cs" />
     <Compile Include="Implementations\SBTaskService.cs" />
     <Compile Include="Implementations\SBUserService.cs" />
+    <Compile Include="Implementations\SKUValueService.cs" />
     <Compile Include="Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Login\LoginViewModel.cs" />
-    <Compile Include="Migrations\201609111119270_Initial.cs" />
-    <Compile Include="Migrations\201609111119270_Initial.Designer.cs">
-      <DependentUpon>201609111119270_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201609190628200_Initial.cs" />
+    <Compile Include="Migrations\201609190628200_Initial.Designer.cs">
+      <DependentUpon>201609190628200_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609111125083_Initial2.cs" />
-    <Compile Include="Migrations\201609111125083_Initial2.Designer.cs">
-      <DependentUpon>201609111125083_Initial2.cs</DependentUpon>
+    <Compile Include="Migrations\201609201154136_Removed boxstatuses.cs" />
+    <Compile Include="Migrations\201609201154136_Removed boxstatuses.Designer.cs">
+      <DependentUpon>201609201154136_Removed boxstatuses.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609111656361_Initial3.cs" />
-    <Compile Include="Migrations\201609111656361_Initial3.Designer.cs">
-      <DependentUpon>201609111656361_Initial3.cs</DependentUpon>
+    <Compile Include="Migrations\201609201224596_added boxstatuses.cs" />
+    <Compile Include="Migrations\201609201224596_added boxstatuses.Designer.cs">
+      <DependentUpon>201609201224596_added boxstatuses.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609111701421_Initial4.cs" />
-    <Compile Include="Migrations\201609111701421_Initial4.Designer.cs">
-      <DependentUpon>201609111701421_Initial4.cs</DependentUpon>
+    <Compile Include="Migrations\201609231515001_Add user role.cs" />
+    <Compile Include="Migrations\201609231515001_Add user role.Designer.cs">
+      <DependentUpon>201609231515001_Add user role.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609120803123_task process.cs" />
-    <Compile Include="Migrations\201609120803123_task process.Designer.cs">
-      <DependentUpon>201609120803123_task process.cs</DependentUpon>
+    <Compile Include="Migrations\201609231536189_Add user role as separate model.cs" />
+    <Compile Include="Migrations\201609231536189_Add user role as separate model.Designer.cs">
+      <DependentUpon>201609231536189_Add user role as separate model.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609140631257_Added password field to SBuser model.cs" />
-    <Compile Include="Migrations\201609140631257_Added password field to SBuser model.Designer.cs">
-      <DependentUpon>201609140631257_Added password field to SBuser model.cs</DependentUpon>
+    <Compile Include="Migrations\201609232030094_add image to model.cs" />
+    <Compile Include="Migrations\201609232030094_add image to model.Designer.cs">
+      <DependentUpon>201609232030094_add image to model.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Box.cs" />
@@ -179,9 +217,11 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductSKU.cs" />
     <Compile Include="Models\ProductVariant.cs" />
+    <Compile Include="Models\SBRole.cs" />
     <Compile Include="Models\SBTask.cs" />
     <Compile Include="Models\SBUser.cs" />
     <Compile Include="Models\SKUValue.cs" />
+    <Compile Include="Models\UserSession.cs" />
     <Compile Include="Models\WishListItem.cs" />
     <Compile Include="Orders\Dialogs\ProcessOrderView.xaml.cs">
       <DependentUpon>ProcessOrderView.xaml</DependentUpon>
@@ -192,7 +232,6 @@
       <DependentUpon>OrdersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="PLC\PLCSerialCom.cs" />
-    <Compile Include="RFID\RFIDCom.cs" />
     <Compile Include="Shell\ViewModels\ShellViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -221,23 +260,23 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201609111119270_Initial.resx">
-      <DependentUpon>201609111119270_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609190628200_Initial.resx">
+      <DependentUpon>201609190628200_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609111125083_Initial2.resx">
-      <DependentUpon>201609111125083_Initial2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609201154136_Removed boxstatuses.resx">
+      <DependentUpon>201609201154136_Removed boxstatuses.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609111656361_Initial3.resx">
-      <DependentUpon>201609111656361_Initial3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609201224596_added boxstatuses.resx">
+      <DependentUpon>201609201224596_added boxstatuses.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609111701421_Initial4.resx">
-      <DependentUpon>201609111701421_Initial4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609231515001_Add user role.resx">
+      <DependentUpon>201609231515001_Add user role.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609120803123_task process.resx">
-      <DependentUpon>201609120803123_task process.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609231536189_Add user role as separate model.resx">
+      <DependentUpon>201609231536189_Add user role as separate model.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609140631257_Added password field to SBuser model.resx">
-      <DependentUpon>201609140631257_Added password field to SBuser model.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609232030094_add image to model.resx">
+      <DependentUpon>201609232030094_add image to model.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -271,6 +310,38 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Additions\Views\AdditionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\BoxesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\FillBoxesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\OptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\OptionValuesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\ProductsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\SKUsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\SKUValueView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\UsersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

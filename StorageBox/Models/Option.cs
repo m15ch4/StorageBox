@@ -17,6 +17,7 @@
 
         [Key]
         [Column(Order = 2)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OptionID { get; set; }
 
         [Index("IX_Options", 1, IsUnique = true)]

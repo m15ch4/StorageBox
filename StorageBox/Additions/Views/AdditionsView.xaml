@@ -10,9 +10,15 @@
         <DockPanel>
             <Border BorderBrush="Black" BorderThickness="1" SnapsToDevicePixels="True" Margin="0,0,0,0" Width="250" Background="White">
                 <DockPanel>
-                    <Button Name="AddCategory" DockPanel.Dock="Top" Content="Kategorie" VerticalAlignment="Top" Margin="5"/>
-                    <Button Name="AddProduct" DockPanel.Dock="Top" Content="Produkty" VerticalAlignment="Top" Margin="5,0,5,5"/>
-                    <Button Name="AddSKU" DockPanel.Dock="Top" Content="SKU" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="Categories" DockPanel.Dock="Top" Content="Kategorie produktów" VerticalAlignment="Top" Margin="5"/>
+                    <Button Name="Products" DockPanel.Dock="Top" Content="Produkty" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="Options" DockPanel.Dock="Top" Content="Parametry produktów" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="OptionValues" DockPanel.Dock="Top" Content="Wartości parametrów produktów" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="SKUs" DockPanel.Dock="Top" Content="SKU" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="SKUValues" DockPanel.Dock="Top" Content="SKU - Wartości parametrów" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="Boxes" DockPanel.Dock="Top" Content="Skrzynki" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="FillBoxes" DockPanel.Dock="Top" Content="Zawartość skrzynek" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="Users" DockPanel.Dock="Top" Content="Użytkownicy" VerticalAlignment="Top" Margin="5,0,5,5"/>
                 </DockPanel>
             </Border>
             <Border>

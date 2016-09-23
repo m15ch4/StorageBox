@@ -24,5 +24,6 @@ namespace StorageBox.Models
         public DbSet<BoxSize> BoxSizes { get; set; }
         public DbSet<SBTask> SBTasks { get; set; }
         public DbSet<SBUser> SBUsers { get; set; }
+        public DbSet<SBRole> SBRoles { get; set; }
     }
 }

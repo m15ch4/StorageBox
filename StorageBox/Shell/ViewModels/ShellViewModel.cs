@@ -1,14 +1,14 @@
 namespace StorageBox.Shell.ViewModels
 {
     using Login;
+    using Models;
     using StorageBox.Framework;
     using System.Collections.Generic;
     using System.Composition;
     using System.Linq;
+    using System;
 
     public class ShellViewModel : Caliburn.Micro.Conductor<IWorkspace>.Collection.OneActive, IShell {
-
-
 
         [ImportingConstructor]
         public ShellViewModel(IEnumerable<IWorkspace> workspaces)
@@ -23,6 +23,9 @@ namespace StorageBox.Shell.ViewModels
 
         public void Login()
         {
+            UserSession.sbuser = null;
+            UserSession.beginDate = null;
+            NotifyOfPropertyChange(() => UserName);
             ActivateItem(Items[0]);
         }
 
@@ -35,6 +38,26 @@ namespace StorageBox.Shell.ViewModels
         {
             ActivateItem(Items[2]);
         }
+
+        public void setUserName()
+        {
+            NotifyOfPropertyChange(() => UserName);
+        }
+
+        public string UserName
+        {
+            get
+            {
+                string userName = "";
+                if (UserSession.sbuser != null)
+                {
+                    userName = UserSession.sbuser.FirstName + " " + UserSession.sbuser.LastName;
+                }
+                return userName;
+            }
+        }
+
+
 
     }
 }

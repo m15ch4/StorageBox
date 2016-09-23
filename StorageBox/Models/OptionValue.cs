@@ -11,6 +11,7 @@
 
         [Key]
         [Column(Order = 3)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OptionValueID { get; set; }
 
         [Key, ForeignKey("Option")]

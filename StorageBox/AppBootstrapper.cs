@@ -36,6 +36,15 @@ namespace StorageBox {
             container.PerRequest<IWorkspace, AdditionsViewModel>();
 
             container.PerRequest<IAddition, AddCategoryViewModel>();
+            container.PerRequest<IAddition, ProductsViewModel>();
+            container.PerRequest<IAddition, OptionsViewModel>();
+            container.PerRequest<IAddition, SKUsViewModel>();
+            container.PerRequest<IAddition, OptionValuesViewModel>();
+            container.PerRequest<IAddition, SKUValueViewModel>();
+            container.PerRequest<IAddition, BoxesViewModel>();
+            container.PerRequest<IAddition, FillBoxesViewModel>();
+            container.PerRequest<IAddition, UsersViewModel>();
+
             container.PerRequest<IDialog, ProcessOrderViewModel>();
 
             container.PerRequest<ICategoryService, CategoryService>();
@@ -44,7 +53,11 @@ namespace StorageBox {
             container.PerRequest<IProductVariantService, ProductVariantService>();
             container.PerRequest<IBoxService, BoxService>();
             container.PerRequest<ISBTaskService, SBTaskService>();
-            container.PerRequest<ILoginService, LoginService>();
+            container.PerRequest<IAuthenticationService, AuthenticateService>();
+            container.PerRequest<IOptionService, OptionService>();
+            container.PerRequest<IOptionValueService, OptionValueService>();
+            container.PerRequest<ISKUValueService, SKUValueService>();
+            container.PerRequest<ISBUserService, SBUserService>();
         }
 
         protected override object GetInstance(Type service, string key) {

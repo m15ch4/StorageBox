@@ -26,5 +26,11 @@
         public virtual ProductSKU ProductSKU { get; set; }
         public virtual Option Option { get; set; }
         public virtual OptionValue OptionValue { get; set; }
+
+        public string Description
+        {
+            get { return ProductSKU.Product.ProductName + ": " + ProductSKU.Sku + " " + Option.OptionName + " " + OptionValue.ValueName; }
+            
+        }
     }
 }

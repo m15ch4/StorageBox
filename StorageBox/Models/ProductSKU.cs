@@ -14,6 +14,7 @@
         [Key]
         [Column(Order = 2)]
         [Index(IsUnique = true)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductSKUID { get; set; }
 
         [Key, ForeignKey("Product")]

@@ -18,21 +18,22 @@ namespace StorageBox.Login
         static bool _continue;
         static SerialPort _serialPort;
 
-        private ILoginService _loginService;
+        private IAuthenticationService _authenticateService;
         private IShell _shell;
         private string _userName;
         private string _password;
 
         private BackgroundWorker _bw = new BackgroundWorker();
 
-        public LoginViewModel(ILoginService loginService)
+        public LoginViewModel(IAuthenticationService authenticateService)
         {
-            _loginService = loginService;
+            _authenticateService = authenticateService;
 
             //CONFIGURE SerialPort
             //start backgroundworker - rfid
             try
             {
+                Console.WriteLine("Trying start rfid");
                 _serialPort = new SerialPort();
                 _serialPort.PortName = "COM3";
                 _serialPort.BaudRate = 9600;
@@ -44,16 +45,17 @@ namespace StorageBox.Login
                 _serialPort.ReadTimeout = 500;
                 _serialPort.WriteTimeout = 500;
 
-                _serialPort.Open();
-                _continue = true;
+                //_serialPort.Open();
+                //_continue = true;
 
                 _bw.WorkerReportsProgress = false;
                 _bw.WorkerSupportsCancellation = false;
                 _bw.DoWork += new DoWorkEventHandler(ReadRFID);
-                _bw.RunWorkerAsync();
+                //_bw.RunWorkerAsync();
             }
             catch
             {
+                Console.WriteLine("Problem z komunikacją z RFID (LoginViewModel.constructor).");
                 Trace.WriteLine("Problem z komunikacją z RFID (LoginViewModel constructor).");
             }
         }
@@ -70,13 +72,21 @@ namespace StorageBox.Login
                 }
                 else
                 {
-                    _bw.RunWorkerAsync();
+                    //_bw.RunWorkerAsync();
                 }
             }
             catch
             {
+                Console.WriteLine("Problem z komunikacją z RFID (LoginViewModel.OnActivate).");
                 Trace.WriteLine("Problem z komunikacją z RFID (LoginViewModel.OnActivate).");
             }
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            _continue = false;
+            base.OnDeactivate(close);
+
         }
 
         public IShell Shell
@@ -111,29 +121,55 @@ namespace StorageBox.Login
 
         public void Login(string username, string password)
         {
-            SBUser sbuser = _loginService.Authenticate(username, password);
+            SBUser sbuser = _authenticateService.Authenticate(username, password);
             if (sbuser != null)
             {
+                UserSession.sbuser = sbuser;
+                UserSession.beginDate = DateTime.Now;
                 UserName = "";
                 Password = "";
+                _shell.setUserName();
                 Shell.Orders();
                 _continue = false;
             }
             else
             {
+                UserName = "";
+                Password = "";
                 Trace.WriteLine("Bad username or password");
             }
         }
 
-        private static void ReadRFID(object sender, DoWorkEventArgs e)
+        public void Login(string rfid)
+        {
+            SBUser sbuser = _authenticateService.Authenticate(rfid);
+            if (sbuser != null)
+            {
+                UserSession.sbuser = sbuser;
+                UserSession.beginDate = DateTime.Now;
+                _shell.setUserName();
+                Shell.Orders();
+                _continue = false;
+            }
+        }
+
+        private void ReadRFID(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
+            byte[] array = new byte[10];
             while (_continue)
             {
                 try
                 {
-                    string message = _serialPort.ReadLine();
-                    Console.WriteLine(message);
+                    _serialPort.Read(array, 0, 5);
+                    string hex = BitConverter.ToString(array);
+                    Console.WriteLine(hex);
+                    if (array[0] == 0x7c)
+                    {
+                        Shell.Orders();
+                    }
+                    //array clear
+                    array[0] = 0;
                 }
                 catch (TimeoutException) { }
             }

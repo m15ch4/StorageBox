@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="StorageBox.Additions.Views.SKUsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StorageBox.Additions.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="374.931" d:DesignWidth="524.54">
+    <Grid>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Left" LastChildFill="False">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
+                    <Label HorizontalContentAlignment="Right" Width="120">Produkt: </Label>
+                    <ComboBox Name="Products" Width="200" SelectedItem="{Binding ProductsSelectedItem}" DisplayMemberPath="ProductName"></ComboBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
+                    <Label HorizontalContentAlignment="Right" Width="120">SKU:</Label>
+                    <TextBox Name="SKU" Width="200" VerticalContentAlignment="Center"></TextBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
+                    <Label HorizontalContentAlignment="Right" Width="120">Cena:</Label>
+                    <TextBox Name="Price" Width="200" VerticalContentAlignment="Center"></TextBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
+                    <Button Name="CreateSKU" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="Zapisz SKU"></Button>
+                </StackPanel>
+            </DockPanel>
+            <DockPanel>
+                <Label DockPanel.Dock="Top">SKU:</Label>
+                <Button DockPanel.Dock="Bottom" cal:Message.Attach="[Click]=[Action RemoveSKU(SKUs.SelectedItem)]">Usuń SKU</Button>
+                <ListBox Name="SKUs" DisplayMemberPath="Sku" DockPanel.Dock="Top" SelectedItem="{Binding SKUsSelectedItem}"></ListBox>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</UserControl>

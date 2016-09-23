@@ -20,7 +20,8 @@
                     <Button Name="Login" Content="Login" VerticalAlignment="Center" Width="75" DockPanel.Dock="Left" Margin="5"/>
                     <Button Name="Orders" Content="Orders" VerticalAlignment="Center" Width="75" DockPanel.Dock="Left" Margin="5"/>
                     <Button Name="Additions" Content="Additions" VerticalAlignment="Center" Width="75" DockPanel.Dock="Left" Margin="5"/>
-                    <Button Name="TryClose" Content="Exit" VerticalAlignment="Center" Width="75" DockPanel.Dock="Right" Margin="5"/>
+                    <Button Name="TryClose" Content="Exit" VerticalAlignment="Center" Width="75" DockPanel.Dock="Left" Margin="5"/>
+                    <Label Name="UserName" Content="" VerticalAlignment="Center" Width="170" DockPanel.Dock="Right" Margin="5" />
                 </DockPanel>
             </Border>
             <ContentControl Name="ActiveItem" DockPanel.Dock="Bottom"/>

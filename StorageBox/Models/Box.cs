@@ -35,5 +35,22 @@
         public virtual BoxSize BoxSize { get; set; }
         public Status Status { get; set; }
         public virtual ICollection<SBTask> SBTasks { get; set; }
+
+        public string DisplayName
+        {
+            get
+            {
+                string displayName = "Wiersz: " + AddressRow + ", Kolumna: " + AddressCol;
+                if (Status == Status.Full)
+                {
+                    displayName += ", [" + ProductSKU.Product.ProductName + "]";
+                }
+                else
+                {
+                    displayName += ", [Empty]";
+                }
+                return displayName;
+            }
+        }
     }
 }

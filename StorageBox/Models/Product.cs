@@ -19,6 +19,7 @@
         public string ProductDescription { get; set; }
 
         public string ProductImage { get; set; }
+        public byte[] ProductImageContent { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual ICollection<Option> Options { get; set; }

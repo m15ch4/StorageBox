@@ -1,4 +1,5 @@
-﻿using StorageBox.Models;
+﻿using Caliburn.Micro;
+using StorageBox.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,12 @@ namespace StorageBox.Contracts
     {
         SBUser Get(string username);
         SBUser GetByRFID(string rfid);
+        BindableCollection<SBUser> GetAll();
+        void RemoveUser(SBUser sbuser);
+
+        bool Create(string userName, string firstName, string lastName, string password, string rfid, SBRole sbRole);
+
+        // Roles
+        BindableCollection<SBRole> GetAllRoles();
     }
 }

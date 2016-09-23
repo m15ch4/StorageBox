@@ -30,10 +30,6 @@ namespace StorageBox.Models
         public DateTime? DateAdded { get; set; }
         public DateTime? DateEnded { get; set; }
 
-
-        //public int BoxID { get; set; }
-        //public int ProductSKUID { get; set; }
-        //public int ProductID { get; set; }
         [NotMapped]
         public ProductVariant ProductVariant { get; set; }
 

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace StorageBox.Models
 {
+
+
     public class SBUser
     {
         public int SBUserID { get; set; }
@@ -15,6 +17,16 @@ namespace StorageBox.Models
         public string Password { get; set; }
         public string RFID { get; set; }
 
+        public virtual SBRole Role { get; set; }
+
         public virtual ICollection<SBTask> SBTasks { get; set; }
+
+        public string DisplayName
+        {
+            get
+            {
+                return FirstName + " " + LastName.ToUpper() + " [" + UserName + "]";
+            }
+        }
     }
 }
