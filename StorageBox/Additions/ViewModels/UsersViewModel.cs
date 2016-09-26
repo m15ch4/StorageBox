@@ -4,6 +4,8 @@ using StorageBox.Framework;
 using StorageBox.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -160,6 +162,36 @@ namespace StorageBox.Additions.ViewModels
             {
                 _sbUserService.RemoveUser(sbuser);
                 SBUsers = _sbUserService.GetAll();
+            }
+        }
+
+        public void ReadRFIDCode()
+        {
+            byte[] array = new byte[4];
+            SerialPort _serialPort = new SerialPort();
+            _serialPort.PortName = "COM3";
+            _serialPort.BaudRate = 9600;
+            _serialPort.DataBits = 8;
+            _serialPort.Parity = Parity.None;
+            _serialPort.StopBits = StopBits.One;
+            _serialPort.Handshake = Handshake.XOnXOff;
+
+            _serialPort.ReadTimeout = 5000;
+            _serialPort.WriteTimeout = 500;
+
+            try
+            {
+                _serialPort.Open();
+
+                _serialPort.Read(array, 0, 4);
+                _serialPort.Read(array, 0, 4);
+                string hex = BitConverter.ToString(array);
+                RFID = hex;
+                _serialPort.Close();
+            }
+            catch
+            {
+                Trace.WriteLine("Błąd portu COM3");
             }
         }
     }

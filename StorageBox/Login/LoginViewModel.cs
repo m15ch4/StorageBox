@@ -156,18 +156,28 @@ namespace StorageBox.Login
         private void ReadRFID(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-            byte[] array = new byte[10];
+            byte[] array = new byte[4];
             while (_continue)
             {
                 try
                 {
-                    _serialPort.Read(array, 0, 5);
+                    _serialPort.Read(array, 0, 4);
+                    _serialPort.Read(array, 0, 4);
                     string hex = BitConverter.ToString(array);
                     Console.WriteLine(hex);
-                    if (array[0] == 0x7c)
+                    SBUser sbuser = _authenticateService.Authenticate(hex);
+                    if (sbuser != null)
                     {
+                        UserSession.sbuser = sbuser;
+                        UserSession.beginDate = DateTime.Now;
+                        _shell.setUserName();
+                        _continue = false;
                         Shell.Orders();
                     }
+                    //if (array[0] == 0x7c)
+                    //{
+                    //    Shell.Orders();
+                    //}
                     //array clear
                     array[0] = 0;
                 }
