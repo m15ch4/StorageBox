@@ -27,7 +27,7 @@
                     <ComboBox Name="ProductSKUs" DisplayMemberPath="Sku" SelectedItem="{Binding ProductSKUsSelectedItem}" Width="200"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                    <Button Name="CreateSKUValue">Powiąż</Button>
+                    <Button Name="CreateSKUValue" Height="40" Width="120">Powiąż</Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel>

@@ -13,5 +13,6 @@ namespace StorageBox.Contracts
         void Create(string optionName, int ProductID, Product product);
         BindableCollection<Option> Get(Product product);
         BindableCollection<Option> GetAll();
+        void Remove(Option option);
     }
 }

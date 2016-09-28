@@ -21,21 +21,50 @@ namespace StorageBox.Additions.ViewModels
         private string _price;
         private BindableCollection<ProductSKU> _skus;
         private ProductSKU _skusSelectedItem;
+        private ICategoryService _categoryService;
+        private BindableCollection<Category> _categories;
+        private Category _categoriesSelectedItem;
 
-        public SKUsViewModel(IProductSKUService productSKUService, IProductService productService)
+        public SKUsViewModel(ICategoryService categoryService, IProductSKUService productSKUService, IProductService productService)
         {
+            _categoryService = categoryService;
             _productSKUService = productSKUService;
             _productService = productService;
 
             //Products = _productService.GetAll();
         }
 
+        
         protected override void OnActivate()
         {
             base.OnActivate();
-            Products = _productService.GetAll();
-            SKUs = _productSKUService.GetAll();
+            Categories = _categoryService.GetAll();
+            //Products = _productService.GetAll();
+            //SKUs = _productSKUService.GetAll();
         }
+
+        public BindableCollection<Category> Categories
+        {
+            get { return _categories; }
+            set
+            {
+                _categories = value;
+                NotifyOfPropertyChange(() => Categories);
+            }
+        }
+
+        public Category CategoriesSelectedItem
+        {
+            get { return _categoriesSelectedItem; }
+            set
+            {
+                _categoriesSelectedItem = value;
+                Products = _productService.Get(_categoriesSelectedItem);
+                NotifyOfPropertyChange(() => CategoriesSelectedItem);
+            }
+        }
+
+
 
         public BindableCollection<Product> Products
         {
@@ -53,6 +82,7 @@ namespace StorageBox.Additions.ViewModels
             set
             {
                 _productsSelectedItem = value;
+                SKUs = _productSKUService.Get(_productsSelectedItem);
                 NotifyOfPropertyChange(() => ProductsSelectedItem);
             }
         }

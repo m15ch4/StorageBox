@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:StorageBox.Shell.Views"
         mc:Ignorable="d"
         Title="ShellView" Height="768" Width="1024"
-        AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
+        AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
     <Grid>
         <DockPanel LastChildFill="True">
             <Border Height="50" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top" SnapsToDevicePixels="True" Margin="5" CornerRadius="5">
@@ -16,12 +16,14 @@
                         <GradientStop Color="LightGray" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
-                <DockPanel HorizontalAlignment="Right">
-                    <Button Name="Login" Content="Login" VerticalAlignment="Center" Width="75" DockPanel.Dock="Left" Margin="5"/>
-                    <Button Name="Orders" Content="Orders" VerticalAlignment="Center" Width="75" DockPanel.Dock="Left" Margin="5"/>
-                    <Button Name="Additions" Content="Additions" VerticalAlignment="Center" Width="75" DockPanel.Dock="Left" Margin="5"/>
-                    <Button Name="TryClose" Content="Exit" VerticalAlignment="Center" Width="75" DockPanel.Dock="Left" Margin="5"/>
+
+                <DockPanel LastChildFill="False">
+                    <Image></Image>
                     <Label Name="UserName" Content="" VerticalAlignment="Center" Width="170" DockPanel.Dock="Right" Margin="5" />
+                    <Button Name="TryClose" Content="Exit" VerticalAlignment="Center" Width="75" DockPanel.Dock="Right" Margin="5"/>
+                    <Button Name="Additions" Content="Additions" VerticalAlignment="Center" Width="75" DockPanel.Dock="Right" Margin="5"/>
+                    <Button Name="Orders" Content="Orders" VerticalAlignment="Center" Width="75" DockPanel.Dock="Right" Margin="5"/>
+                    <Button Name="Login" Content="Login" VerticalAlignment="Center" Width="75" DockPanel.Dock="Right" Margin="5"/>
                 </DockPanel>
             </Border>
             <ContentControl Name="ActiveItem" DockPanel.Dock="Bottom"/>

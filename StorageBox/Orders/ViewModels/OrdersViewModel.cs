@@ -262,12 +262,11 @@
             {
                 try
                 {
-                    //return Path.Combine("E:/", "myimage.jpg");
                     return LoadImage(_productsSelectedItem.ProductImageContent);
                 }
                 catch
                 {
-                    return new BitmapImage(new System.Uri("E:/myimage.jpg"));
+                    return new BitmapImage();
                 }
             }
 

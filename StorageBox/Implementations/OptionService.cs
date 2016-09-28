@@ -27,14 +27,24 @@ namespace StorageBox.Implementations
 
         public BindableCollection<Option> Get(Product product)
         {
-            List<Option> options = _context.Options.Where(o => o.ProductID == product.ProductID).ToList();
-            return new BindableCollection<Option>(options);
+            if (product != null)
+            {
+                List<Option> options = _context.Options.Where(o => o.ProductID == product.ProductID).ToList();
+                return new BindableCollection<Option>(options);
+            }
+            else return null;
         }
 
         public BindableCollection<Option> GetAll()
         {
             List<Option> options = _context.Options.ToList();
             return new BindableCollection<Option>(options);
+        }
+
+        public void Remove(Option option)
+        {
+            _context.Options.Remove(option);
+            _context.SaveChanges();
         }
     }
 }

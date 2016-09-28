@@ -13,6 +13,10 @@
 
             <DockPanel DockPanel.Dock="Left" LastChildFill="False" Width="330" HorizontalAlignment="Left">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                    <Label Width="120" HorizontalContentAlignment="Right">Kategoria:</Label>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" Width="200" SelectedItem="{Binding CategoriesSelectedItem}"></ComboBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
                     <Label Width="120" HorizontalContentAlignment="Right">Nazwa produktu:</Label>
                     <TextBox Name="ProductName" Width="200" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"></TextBox>
                 </StackPanel>
@@ -23,19 +27,16 @@
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
                     <Label Width="120" HorizontalContentAlignment="Right">Zdjęcie produktu:</Label>
                     <TextBox Name="ImageFileName" Width="140" VerticalContentAlignment="Center"></TextBox>
-                    <Button Content="Otwórz" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action ImageFile()]" Margin="10 0 0 0"></Button>
+                    <Button Content="Otwórz" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action ImageFile()]" Margin="5 0 0 0" Width="55"></Button>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
                     <Border BorderBrush="Black" BorderThickness="1" SnapsToDevicePixels="True">
                         <Image Name="ProductImage" Source="{Binding ImageFileName}" Width="250" Height="250"/>
                     </Border>
                 </StackPanel>
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Kategoria:</Label>
-                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" Width="200" SelectedItem="{Binding CategoriesSelectedItem}"></ComboBox>
-                </StackPanel>
+                
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateProduct" Content="Zapisz" HorizontalAlignment="Right"></Button>
+                    <Button Name="CreateProduct" Content="Zapisz" HorizontalAlignment="Right" Height="40" Width="120"></Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel DockPanel.Dock="Right" >

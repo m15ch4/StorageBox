@@ -20,11 +20,11 @@
                 </Border.Background>
                 <DockPanel LastChildFill="True" >
                     <Label Content="Kategoria:" DockPanel.Dock="Top" Margin="5,5,5,5" FontSize="16" FontWeight="Bold"/>
-                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16"/>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" Height="40" VerticalContentAlignment="Center"/>
                     <Label Content="Przedmiot:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" FontWeight="Bold"/>
                     <ListBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" DockPanel.Dock="Top" Height="250" Margin="5,0,5,5" FontSize="16"/>
                     <Label Content="SKU:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" FontWeight="Bold"/>
-                    <Button Content="Dodaj do kolejki" DockPanel.Dock="Bottom" Background="LightGreen" Margin="5,0,5,5" FontSize="16">
+                    <Button Content="Dodaj do kolejki" DockPanel.Dock="Bottom" Background="LightGreen" Margin="5,0,5,5" FontSize="18" Height="40" FontWeight="Bold">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <cal:ActionMessage MethodName="AddToWishList">
@@ -36,38 +36,58 @@
                     <ListBox Name="ProductVariants" SelectedItem="{Binding ProductsVariantSelectedItem}" DisplayMemberPath="ProductVariantDescriptionWithNumber" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" />
                 </DockPanel>
             </Border>
-            <Border BorderBrush="DarkGray" BorderThickness="1" DockPanel.Dock="Top" SnapsToDevicePixels="True" Margin="0,0,5,5" CornerRadius="5">
-                <Border.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Gray" Offset="0"/>
-                        <GradientStop Color="LightGray" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <DockPanel>
-                    <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Opis przedmiotu</Label>
-                    <DockPanel DockPanel.Dock="Bottom" Margin="5">
-                        <DockPanel DockPanel.Dock="Right" Width="320" Height="320">
-                            <DockPanel DockPanel.Dock="Bottom" Margin="0 5 0 0" >
-                                
-                                <Button Name="RemoveFromWishList" Content="Usuń z listy" FontSize="16" HorizontalAlignment="Left" Width="150" Background="Orange" ></Button>
-                                <Button Name="Order" Content="Realizuj zamówienie" FontSize="16" Background="LightGreen" HorizontalAlignment="Right" Width="150"></Button>
+                <DockPanel Margin="0 0 5 0">
+                    <DockPanel DockPanel.Dock="Bottom">
+                        <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right" Width="320" Height="320" CornerRadius="5" Margin="5 0 0 5">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="DarkGray" Offset="0"/>
+                                <GradientStop Color="LightGray" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <DockPanel >
+                                <DockPanel DockPanel.Dock="Bottom" Margin="5" >
+                                    <Button Name="RemoveFromWishList" Content="Usuń z listy" FontSize="18" HorizontalAlignment="Left" Width="110" Background="Orange" Height="40" FontWeight="Bold"></Button>
+                                    <Button Name="Order" Content="Realizuj zamówienie" FontSize="18" Background="LightGreen" HorizontalAlignment="Right" Width="190" FontWeight="Bold"></Button>
+                                </DockPanel>
+                                <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Kolejka zamówienia</Label>
+                                <ListBox DockPanel.Dock="Top" Name="OrderQueue" FontSize="16" SelectedItem="{Binding OrderQueueSelectedItem}" Margin="5">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding WishListItemDescription}"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </DockPanel>
-                            <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Kolejka zamówienia</Label>
-                            <ListBox DockPanel.Dock="Top" Name="OrderQueue" FontSize="16" SelectedItem="{Binding OrderQueueSelectedItem}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding WishListItemDescription}"/>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </DockPanel>
-
-                        <Image Source="{Binding ProductImage}" DockPanel.Dock="Left" Height="270" Width="270" />
-
-                    </DockPanel>
-                    <Label DockPanel.Dock="Top" Content="{Binding ItemDescription}"/>
+                        </Border>
+                        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="5" Margin="0 0 5 5">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="DarkGray" Offset="0"/>
+                                <GradientStop Color="LightGray" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <DockPanel DockPanel.Dock="Left">
+                            <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Ilustracja:</Label>
+                            <Image DockPanel.Dock="Top" Source="{Binding ProductImage}" Height="270" Width="270" />
+                         </DockPanel>
+                    </Border>
                 </DockPanel>
-            </Border>
+
+                <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Margin="0 0 0 10">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="DarkGray" Offset="0"/>
+                            <GradientStop Color="LightGray" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <DockPanel LastChildFill="True" Margin="5">
+                        <Label DockPanel.Dock="Top" FontSize="16" FontWeight="Bold">Opis przedmiotu</Label>
+                        <Label DockPanel.Dock="Top" Content="{Binding ItemDescription}"/>
+                    </DockPanel>
+                </Border>
+
+            </DockPanel>
         </DockPanel>
     </Grid>
 </UserControl>

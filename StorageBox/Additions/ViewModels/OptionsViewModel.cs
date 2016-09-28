@@ -18,9 +18,13 @@ namespace StorageBox.Additions.ViewModels
         private Product _productsSelectedItem;
         private string _optionName;
         private BindableCollection<Option> _options;
+        private ICategoryService _categoryService;
+        private BindableCollection<Category> _categories;
+        private Category _categoriesSelectedItem;
 
-        public OptionsViewModel(IProductService productService, IOptionService optionService)
+        public OptionsViewModel(ICategoryService categoryService, IProductService productService, IOptionService optionService)
         {
+            _categoryService = categoryService;
             _productService = productService;
             _optionService = optionService;
 
@@ -30,8 +34,30 @@ namespace StorageBox.Additions.ViewModels
         protected override void OnActivate()
         {
             base.OnActivate();
-            Products = _productService.GetAll();
-            Options = _optionService.GetAll();
+            Categories = _categoryService.GetAll();
+            //Products = _productService.GetAll();
+            //Options = _optionService.GetAll();
+        }
+
+        public BindableCollection<Category> Categories
+        {
+            get { return _categories; }
+            set
+            {
+                _categories = value;
+                NotifyOfPropertyChange(() => Categories);
+            }
+        }
+
+        public Category CategoriesSelectedItem
+        {
+            get { return _categoriesSelectedItem; }
+            set
+            {
+                _categoriesSelectedItem = value;
+                Products = _productService.Get(_categoriesSelectedItem);
+                NotifyOfPropertyChange(() => CategoriesSelectedItem);
+            }
         }
 
         public BindableCollection<Product> Products
@@ -50,6 +76,7 @@ namespace StorageBox.Additions.ViewModels
             set
             {
                 _productsSelectedItem = value;
+                Options = _optionService.Get(_productsSelectedItem);
                 NotifyOfPropertyChange(() => ProductsSelectedItem);
             }
         }
@@ -68,7 +95,7 @@ namespace StorageBox.Additions.ViewModels
         {
             _optionService.Create(OptionName, ProductsSelectedItem.ProductID, ProductsSelectedItem);
             OptionName = "";
-            Options = _optionService.GetAll();
+            Options = _optionService.Get(ProductsSelectedItem);
         }
 
         public BindableCollection<Option> Options
@@ -79,6 +106,12 @@ namespace StorageBox.Additions.ViewModels
                 _options = value;
                 NotifyOfPropertyChange(() => Options);
             }
+        }
+
+        public void RemoveOption(Option option)
+        {
+            _optionService.Remove(option);
+            Options = _optionService.Get(ProductsSelectedItem);
         }
     }
 }

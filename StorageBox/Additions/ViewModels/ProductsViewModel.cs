@@ -55,6 +55,7 @@ namespace StorageBox.Additions.ViewModels
             set
             {
                 _categoriesSelectedItem = value;
+                Products = _productService.Get(_categoriesSelectedItem);
                 NotifyOfPropertyChange(() => CategoriesSelectedItem);
             }
         }

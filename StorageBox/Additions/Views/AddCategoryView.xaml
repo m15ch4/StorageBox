@@ -10,20 +10,26 @@
              d:DesignHeight="500" d:DesignWidth="800">
     <Grid>
         <DockPanel Margin="0">
-            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Top">
-                <Label Content="Nazwa kategorii:" DockPanel.Dock="Left" Margin="5" />
-                <TextBox Name="CategoryName"  Width="200" Margin="5" DockPanel.Dock="Left" ></TextBox>
-                <Button Content="Dodaj kategorię" Margin="5" DockPanel.Dock="Left" HorizontalAlignment="Right" >
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="AddCategory">
-                                <cal:Parameter Value="{Binding ElementName=CategoryName, Path=Text}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
+            <DockPanel DockPanel.Dock="Left" LastChildFill="False" >
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                    <Label Content="Nazwa kategorii:" DockPanel.Dock="Left" Width="120" HorizontalContentAlignment="Right" />
+                    <TextBox Name="CategoryName"  Width="200" DockPanel.Dock="Left" VerticalContentAlignment="Center"></TextBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Margin="5">
+                    <Button Content="Dodaj kategorię" DockPanel.Dock="Left" HorizontalAlignment="Right" Width="120" Height="40">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="AddCategory">
+                                    <cal:Parameter Value="{Binding ElementName=CategoryName, Path=Text}" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </StackPanel>
+                
             </DockPanel>
-            <DockPanel DockPanel.Dock="Right" Margin="20 0 0 0">
+            <DockPanel DockPanel.Dock="Right" >
+                <Label DockPanel.Dock="Top" Content="Kategorie"></Label>
                 <Button Content="Usuń kategorię" DockPanel.Dock="Bottom" Margin="0 5 0 0" HorizontalAlignment="Right">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">

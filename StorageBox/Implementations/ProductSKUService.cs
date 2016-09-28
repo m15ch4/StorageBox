@@ -26,8 +26,12 @@ namespace StorageBox.Implementations
 
         public BindableCollection<ProductSKU> Get(Product product)
         {
-            List<ProductSKU> productSKUs = _context.ProductSKUS.Where(p => p.Product.ProductID == product.ProductID).ToList();
-            return new BindableCollection<ProductSKU>(productSKUs);
+            if (product != null)
+            {
+                List<ProductSKU> productSKUs = _context.ProductSKUS.Where(p => p.Product.ProductID == product.ProductID).ToList();
+                return new BindableCollection<ProductSKU>(productSKUs);
+            }
+            else return null;
         }
 
         public BindableCollection<ProductSKU> GetAll()

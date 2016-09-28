@@ -12,6 +12,10 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
+                    <Label HorizontalContentAlignment="Right" Width="120">Kategoria:</Label>
+                    <ComboBox Name="Categories" Width="200" SelectedItem="{Binding CategoriesSelectedItem}" DisplayMemberPath="CategoryName"></ComboBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
                     <Label HorizontalContentAlignment="Right" Width="120">Produkt: </Label>
                     <ComboBox Name="Products" Width="200" SelectedItem="{Binding ProductsSelectedItem}" DisplayMemberPath="ProductName"></ComboBox>
                 </StackPanel>
@@ -24,7 +28,7 @@
                     <TextBox Name="Price" Width="200" VerticalContentAlignment="Center"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateSKU" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Content="Zapisz SKU"></Button>
+                    <Button Name="CreateSKU" HorizontalAlignment="Right" Content="Zapisz SKU" Height="40" Width="120"></Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel>

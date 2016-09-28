@@ -4,26 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StorageBox.Additions.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="329.154" d:DesignWidth="505.016">
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Content="Nazwa parametru:" Width="120"></Label>
-                    <TextBox Name="OptionName" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Content="Kategoria:" Width="120" HorizontalContentAlignment="Right"></Label>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" Width="200" SelectedItem="{Binding CategoriesSelectedItem}"></ComboBox>
                 </StackPanel>
+                
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Content="Przedmiot:" Width="120"></Label>
+                    <Label Content="Przedmiot:" Width="120" HorizontalContentAlignment="Right"></Label>
                     <ComboBox Name="Products" DisplayMemberPath="ProductName" Width="200" SelectedItem="{Binding ProductsSelectedItem}"></ComboBox>
                 </StackPanel>
+                
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                    <Label Content="Nazwa parametru:" Width="120" HorizontalContentAlignment="Right"></Label>
+                    <TextBox Name="OptionName" Width="200" VerticalContentAlignment="Center"></TextBox>
+                </StackPanel>
+                
                 <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="5">
-                    <Button Name="CreateOption" Content="Zapisz"></Button>
+                    <Button Name="CreateOption" Content="Zapisz" Height="40" Width="120"></Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel DockPanel.Dock="Right">
                 <Label DockPanel.Dock="Top">Parametry produktu:</Label>
-                <Button DockPanel.Dock="Bottom" Content="Usuń opcję" />
+                <Button DockPanel.Dock="Bottom" Content="Usuń opcję" cal:Message.Attach="[Click]=[Action RemoveOption(Options.SelectedItem)]"/>
                 <ListBox Name="Options" DisplayMemberPath="OptionName" DockPanel.Dock="Top"></ListBox>
             </DockPanel>
         </DockPanel>

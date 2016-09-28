@@ -8,21 +8,37 @@
              d:DesignHeight="690" d:DesignWidth="1000">
     <Grid Margin="5 0 5 5">
         <DockPanel>
-            <Border BorderBrush="Black" BorderThickness="1" SnapsToDevicePixels="True" Margin="0,0,0,0" Width="250" Background="White">
+            <Border BorderBrush="Black" BorderThickness="1" SnapsToDevicePixels="True" Margin="0,0,0,0" Width="250" CornerRadius="5">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="DarkGray" Offset="0"/>
+                        <GradientStop Color="LightGray" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
                 <DockPanel>
-                    <Button Name="Categories" DockPanel.Dock="Top" Content="Kategorie produktów" VerticalAlignment="Top" Margin="5"/>
-                    <Button Name="Products" DockPanel.Dock="Top" Content="Produkty" VerticalAlignment="Top" Margin="5,0,5,5"/>
-                    <Button Name="Options" DockPanel.Dock="Top" Content="Parametry produktów" VerticalAlignment="Top" Margin="5,0,5,5"/>
-                    <Button Name="OptionValues" DockPanel.Dock="Top" Content="Wartości parametrów produktów" VerticalAlignment="Top" Margin="5,0,5,5"/>
-                    <Button Name="SKUs" DockPanel.Dock="Top" Content="SKU" VerticalAlignment="Top" Margin="5,0,5,5"/>
-                    <Button Name="SKUValues" DockPanel.Dock="Top" Content="SKU - Wartości parametrów" VerticalAlignment="Top" Margin="5,0,5,5"/>
-                    <Button Name="Boxes" DockPanel.Dock="Top" Content="Skrzynki" VerticalAlignment="Top" Margin="5,0,5,5"/>
-                    <Button Name="FillBoxes" DockPanel.Dock="Top" Content="Zawartość skrzynek" VerticalAlignment="Top" Margin="5,0,5,5"/>
-                    <Button Name="Users" DockPanel.Dock="Top" Content="Użytkownicy" VerticalAlignment="Top" Margin="5,0,5,5"/>
+                    <Button Name="Categories" DockPanel.Dock="Top" Content="Kategorie produktów" VerticalAlignment="Top" Margin="5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="Products" DockPanel.Dock="Top" Content="Produkty" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="Options" DockPanel.Dock="Top" Content="Parametry produktów" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="OptionValues" DockPanel.Dock="Top" Content="Wartości parametrów produktów" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="SKUs" DockPanel.Dock="Top" Content="SKU" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="SKUValues" DockPanel.Dock="Top" Content="SKU - Wartości parametrów" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="Boxes" DockPanel.Dock="Top" Content="Skrzynki" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="FillBoxes" DockPanel.Dock="Top" Content="Zawartość skrzynek" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="Users" DockPanel.Dock="Top" Content="Użytkownicy" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
                 </DockPanel>
             </Border>
-            <Border>
-                <ContentControl Name="ActiveItem"/>
+            <Border BorderBrush="Black" BorderThickness="1" Margin="5 0 0 0" CornerRadius="5">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="DarkGray" Offset="0"/>
+                        <GradientStop Color="LightGray" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <DockPanel LastChildFill="True">
+                    <Label DockPanel.Dock="Top" Name="Title" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"></Label>
+                    <Border DockPanel.Dock="Top" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="0,1,0,0" SnapsToDevicePixels="True"></Border>
+                    <ContentControl Name="ActiveItem" DockPanel.Dock="Top" Margin="5"/>
+                </DockPanel>
             </Border>
         </DockPanel>
     </Grid>

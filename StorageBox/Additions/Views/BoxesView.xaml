@@ -12,28 +12,28 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120">Wiersz:</Label>
+                    <Label Width="120" HorizontalContentAlignment="Right">Wiersz:</Label>
                     <TextBox Name="Row" Width="200" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120">Kolumna:</Label>
+                    <Label Width="120" HorizontalContentAlignment="Right">Kolumna:</Label>
                     <TextBox Name="Column" Width="200" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120">Rozmiar:</Label>
+                    <Label Width="120" HorizontalContentAlignment="Right">Rozmiar:</Label>
                     <ComboBox Name="BoxSizes" DisplayMemberPath="BoxSizeName" SelectedItem="{Binding BoxSizesSelectedItem}" Width="200"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateBox" Content="Dodaj skrzynkę"></Button>
+                    <Button Name="CreateBox" Content="Dodaj skrzynkę" Height="40" Width="120"></Button>
                 </StackPanel>
 
                 
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateBoxSize" Content="Dodaj rozmiar skrzynki" HorizontalAlignment="Right"></Button>
+                    <Button Name="CreateBoxSize" Content="Dodaj rozmiar skrzynki" HorizontalAlignment="Right" Height="40" Width="140"></Button>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
-                    <Label Width="120">Rozmiar skrzynki:</Label>
-                    <TextBox Name="BoxSizeName" Width="200"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right">Rozmiar skrzynki:</Label>
+                    <TextBox Name="BoxSizeName" Width="200" VerticalContentAlignment="Center"></TextBox>
                 </StackPanel>
             </DockPanel>
             <DockPanel>

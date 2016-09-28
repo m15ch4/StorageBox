@@ -10,6 +10,10 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                    <Label Width="120" HorizontalContentAlignment="Right">Kategoria:</Label>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" Width="200"></ComboBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
                     <Label Width="120" HorizontalContentAlignment="Right">Produkt:</Label>
                     <ComboBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" Width="200"></ComboBox>
                 </StackPanel>
@@ -22,7 +26,7 @@
                     <TextBox Name="OptionValueName" Width="200" VerticalContentAlignment="Center"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateOptionValue" Content="Dodaj opcję"></Button>
+                    <Button Name="CreateOptionValue" Content="Dodaj opcję" Height="40" Width="120"></Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel>

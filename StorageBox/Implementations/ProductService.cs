@@ -41,7 +41,18 @@ namespace StorageBox.Implementations
 
         public void Create(string productName, string productDescription, Category category, string imagePath)
         {
-            byte[] imageData = ReadFile(imagePath);
+            byte[] imageData = new byte[1];
+
+            if (imagePath != "")
+            {
+                try
+                {
+                    imageData = ReadFile(imagePath);
+                }
+                catch
+                { }
+            }
+           
 
             Product product = new Product() { ProductName = productName, ProductDescription = productDescription, Category = category, ProductImageContent=imageData };
             _context.Products.Add(product);

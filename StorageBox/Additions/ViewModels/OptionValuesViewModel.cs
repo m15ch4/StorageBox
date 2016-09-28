@@ -21,9 +21,13 @@ namespace StorageBox.Additions.ViewModels
         private Option _optionsSelectedItem;
         private string _optionValueName;
         private BindableCollection<OptionValue> _optionValues;
+        private ICategoryService _categoryService;
+        private BindableCollection<Category> _categories;
+        private Category _categoriesSelectedItem;
 
-        public OptionValuesViewModel(IOptionValueService optionValueService, IOptionService optionService, IProductService productService)
+        public OptionValuesViewModel(ICategoryService categoryService, IOptionValueService optionValueService, IOptionService optionService, IProductService productService)
         {
+            _categoryService = categoryService;
             _optionValueService = optionValueService;
             _optionService = optionService;
             _productService = productService;
@@ -32,9 +36,31 @@ namespace StorageBox.Additions.ViewModels
         protected override void OnActivate()
         {
             base.OnActivate();
-            Products = _productService.GetAll();
-            Options = _optionService.GetAll();
-            OptionValues = _optionValueService.GetAll();
+            Categories = _categoryService.GetAll();
+            //Products = _productService.GetAll();
+            //Options = _optionService.GetAll();
+            //OptionValues = _optionValueService.GetAll();
+        }
+
+        public BindableCollection<Category> Categories
+        {
+            get { return _categories; }
+            set
+            {
+                _categories = value;
+                NotifyOfPropertyChange(() => Categories);
+            }
+        }
+
+        public Category CategoriesSelectedItem
+        {
+            get { return _categoriesSelectedItem; }
+            set
+            {
+                _categoriesSelectedItem = value;
+                Products = _productService.Get(_categoriesSelectedItem);
+                NotifyOfPropertyChange(() => CategoriesSelectedItem);
+            }
         }
 
         public BindableCollection<Product> Products
