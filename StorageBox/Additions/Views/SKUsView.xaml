@@ -12,29 +12,33 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
-                    <Label HorizontalContentAlignment="Right" Width="120">Kategoria:</Label>
-                    <ComboBox Name="Categories" Width="200" SelectedItem="{Binding CategoriesSelectedItem}" DisplayMemberPath="CategoryName"></ComboBox>
+                    <Label HorizontalContentAlignment="Right" Width="120" Height="35" VerticalContentAlignment="Center" FontSize="14" >Kategoria:</Label>
+                    <ComboBox Name="Categories" Width="200" SelectedItem="{Binding CategoriesSelectedItem}" DisplayMemberPath="CategoryName" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
-                    <Label HorizontalContentAlignment="Right" Width="120">Produkt: </Label>
-                    <ComboBox Name="Products" Width="200" SelectedItem="{Binding ProductsSelectedItem}" DisplayMemberPath="ProductName"></ComboBox>
+                    <Label HorizontalContentAlignment="Right" Width="120" Height="35" VerticalContentAlignment="Center" FontSize="14">Produkt: </Label>
+                    <ComboBox Name="Products" Width="200" SelectedItem="{Binding ProductsSelectedItem}" DisplayMemberPath="ProductName" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
-                    <Label HorizontalContentAlignment="Right" Width="120">SKU:</Label>
-                    <TextBox Name="SKU" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label HorizontalContentAlignment="Right" Width="120" Height="35" VerticalContentAlignment="Center" FontSize="14">SKU:</Label>
+                    <TextBox Name="SKU" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
-                    <Label HorizontalContentAlignment="Right" Width="120">Cena:</Label>
-                    <TextBox Name="Price" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label HorizontalContentAlignment="Right" Width="120" Height="35" VerticalContentAlignment="Center" FontSize="14">Cena:</Label>
+                    <TextBox Name="Price" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14" PreviewTextInput="NumberValidationTextBox"></TextBox>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" Width="320">
+                    <Label HorizontalContentAlignment="Right" Width="120" Height="35" VerticalContentAlignment="Center" FontSize="14">Próg powiadamiania:</Label>
+                    <TextBox Name="Threshold" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14" PreviewTextInput="NumberValidationTextBox"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateSKU" HorizontalAlignment="Right" Content="Zapisz SKU" Height="40" Width="120"></Button>
+                    <Button Name="CreateSKU" HorizontalAlignment="Right" Content="Zapisz SKU" Height="40" Width="120" FontSize="14"></Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel>
-                <Label DockPanel.Dock="Top">SKU:</Label>
-                <Button DockPanel.Dock="Bottom" cal:Message.Attach="[Click]=[Action RemoveSKU(SKUs.SelectedItem)]">Usuń SKU</Button>
-                <ListBox Name="SKUs" DisplayMemberPath="Sku" DockPanel.Dock="Top" SelectedItem="{Binding SKUsSelectedItem}"></ListBox>
+                <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">SKU:</Label>
+                <Button DockPanel.Dock="Bottom" cal:Message.Attach="[Click]=[Action RemoveSKU(SKUs.SelectedItem)]" Height="40" VerticalContentAlignment="Center" FontSize="14" Margin="0 5 0 0" HorizontalAlignment="Right" Width="120">Usuń SKU</Button>
+                <ListBox Name="SKUs" DisplayMemberPath="Sku" DockPanel.Dock="Top" SelectedItem="{Binding SKUsSelectedItem}" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

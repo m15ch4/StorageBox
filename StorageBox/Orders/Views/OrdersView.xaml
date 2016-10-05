@@ -11,29 +11,49 @@
     <Grid Background="White">
         <DockPanel LastChildFill="True">
 
-            <Border BorderBrush="DarkGray" BorderThickness="1" DockPanel.Dock="Left" SnapsToDevicePixels="True" Margin="5,0,5,5" Width="320" CornerRadius="5">
+            <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left" SnapsToDevicePixels="True" Margin="5,0,5,5" Width="340" CornerRadius="5">
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Gray" Offset="0"/>
-                        <GradientStop Color="LightGray" Offset="1"/>
+                        <GradientStop Color="DarkGray" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
                 <DockPanel LastChildFill="True" >
                     <Label Content="Kategoria:" DockPanel.Dock="Top" Margin="5,5,5,5" FontSize="16" FontWeight="Bold"/>
-                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" Height="40" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="Categories" SelectedItem="{Binding CategoriesSelectedItem}" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" Height="40" VerticalContentAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Stretch" Height="40">
+                                    <TextBlock Text="{Binding CategoryName}" Margin="0 6 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <Label Content="Przedmiot:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" FontWeight="Bold"/>
-                    <ListBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" DockPanel.Dock="Top" Height="250" Margin="5,0,5,5" FontSize="16"/>
+                    <ListBox Name="Products" SelectedItem="{Binding ProductsSelectedItem}" DockPanel.Dock="Top" Height="250" Margin="5,0,5,5" FontSize="16">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Stretch" Height="40">
+                                    <TextBlock Text="{Binding ProductName}" Margin="0 6 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <Label Content="SKU:" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" FontWeight="Bold"/>
-                    <Button Content="Dodaj do kolejki" DockPanel.Dock="Bottom" Background="LightGreen" Margin="5,0,5,5" FontSize="18" Height="40" FontWeight="Bold">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <cal:ActionMessage MethodName="AddToWishList">
-                                    <cal:Parameter Value="{Binding ElementName=ProductsVariantSelectedItem}" />
-                                </cal:ActionMessage>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Button>
-                    <ListBox Name="ProductVariants" SelectedItem="{Binding ProductsVariantSelectedItem}" DisplayMemberPath="ProductVariantDescriptionWithNumber" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" />
+                    <Button Content="Dodaj do kolejki" DockPanel.Dock="Bottom" Background="LightGreen" Margin="5,0,5,5" FontSize="18" Height="40" FontWeight="Bold" cal:Message.Attach="[Click]=[Action AddToWishList(ProductSKUs.SelectedItem)]" />
+                    <ListBox Name="ProductSKUs" SelectedItem="{Binding ProductSKUsSelectedItem}" DockPanel.Dock="Top" Margin="5,0,5,5" FontSize="16" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border HorizontalAlignment="Center" >
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding SKUDescription}" FontSize="14" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding SKUCount}" FontSize="12"/>
+                                        <TextBlock Text="{Binding SKUOptionsDescription}" FontSize="12" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </DockPanel>
             </Border>
                 <DockPanel Margin="0 0 5 0">
@@ -41,8 +61,8 @@
                         <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right" Width="320" Height="320" CornerRadius="5" Margin="5 0 0 5">
                         <Border.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="DarkGray" Offset="0"/>
-                                <GradientStop Color="LightGray" Offset="1"/>
+                                <GradientStop Color="Gray" Offset="0"/>
+                                <GradientStop Color="DarkGray" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
                         <DockPanel >
@@ -54,7 +74,11 @@
                                 <ListBox DockPanel.Dock="Top" Name="OrderQueue" FontSize="16" SelectedItem="{Binding OrderQueueSelectedItem}" Margin="5">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding WishListItemDescription}"/>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding WishListItemNameDescription}" FontSize="14" FontWeight="Bold" />
+                                                <TextBlock Text="{Binding WishListItemCountDescription}" FontSize="12"/>
+                                                <TextBlock Text="{Binding WishListItemOptionsDescription}" FontSize="12"/>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
@@ -63,8 +87,8 @@
                         <Border BorderBrush="Black" BorderThickness="1" CornerRadius="5" Margin="0 0 5 5">
                         <Border.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="DarkGray" Offset="0"/>
-                                <GradientStop Color="LightGray" Offset="1"/>
+                                <GradientStop Color="Gray" Offset="0"/>
+                                <GradientStop Color="DarkGray" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
                         <DockPanel DockPanel.Dock="Left">
@@ -74,11 +98,11 @@
                     </Border>
                 </DockPanel>
 
-                <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Margin="0 0 0 10">
+                <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Margin="0 0 0 5">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="DarkGray" Offset="0"/>
-                            <GradientStop Color="LightGray" Offset="1"/>
+                            <GradientStop Color="Gray" Offset="0"/>
+                            <GradientStop Color="DarkGray" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                     <DockPanel LastChildFill="True" Margin="5">

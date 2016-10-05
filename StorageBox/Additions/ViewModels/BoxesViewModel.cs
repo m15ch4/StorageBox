@@ -30,6 +30,8 @@ namespace StorageBox.Additions.ViewModels
             base.OnActivate();
             Boxes = _boxService.GetAll();
             BoxSizes = _boxService.GetAllBoxSizes();
+            Row = "";
+            Column = "";
         }
 
         public BindableCollection<BoxSize> BoxSizes
@@ -49,6 +51,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _boxSizesSelectedItem = value;
                 NotifyOfPropertyChange(() => BoxSizesSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateBox);
             }
         }
 
@@ -59,6 +62,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _row = value;
                 NotifyOfPropertyChange(() => Row);
+                NotifyOfPropertyChange(() => CanCreateBox);
             }
         }
 
@@ -69,20 +73,28 @@ namespace StorageBox.Additions.ViewModels
             {
                 _column = value;
                 NotifyOfPropertyChange(() => Column);
+                NotifyOfPropertyChange(() => CanCreateBox);
             }
         }
 
         public void CreateBox()
         {
-            Int16 r = Convert.ToInt16(Row);
-            Int16 c = Convert.ToInt16(Column);
+            byte r = Convert.ToByte(Row);
+            byte c = Convert.ToByte(Column);
 
-            if (_boxService.Get(Convert.ToInt32(Row), Convert.ToInt32(Column)) == null)
+            if (_boxService.Get(Convert.ToByte(Row), Convert.ToByte(Column)) == null)
             {
                 _boxService.CreateBox(r, c, BoxSizesSelectedItem);
                 Boxes = _boxService.GetAll();
+                Row = "";
+                Column = "";
             }
 
+        }
+
+        public bool CanCreateBox
+        {
+            get { return ((Row != "") && (Column != "") && (BoxSizesSelectedItem != null)); }
         }
 
         public string BoxSizeName

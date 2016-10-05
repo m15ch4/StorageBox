@@ -12,40 +12,40 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Kategoria:</Label>
-                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right"  Height="35" VerticalContentAlignment="Center" FontSize="14">Kategoria:</Label>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Produkt:</Label>
-                    <ComboBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Produkt:</Label>
+                    <ComboBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">SKU:</Label>
-                    <ComboBox Width="200" Name="SKUs" DisplayMemberPath="Sku" SelectedItem="{Binding SKUsSelectedItem}"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">SKU:</Label>
+                    <ComboBox Width="200" Name="SKUs" DisplayMemberPath="Sku" SelectedItem="{Binding SKUsSelectedItem}" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
 
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5 50 5 5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Skrzynka:</Label>
-                    <ComboBox Width="200" Name="Boxes2" DisplayMemberPath="DisplayName" SelectedItem="{Binding Boxes2SelectedItem}"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Skrzynka:</Label>
+                    <ComboBox Width="200" Name="Boxes2" DisplayMemberPath="DisplayName" SelectedItem="{Binding Boxes2SelectedItem}" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Wiersz:</Label>
-                    <TextBox Name="Row" Width="200" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center" IsEnabled="False"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Wiersz:</Label>
+                    <TextBox Name="Row" Width="200" PreviewTextInput="NumberValidationTextBox"  Height="35" VerticalContentAlignment="Center" FontSize="14" IsEnabled="False"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Kolumna:</Label>
-                    <TextBox Name="Column" Width="200" PreviewTextInput="NumberValidationTextBox" IsEnabled="False"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Kolumna:</Label>
+                    <TextBox Name="Column" Width="200" PreviewTextInput="NumberValidationTextBox" IsEnabled="False" Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Content="Dodaj do pojedynczej skrzynki" cal:Message.Attach="[Click]=[Action FillSingle(SKUs.SelectedItem,Row,Column)]" Height="40" Width="180"/>
+                    <Button Content="Dodaj do pojedynczej skrzynki" cal:Message.Attach="[Click]=[Action FillSingle(SKUs.SelectedItem,Row,Column)]" Height="40" Width="200" FontSize="14"/>
                 </StackPanel>
 
                 
             </DockPanel>
             <DockPanel>
-                <Label DockPanel.Dock="Top">Skrzynki:</Label>
-                <Button DockPanel.Dock="Bottom" Content="Opróżnij skrzynkę" cal:Message.Attach="[Click]=[Action EmptySingle(Boxes.SelectedItem)]"></Button>
-                <ListBox Name="Boxes" DisplayMemberPath="DisplayName"></ListBox>
+                <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Skrzynki:</Label>
+                <Button DockPanel.Dock="Bottom" Content="Opróżnij skrzynkę" cal:Message.Attach="[Click]=[Action EmptySingle(Boxes.SelectedItem)]" FontSize="14" HorizontalAlignment="Right" Width="140" Height="40" Margin="0 5 0 0"></Button>
+                <ListBox Name="Boxes" DisplayMemberPath="DisplayName" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

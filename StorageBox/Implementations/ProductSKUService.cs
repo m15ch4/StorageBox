@@ -17,9 +17,9 @@ namespace StorageBox.Implementations
             _context = context;
         }
 
-        public void Create(string SKU, Product product, string price)
+        public void Create(string SKU, Product product, string price, int threshold)
         {
-            ProductSKU productSKU = new ProductSKU() { Sku = SKU, Product = product, Price = price };
+            ProductSKU productSKU = new ProductSKU() { Sku = SKU, Product = product, Price = price, Threshold = threshold };
             _context.ProductSKUS.Add(productSKU);
             _context.SaveChanges();
         }

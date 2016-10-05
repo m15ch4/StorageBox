@@ -12,11 +12,11 @@
         <DockPanel Margin="0">
             <DockPanel DockPanel.Dock="Left" LastChildFill="False" >
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Content="Nazwa kategorii:" DockPanel.Dock="Left" Width="120" HorizontalContentAlignment="Right" />
-                    <TextBox Name="CategoryName"  Width="200" DockPanel.Dock="Left" VerticalContentAlignment="Center"></TextBox>
+                    <Label Content="Nazwa kategorii:" DockPanel.Dock="Left" Width="120" Height="35" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="14"/>
+                    <TextBox Name="CategoryName"  Width="200" Height="35" DockPanel.Dock="Left" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Margin="5">
-                    <Button Content="Dodaj kategorię" DockPanel.Dock="Left" HorizontalAlignment="Right" Width="120" Height="40">
+                    <Button Content="Dodaj kategorię" DockPanel.Dock="Left" HorizontalAlignment="Right" Width="120" Height="40" FontSize="14">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <cal:ActionMessage MethodName="AddCategory">
@@ -29,8 +29,8 @@
                 
             </DockPanel>
             <DockPanel DockPanel.Dock="Right" >
-                <Label DockPanel.Dock="Top" Content="Kategorie"></Label>
-                <Button Content="Usuń kategorię" DockPanel.Dock="Bottom" Margin="0 5 0 0" HorizontalAlignment="Right">
+                <Label DockPanel.Dock="Top" Content="Kategorie:" FontSize="14"></Label>
+                <Button Content="Usuń kategorię" DockPanel.Dock="Bottom" Margin="0 5 0 0" HorizontalAlignment="Right" FontSize="14" Height="40" Width="120">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="DeleteCategory">
@@ -39,7 +39,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>
-                <ListBox Name="Categories" DockPanel.Dock="Top" HorizontalAlignment="Stretch"  DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}"></ListBox>
+                <ListBox Name="Categories" DockPanel.Dock="Top" HorizontalAlignment="Stretch"  DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" FontSize="14"></ListBox>
             </DockPanel>
             
         </DockPanel>

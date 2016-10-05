@@ -65,6 +65,7 @@ namespace StorageBox.Additions.ViewModels
                 _categoriesSelectedItem = value;
                 Products = _productService.Get(_categoriesSelectedItem);
                 NotifyOfPropertyChange(() => CategoriesSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateSKUValue);
             }
         }
 
@@ -97,6 +98,7 @@ namespace StorageBox.Additions.ViewModels
                     SKUValues = null;
                 }
                 NotifyOfPropertyChange(() => ProductsSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateSKUValue);
             }
         }
 
@@ -125,6 +127,7 @@ namespace StorageBox.Additions.ViewModels
                     OptionValues = null;
                 }
                 NotifyOfPropertyChange(() => OptionsSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateSKUValue);
             }
         }
 
@@ -145,6 +148,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _optionValuesSelectedItem = value;
                 NotifyOfPropertyChange(() => OptionValuesSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateSKUValue);
             }
         }
 
@@ -165,6 +169,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _productSKUsSelectedItem = value;
                 NotifyOfPropertyChange(() => ProductSKUsSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateSKUValue);
             }
         }
 
@@ -172,6 +177,11 @@ namespace StorageBox.Additions.ViewModels
         {
             _skuValueService.Create(ProductsSelectedItem.ProductID, ProductSKUsSelectedItem.ProductSKUID, OptionsSelectedItem.OptionID, OptionValuesSelectedItem.OptionValueID);
             SKUValues = _skuValueService.Get(ProductsSelectedItem);
+        }
+
+        public bool CanCreateSKUValue
+        {
+            get { return ((CategoriesSelectedItem != null) && (ProductsSelectedItem != null) && (OptionsSelectedItem != null) && (OptionValuesSelectedItem != null) && (ProductSKUsSelectedItem != null)); }
         }
 
         public BindableCollection<SKUValue> SKUValues

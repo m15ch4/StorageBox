@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using StorageBox.Models;
+using System.Windows.Media.Imaging;
 
 namespace StorageBox.Implementations
 {
@@ -26,7 +27,7 @@ namespace StorageBox.Implementations
 
             foreach (WishListItem wishListItem in orderQueue)
             {
-                IEnumerable<Box> boxes = boxService.Get(wishListItem.ProductVariant.ProductSKU);
+                IEnumerable<Box> boxes = boxService.Get(wishListItem.ProductSKU);
                 for (int i = 0; i < wishListItem.Count; i++)
                 {
                     SBTask sbTask = new SBTask()
@@ -34,10 +35,9 @@ namespace StorageBox.Implementations
                         SBTaskStatus = SBTaskStatus.Queued,
                         SBTaskType = SBTaskType.Order,
                         DateAdded = DateTime.Now,
-                        ProductVariant = wishListItem.ProductVariant,
-                        ProductSKU = wishListItem.ProductVariant.ProductSKU,
-                        // TODO: zabezpieczenie czy nie za dużo lub mało skrzynek
-                        Box = boxes.ElementAt(i)
+                        ProductSKU = wishListItem.ProductSKU,
+                        Box = boxes.ElementAt(i),
+                        SBUser = UserSession.sbuser
                     };
 
                     _context.SBTasks.Add(sbTask);
@@ -49,10 +49,43 @@ namespace StorageBox.Implementations
             return sbTasks;
         }
 
+        public BindableCollection<SBTask> GetAll()
+        {
+            List<SBTask> sbtasks = _context.SBTasks.ToList();
+            return new BindableCollection<SBTask>(sbtasks);
+        }
+
         public void processSBTask(SBTask task)
         {
 
         }
 
+
+        public void SetCompleted(SBTask sbtask)
+        {
+            sbtask.SetStatus = SBTaskStatus.Completed;
+            sbtask.DateEnded = DateTime.Now;
+            _context.SaveChanges();
+        }
+
+        public void SetFailed(SBTask sbtask)
+        {
+            sbtask.SetStatus = SBTaskStatus.Failed;
+            sbtask.DateEnded = DateTime.Now;
+            _context.SaveChanges();
+        }
+
+        public void SetRunning(SBTask sbtask)
+        {
+            sbtask.SetStatus = SBTaskStatus.Running;
+            sbtask.DateStarted = DateTime.Now;
+            _context.SaveChanges();
+        }
+
+        public void SetValid(SBTask sbtask, bool isvalid)
+        {
+            sbtask.IsValid = isvalid;
+            _context.SaveChanges();
+        }
     }
 }

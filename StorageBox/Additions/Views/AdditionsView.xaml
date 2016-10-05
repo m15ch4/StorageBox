@@ -25,6 +25,7 @@
                     <Button Name="Boxes" DockPanel.Dock="Top" Content="Skrzynki" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
                     <Button Name="FillBoxes" DockPanel.Dock="Top" Content="Zawartość skrzynek" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
                     <Button Name="Users" DockPanel.Dock="Top" Content="Użytkownicy" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
+                    <Button Name="Tasks" DockPanel.Dock="Top" Content="Zadania" VerticalAlignment="Top" Margin="5,0,5,5" Height="40" FontSize="14" FontWeight="Bold"/>
                 </DockPanel>
             </Border>
             <Border BorderBrush="Black" BorderThickness="1" Margin="5 0 0 0" CornerRadius="5">

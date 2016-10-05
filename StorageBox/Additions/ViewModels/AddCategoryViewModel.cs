@@ -30,6 +30,11 @@ namespace StorageBox.Additions.ViewModels
             CategoryName = null;
         }
 
+        public bool CanAddCategory
+        {
+            get { return CategoryName != ""; }
+        }
+
         public BindableCollection<Category> Categories
         {
             get { return _categories; }

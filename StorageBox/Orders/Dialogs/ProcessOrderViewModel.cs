@@ -6,13 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Dynamic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace StorageBox.Orders.Dialogs
 {
-    public class ProcessOrderViewModel : Screen, IDialog
+    public class ProcessOrderViewModel : Screen, IDialog, IHandle<SBTask>
     {
         private BackgroundWorker _bw = new BackgroundWorker();
         private BindableCollection<WishListItem> _orderQueue; 
@@ -21,11 +26,22 @@ namespace StorageBox.Orders.Dialogs
         private ISBTaskService _sbTaskService;
         private string _tbProgress;
 
-        public ProcessOrderViewModel(BindableCollection<WishListItem> orderQueue, IBoxService boxService, ISBTaskService sbTaskService)
+        static bool _continue;
+        static SerialPort _serialPort;
+        static bool _nextCommand;
+        static byte[] response = new byte[8];
+        private IWindowManager _windowManager;
+        private IEventAggregator _eventAggregator;
+
+        public ProcessOrderViewModel(IWindowManager windowManager, IEventAggregator eventAggregator, BindableCollection<WishListItem> orderQueue, IBoxService boxService, ISBTaskService sbTaskService)
         {
             _orderQueue = orderQueue;
             _boxService = boxService;
             _sbTaskService = sbTaskService;
+            _windowManager = windowManager;
+            _eventAggregator = eventAggregator;
+
+            _eventAggregator.Subscribe(this);
 
             SBTasks = _sbTaskService.CreateSBTasks(orderQueue, boxService);
 
@@ -36,8 +52,15 @@ namespace StorageBox.Orders.Dialogs
             _bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
             _bw.RunWorkerAsync();
 
+
         }
 
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            //Thread.Sleep(100);
+            //DoWork();
+        }
 
         public BindableCollection<SBTask> SBTasks
         {
@@ -52,7 +75,7 @@ namespace StorageBox.Orders.Dialogs
 
         public void CloseDialog()
         {
-            TryClose();
+            TryClose(true);
         }
 
 
@@ -73,31 +96,170 @@ namespace StorageBox.Orders.Dialogs
             }
         }
 
+        private bool OpenConfirmDialog()
+        {
+            dynamic mysettings = new ExpandoObject();
+            mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+            var dialog_result = _windowManager.ShowDialog(new ConfirmItemViewModel(), null, mysettings);
+            if (dialog_result)
+            {
+                Trace.WriteLine("CONFIRMED");
+            }
+            else
+            {
+                Trace.WriteLine("NOT CONFIRMED");
+            }
+            return dialog_result;
+        }
+
+
 
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
+            //System.Windows.Threading.Dispatcher.Run();
             BackgroundWorker worker = sender as BackgroundWorker;
-            int p = 0;
 
-            foreach (SBTask sbtask in SBTasks)
+            Thread readThread = new Thread(Read);
+            _serialPort = new SerialPort();
+
+            _serialPort = new SerialPort();
+            _serialPort.PortName = "COM6";
+            _serialPort.BaudRate = 9600;
+            _serialPort.DataBits = 8;
+            _serialPort.Parity = Parity.None;
+            _serialPort.StopBits = StopBits.One;
+            _serialPort.Handshake = Handshake.XOnXOff;
+
+            _serialPort.ReadTimeout = 500;
+            _serialPort.WriteTimeout = 500;
+
+            try
             {
-                if ((worker.CancellationPending == true))
-                {
-                    e.Cancel = true;
-                    break;
-                }
-                else
-                {
-                    p++;
-                    //perform long running task
-                    // send command to plc (command code, row, column)
-                    // recieve response
-                    // wait for report that the door has opened - success
-                    _boxService.Empty(sbtask.Box);
+                // UNCOMMENT !!!!!!!!!!!!!!!
+                //_serialPort.Open();
+                _continue = true;
+                _nextCommand = true;
+                // UNCOMMENT !!!!!!!!!!!!!!!
+                //readThread.Start();
 
-                    System.Threading.Thread.Sleep(1000);
-                    worker.ReportProgress((int)(p *100.0 / SBTasks.Count));
+                byte[] toSend = { 71, 79, 0, 0, 0, 0, 0, 0 };
+
+                int progress = 0;
+
+                foreach (SBTask sbtask in SBTasks)
+                {
+                    if ((worker.CancellationPending == true))
+                    {
+                        e.Cancel = true;
+                        break;
+                    }
+                    else
+                    {
+                        // COMMENT !!!!!!!!!!!!!!!
+                        response[0] = 0;
+                        response[1] = 0;
+                        response[2] = 0;
+                        response[3] = 0;
+                        response[4] = 0;
+                        response[5] = 0;
+                        response[6] = 0;
+                        response[7] = 0;
+                        // Update Task status and set DateStarted
+                        _sbTaskService.SetRunning(sbtask);
+                        progress++;
+                        //perform long running task
+                        // send command to plc (command code, row, column)
+                        // recieve response
+                        // wait for report that the door has opened - success
+                        toSend[3] = sbtask.Box.AddressRow;
+                        toSend[5] = sbtask.Box.AddressCol;
+                        toSend[7] = Convert.ToByte(sbtask.Box.BoxSize.BoxSizeID);
+
+                        // UNCOMMENT !!!!!!!!!!!!!!!
+                        //_serialPort.Write(toSend, 0, 8);
+                        Console.WriteLine("Sending: " + BitConverter.ToString(toSend));
+                        // UNCOMMENT !!!!!!!!!!!!!!!
+                        //_nextCommand = false;
+
+                        Console.WriteLine("Command sent.");
+
+                        Thread.Sleep(2000);
+
+                        while (!_nextCommand)
+                        {
+
+                        }
+                        if ((response[0] == 'E') && (response[1] == 'R'))
+                        {
+                            _sbTaskService.SetFailed(sbtask);
+                        }
+                        else
+                        {
+                            _sbTaskService.SetCompleted(sbtask);
+                            _boxService.Empty(sbtask.Box);
+
+
+                            _eventAggregator.PublishOnUIThread(sbtask);
+                            //dynamic mysettings = new ExpandoObject();
+                            //mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+                            //var dialog_result = _windowManager.ShowDialog(new ConfirmItemViewModel(), null, mysettings);
+                            //if (dialog_result)
+                            //{
+                            //    Trace.WriteLine("CONFIRMED");
+                            //}
+                            //else
+                            //{
+                            //    Trace.WriteLine("NOT CONFIRMED");
+                            //}
+                        }
+
+                        //.SBTaskStatusImage = new BitmapImage(new Uri("E:/completed.png"));
+                        //NotifyOfPropertyChange(() => sbtask.SBTaskStatusImage);
+                        //NotifyOfPropertyChange(() => SBTasks);
+
+                        //char c = toSend[0];
+                        //int i = (int)c;
+                        //toSend[0]++;
+                        //toSend[0] = (char)i;
+                        //byte[] response = new byte[8];
+                        //int bytesRead = _serialPort.Read(response, 0, 8);
+                        //Trace.WriteLine(BitConverter.ToString(response));
+                        //SBTasks.Remove(sbtask);
+                        worker.ReportProgress((int)(progress * 100.0 / SBTasks.Count));
+                    }
                 }
+
+                _continue = false;
+                // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
+                //readThread.Join();
+                // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
+                //_serialPort.Close();
+            }
+            catch
+            {
+                Trace.WriteLine("Błąd połączenia ze sterownikiem PLC.");
+                
+            }
+
+        }
+
+        public static void Read()
+        {
+            
+            while (_continue)
+            {
+                try
+                {
+                    if (_serialPort.BytesToRead == 8)
+                    {
+                        int bytesRead = _serialPort.Read(response, 0, 8);
+                        //Console.WriteLine(new string(response) + " " + bytesRead);
+                        _nextCommand = true;
+                    }
+                }
+                catch (TimeoutException) { }
             }
         }
 
@@ -125,6 +287,11 @@ namespace StorageBox.Orders.Dialogs
             Console.WriteLine(tbProgress);
         }
 
-
+        public void Handle(SBTask sbtask)
+        {
+            Trace.WriteLine("Message recieved");
+            bool result = OpenConfirmDialog();
+            _sbTaskService.SetValid(sbtask, result);
+        }
     }
 }

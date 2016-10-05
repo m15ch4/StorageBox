@@ -10,6 +10,7 @@ namespace StorageBox.Shell.ViewModels
 
     public class ShellViewModel : Caliburn.Micro.Conductor<IWorkspace>.Collection.OneActive, IShell {
 
+
         [ImportingConstructor]
         public ShellViewModel(IEnumerable<IWorkspace> workspaces)
         {
@@ -20,6 +21,12 @@ namespace StorageBox.Shell.ViewModels
             ((LoginViewModel)Items[0]).Shell = this;
         }
 
+        public override void CanClose(Action<bool> callback)
+        {
+            base.CanClose(callback);
+            //callback(false);
+            //base.CanClose(callback);
+        }
 
         public void Login()
         {

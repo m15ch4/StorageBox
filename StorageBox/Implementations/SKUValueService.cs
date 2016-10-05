@@ -18,10 +18,18 @@ namespace StorageBox.Implementations
         }
         public void Create(int productID, int productSKUID, int optionID, int optionValueID)
         {
-            SKUValue skuValue = new SKUValue() { ProductID = productID, ProductSKUID = productSKUID, OptionID = optionID, OptionValueID = optionValueID };
-            _context.SKUValues.Add(skuValue);
-            _context.SaveChanges();
+            try
+            {
+                SKUValue skuValue = new SKUValue() { ProductID = productID, ProductSKUID = productSKUID, OptionID = optionID, OptionValueID = optionValueID };
+                _context.SKUValues.Add(skuValue);
+                _context.SaveChanges();
+            }
+            catch
+            {
+
+            }
         }
+
 
         public BindableCollection<SKUValue> GetAll()
         {

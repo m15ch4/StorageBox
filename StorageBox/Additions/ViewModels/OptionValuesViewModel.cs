@@ -37,6 +37,7 @@ namespace StorageBox.Additions.ViewModels
         {
             base.OnActivate();
             Categories = _categoryService.GetAll();
+            OptionValueName = "";
             //Products = _productService.GetAll();
             //Options = _optionService.GetAll();
             //OptionValues = _optionValueService.GetAll();
@@ -60,6 +61,7 @@ namespace StorageBox.Additions.ViewModels
                 _categoriesSelectedItem = value;
                 Products = _productService.Get(_categoriesSelectedItem);
                 NotifyOfPropertyChange(() => CategoriesSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateOptionValue);
             }
         }
 
@@ -82,6 +84,7 @@ namespace StorageBox.Additions.ViewModels
                 Options = _optionService.Get(_productsSelectedItem);
                 NotifyOfPropertyChange(() => ProductsSelectedItem);
                 NotifyOfPropertyChange(() => Options);
+                NotifyOfPropertyChange(() => CanCreateOptionValue);
             }
         }
 
@@ -102,6 +105,8 @@ namespace StorageBox.Additions.ViewModels
             {
                 _optionsSelectedItem = value;
                 NotifyOfPropertyChange(() => OptionsSelectedItem);
+                OptionValues = _optionValueService.Get(OptionsSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateOptionValue);
             }
         }
 
@@ -112,6 +117,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _optionValueName = value;
                 NotifyOfPropertyChange(() => OptionValueName);
+                NotifyOfPropertyChange(() => CanCreateOptionValue);
             }
         }
 
@@ -119,7 +125,12 @@ namespace StorageBox.Additions.ViewModels
         {
             _optionValueService.Create(OptionsSelectedItem, ProductsSelectedItem.ProductID, OptionValueName);
             OptionValueName = "";
-            OptionValues = _optionValueService.GetAll();
+            OptionValues = _optionValueService.Get(OptionsSelectedItem);
+        }
+
+        public bool CanCreateOptionValue
+        {
+            get { return ((CategoriesSelectedItem != null) && (ProductsSelectedItem != null) && (OptionsSelectedItem != null) && (OptionValueName != "")); }
         }
 
         public BindableCollection<OptionValue> OptionValues

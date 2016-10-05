@@ -25,10 +25,46 @@
 
         public string Price { get; set; }
 
+        public int Threshold { get; set; }
+
         public virtual Product Product { get; set; }
         public virtual ICollection<SKUValue> SKUValues { get; set; }
         public virtual ICollection<Box> Boxes { get; set; }
         public virtual ICollection<SBTask> SBTasks { get; set; }
 
+
+        public string SKUDescription
+        {
+            get { return "<" + Sku + ">"; }
+        }
+
+        public string SKUOptionsDescription
+        {
+            get
+            {
+                string optionsDescription = "";
+
+                if (SKUValues.Count > 0)
+                {
+                    foreach (SKUValue skuvalue in SKUValues)
+                    {
+                        optionsDescription += skuvalue.OptionValue.Option.OptionName + ": " + skuvalue.OptionValue.ValueName + "; ";
+                    }
+                }
+                else
+                {
+                    optionsDescription = "Brak parametrów";
+                }
+                return optionsDescription;
+            }
+        }
+
+        public string SKUCount
+        {
+            get
+            {
+                return "Dostępność: " + Boxes.Count.ToString();
+            }
+        }
     }
 }

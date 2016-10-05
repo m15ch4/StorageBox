@@ -7,42 +7,42 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="465.093" d:DesignWidth="725.778">
+             d:DesignHeight="600.821" d:DesignWidth="933.894">
     <Grid>
         <DockPanel>
 
             <DockPanel DockPanel.Dock="Left" LastChildFill="False" Width="330" HorizontalAlignment="Left">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Kategoria:</Label>
-                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" Width="200" SelectedItem="{Binding CategoriesSelectedItem}"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Kategoria:</Label>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" Width="200" SelectedItem="{Binding CategoriesSelectedItem}"  Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Nazwa produktu:</Label>
-                    <TextBox Name="ProductName" Width="200" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right"  Height="35" VerticalContentAlignment="Center" FontSize="14">Nazwa produktu:</Label>
+                    <TextBox Name="ProductName" Width="200" HorizontalAlignment="Stretch" Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Opis produktu:</Label>
-                    <TextBox Name="ProductDescription" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Opis produktu:</Label>
+                    <TextBox Name="ProductDescription" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Zdjęcie produktu:</Label>
-                    <TextBox Name="ImageFileName" Width="140" VerticalContentAlignment="Center"></TextBox>
-                    <Button Content="Otwórz" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action ImageFile()]" Margin="5 0 0 0" Width="55"></Button>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Zdjęcie produktu:</Label>
+                    <TextBox Name="ImageFileName" Width="140"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
+                    <Button Content="Otwórz" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action ImageFile()]" Margin="5 0 0 0" Width="55" Height="35" VerticalContentAlignment="Center" FontSize="14"></Button>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
                     <Border BorderBrush="Black" BorderThickness="1" SnapsToDevicePixels="True">
                         <Image Name="ProductImage" Source="{Binding ImageFileName}" Width="250" Height="250"/>
                     </Border>
                 </StackPanel>
-                
+
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
                     <Button Name="CreateProduct" Content="Zapisz" HorizontalAlignment="Right" Height="40" Width="120"></Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel DockPanel.Dock="Right" >
-                <Label DockPanel.Dock="Top">Produkty:</Label>
-                <Button DockPanel.Dock="Bottom" Content="Usuń produkt" HorizontalAlignment="Right"></Button>
-                <ListBox Name="Products" DisplayMemberPath="ProductName">
+                <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Produkty:</Label>
+                <Button DockPanel.Dock="Bottom" Content="Usuń produkt" Margin="0 5 0 0" HorizontalAlignment="Right" Width="120" Height="40" VerticalContentAlignment="Center" FontSize="14"></Button>
+                <ListBox Name="Products" DisplayMemberPath="ProductName" VerticalContentAlignment="Center" FontSize="14">
 
                 </ListBox>
             </DockPanel>

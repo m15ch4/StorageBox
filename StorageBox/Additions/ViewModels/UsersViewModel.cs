@@ -9,6 +9,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace StorageBox.Additions.ViewModels
 {
@@ -34,7 +35,13 @@ namespace StorageBox.Additions.ViewModels
         {
             base.OnActivate();
             SBRoles = _sbUserService.GetAllRoles();
-            SBUsers = _sbUserService.GetAll();
+            SBUsers = _sbUserService.GetAllActive();
+            UserName = "";
+            FirstName = "";
+            LastName = "";
+            PasswordConfirm = "";
+            Password = "";
+            RFID = "";
         }
 
         public string UserName
@@ -44,6 +51,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _userName = value;
                 NotifyOfPropertyChange(() => UserName);
+                NotifyOfPropertyChange(() => CanAddUser);
             }
         }
 
@@ -54,6 +62,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _firstName = value;
                 NotifyOfPropertyChange(() => FirstName);
+                NotifyOfPropertyChange(() => CanAddUser);
             }
         }
 
@@ -64,6 +73,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _lastName = value;
                 NotifyOfPropertyChange(() => LastName);
+                NotifyOfPropertyChange(() => CanAddUser);
             }
         }
 
@@ -74,6 +84,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _password = value;
                 NotifyOfPropertyChange(() => Password);
+                NotifyOfPropertyChange(() => CanAddUser);
             }
         }
 
@@ -84,6 +95,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _passwordConfirm = value;
                 NotifyOfPropertyChange(() => PasswordConfirm);
+                NotifyOfPropertyChange(() => CanAddUser);
             }
         }
 
@@ -114,16 +126,20 @@ namespace StorageBox.Additions.ViewModels
             {
                 _sbRolesSelectedItem = value;
                 NotifyOfPropertyChange(() => SBRolesSelectedItem);
+                NotifyOfPropertyChange(() => CanAddUser);
             }
         }
 
         public void AddUser(string userName, string firstName, string lastName, string password, string passwordConfirm, string rfid, SBRole sbRole)
         {
-            if ((userName == "") || (firstName == "") || (lastName == "") || (password == "") || (sbRole == null))
+
+            //string _passwordConfirmtxt = _passwordBoxConfirm.Password;
+
+            if ((userName == "") || (firstName == "") || (lastName == "") || (password == "") || (passwordConfirm == "") || (sbRole == null))
             {
                 return;
             }
-            if (password != passwordConfirm)
+            if (_password != _passwordConfirm)
             {
                 Password = "";
                 PasswordConfirm = "";
@@ -138,12 +154,17 @@ namespace StorageBox.Additions.ViewModels
                 Password = "";
                 PasswordConfirm = "";
                 RFID = "";
-                SBUsers = _sbUserService.GetAll();
+                SBUsers = _sbUserService.GetAllActive();
             }
             else
             {
                 UserName = "";
             }
+        }
+
+        public bool CanAddUser
+        {
+            get { return ((UserName != "") && (FirstName != "") && (LastName != "")); }
         }
 
         public BindableCollection<SBUser> SBUsers
@@ -161,7 +182,7 @@ namespace StorageBox.Additions.ViewModels
             if (sbuser != null)
             {
                 _sbUserService.RemoveUser(sbuser);
-                SBUsers = _sbUserService.GetAll();
+                SBUsers = _sbUserService.GetAllActive();
             }
         }
 

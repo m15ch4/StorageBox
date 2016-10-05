@@ -12,33 +12,36 @@
         <DockPanel LastChildFill="True">
             <Border BorderBrush="DarkGray" BorderThickness="1" DockPanel.Dock="Left" SnapsToDevicePixels="True" Margin="5,0,5,5" CornerRadius="5">
                 <Border.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Gray" Offset="0"/>
-                        <GradientStop Color="LightGray" Offset="1"/>
-                    </LinearGradientBrush>
+                    <ImageBrush ImageSource="e:\txm_ex_2.jpg"/>
                 </Border.Background>
-                
-                <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                        <Label FontSize="16">Użytkownik:</Label>
-                        <TextBox Name="UserName" Width="200" FontSize="16" />
-                    </StackPanel>
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                        <Label FontSize="16">Hasło:</Label>
-                        <TextBox Name="Password" Width="200" FontSize="16" />
-                    </StackPanel>
-                    <Button Content="Zaloguj" HorizontalAlignment="Center" Width="150" Margin="5" FontSize="16">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <cal:ActionMessage MethodName="Login">
-                                    <cal:Parameter Value="{Binding ElementName=UserName, Path=Text}" />
-                                    <cal:Parameter Value="{Binding ElementName=Password, Path=Text}" />
-                                </cal:ActionMessage>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Button>
-                </DockPanel>
 
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="1" CornerRadius="10" Background="#FFB9B9B9" Opacity="0.9">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="5" Opacity="0.4"/>
+                    </Border.Effect>
+                    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10 20 10 10">
+                        <Label FontSize="16">Użytkownik:</Label>
+                        <TextBox Name="UserName" Width="200" FontSize="16" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                        <Label FontSize="16">Hasło:</Label>
+                        <TextBox Name="Password" Width="200" FontSize="16" VerticalContentAlignment="Center" />
+                    </StackPanel>
+                        <StackPanel Margin="10 10 10 20">
+                            <Button Content="Zaloguj" HorizontalAlignment="Center" Width="150" Margin="0" FontSize="16" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <cal:ActionMessage MethodName="Login">
+                                            <cal:Parameter Value="{Binding ElementName=UserName, Path=Text}" />
+                                            <cal:Parameter Value="{Binding ElementName=Password, Path=Text}" />
+                                        </cal:ActionMessage>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+                    </DockPanel>
+            </Border>
             </Border>
         </DockPanel>
     </Grid>

@@ -7,47 +7,47 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="328.094" d:DesignWidth="626.087">
+             d:DesignHeight="383.563" d:DesignWidth="680.376">
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False" Width="330">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Nazwa użytkownika:</Label>
-                    <TextBox Name="UserName" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Login:</Label>
+                    <TextBox Name="UserName" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Imię:</Label>
-                    <TextBox Name="FirstName" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Imię:</Label>
+                    <TextBox Name="FirstName" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Nazwisko:</Label>
-                    <TextBox Name="LastName" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Nazwisko:</Label>
+                    <TextBox Name="LastName" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Hasło:</Label>
-                    <TextBox Name="Password" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Hasło:</Label>
+                    <TextBox Name="Password" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14"/>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Powtórz hasło:</Label>
-                    <TextBox Name="PasswordConfirm" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Powtórz hasło:</Label>
+                    <TextBox Name="PasswordConfirm" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">RFID:</Label>
-                    <TextBox Name="RFID" Width="115" VerticalContentAlignment="Center"></TextBox>
-                    <Button Name="ReadRFIDCode" Content="Wczytaj kartę" Margin="10 0 0 0"></Button>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">RFID:</Label>
+                    <TextBox Name="RFID" Width="105"  Height="35" VerticalContentAlignment="Center" FontSize="14" ></TextBox>
+                    <Button Name="ReadRFIDCode" Content="Wczytaj kartę" Margin="5 0 0 0" FontSize="14"></Button>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Rola:</Label>
-                    <ComboBox Name="SBRoles" DisplayMemberPath="SBRoleName" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Rola:</Label>
+                    <ComboBox Name="SBRoles" DisplayMemberPath="SBRoleName" SelectedItem="SBRolesSelectedItem" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Content="Dodaj użytkownika" Height="40" Width="120" cal:Message.Attach="[Click]=[Action AddUser(UserName, FirstName, LastName, Password, PasswordConfirm, RFID, SBRoles.SelectedItem)]"/>
+                    <Button Content="Dodaj użytkownika" Height="40" Width="140" cal:Message.Attach="[Click]=[Action AddUser(UserName, FirstName, LastName, Password, PasswordConfirm, RFID, SBRoles.SelectedItem)]" FontSize="14" />
                 </StackPanel>
             </DockPanel>
             <DockPanel >
-                <Label DockPanel.Dock="Top" Content="Użytkownicy:"></Label>
-                <Button DockPanel.Dock="Bottom" Content="Usuń użytkownika" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action RemoveUser(SBUsers.SelectedItem)]"></Button>
-                <ListBox Name="SBUsers" DisplayMemberPath="DisplayName" DockPanel.Dock="Top" ></ListBox>
+                <Label DockPanel.Dock="Top" Content="Użytkownicy:" Height="35" VerticalContentAlignment="Center" FontSize="14"></Label>
+                <Button DockPanel.Dock="Bottom" Content="Usuń użytkownika" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action RemoveUser(SBUsers.SelectedItem)]" FontSize="14" Height="40" Width="140" Margin="0 5 0 0"></Button>
+                <ListBox Name="SBUsers" DisplayMemberPath="DisplayName" DockPanel.Dock="Top" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

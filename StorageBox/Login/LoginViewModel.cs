@@ -129,7 +129,16 @@ namespace StorageBox.Login
                 UserName = "";
                 Password = "";
                 _shell.setUserName();
-                Shell.Orders();
+
+                if (sbuser.Role.SBRoleID == 1)
+                {
+                    Shell.Orders();
+                }
+                else
+                {
+                    Shell.Additions();
+                }
+
                 _continue = false;
             }
             else
@@ -148,7 +157,14 @@ namespace StorageBox.Login
                 UserSession.sbuser = sbuser;
                 UserSession.beginDate = DateTime.Now;
                 _shell.setUserName();
-                Shell.Orders();
+                if (sbuser.Role.SBRoleID == 1)
+                {
+                    Shell.Orders();
+                }
+                else
+                {
+                    Shell.Additions();
+                }
                 _continue = false;
             }
         }

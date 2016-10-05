@@ -9,19 +9,30 @@ namespace StorageBox.Models
 {
     public class WishListItem : PropertyChangedBase
     {
-        public ProductVariant _productVariant;
+        //public ProductVariant _productVariant;
+        public ProductSKU _productSKU;
         public int _count;
 
-        public ProductVariant ProductVariant
+
+        public ProductSKU ProductSKU
         {
-            get { return _productVariant; }
+            get { return _productSKU; }
             set
             {
-                _productVariant = value;
-                NotifyOfPropertyChange(() => ProductVariant);
-                NotifyOfPropertyChange(() => WishListItemDescription);
+                _productSKU = value;
+                NotifyOfPropertyChange(() => ProductSKU);
             }
         }
+        //public ProductVariant ProductVariant
+        //{
+        //    get { return _productVariant; }
+        //    set
+        //    {
+        //        _productVariant = value;
+        //        NotifyOfPropertyChange(() => ProductVariant);
+        //        NotifyOfPropertyChange(() => WishListItemDescription);
+        //    }
+        //}
 
         public int Count
         {
@@ -30,13 +41,23 @@ namespace StorageBox.Models
             {
                 _count = value;
                 NotifyOfPropertyChange(() => Count);
-                NotifyOfPropertyChange(() => WishListItemDescription);
+                NotifyOfPropertyChange(() => WishListItemCountDescription);
             }
         }
 
-        public string WishListItemDescription
+        public string WishListItemNameDescription
         {
-            get { return _productVariant.Product.ProductName + " [" + _productVariant.ProductSKU.Sku + "] " + _count; }
+            get { return ProductSKU.Product.ProductName + " <" + ProductSKU.Sku + ">"; }
+        }
+
+        public string WishListItemOptionsDescription
+        {
+            get { return ProductSKU.SKUOptionsDescription; }
+        }
+
+        public string WishListItemCountDescription
+        {
+            get { return "Zamówionych: " + Count.ToString(); }
         }
     }
 }

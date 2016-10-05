@@ -11,7 +11,7 @@ namespace StorageBox.Contracts
     public interface IBoxService
     {
         BindableCollection<Box> GetAll();
-        Box Get(int row, int column);
+        Box Get(byte row, byte column);
         ICollection<Box> Get(ProductSKU productSKU);
         IEnumerable<Box> Get(ProductSKU productSKU, int numberOfRecords);
         bool Reserve(Box box);
@@ -23,8 +23,8 @@ namespace StorageBox.Contracts
         BindableCollection<BoxSize> GetAllBoxSizes();
         void CreateBoxSize(string boxSizeName);
 
-        void CreateBox(Int16 row, Int16 column, BoxSize boxSize);
-        bool FillSingle(ProductSKU productSKU, int row, int column);
+        void CreateBox(byte row, byte column, BoxSize boxSize);
+        bool FillSingle(ProductSKU productSKU, byte row, byte column);
         void Remove(Box box);
     }
 }

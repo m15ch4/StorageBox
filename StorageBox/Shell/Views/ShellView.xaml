@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:StorageBox.Shell.Views"
         mc:Ignorable="d"
         Title="ShellView" Height="768" Width="1024"
-        AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
+        AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="/StorageBox;component/Images/StorageBox.ico" >
     <Grid>
         <DockPanel LastChildFill="True">
             <Border Height="50" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top" SnapsToDevicePixels="True" Margin="5" CornerRadius="5">

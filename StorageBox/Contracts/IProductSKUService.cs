@@ -7,7 +7,7 @@ namespace StorageBox.Contracts
     {
         BindableCollection<ProductSKU> Get(Product product);
         BindableCollection<ProductSKU> GetAll();
-        void Create(string SKU, Product product, string price);
+        void Create(string SKU, Product product, string price, int threshold);
         void Remove(ProductSKU sku);
     }
 }

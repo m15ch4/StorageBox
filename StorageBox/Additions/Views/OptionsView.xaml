@@ -7,33 +7,33 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="329.154" d:DesignWidth="505.016">
+             d:DesignHeight="381.954" d:DesignWidth="628.216">
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Content="Kategoria:" Width="120" HorizontalContentAlignment="Right"></Label>
+                    <Label Content="Kategoria:" Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14"></Label>
                     <ComboBox Name="Categories" DisplayMemberPath="CategoryName" Width="200" SelectedItem="{Binding CategoriesSelectedItem}"></ComboBox>
                 </StackPanel>
-                
+
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Content="Przedmiot:" Width="120" HorizontalContentAlignment="Right"></Label>
-                    <ComboBox Name="Products" DisplayMemberPath="ProductName" Width="200" SelectedItem="{Binding ProductsSelectedItem}"></ComboBox>
+                    <Label Content="Przedmiot:" Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14"></Label>
+                    <ComboBox Name="Products" DisplayMemberPath="ProductName" Width="200" SelectedItem="{Binding ProductsSelectedItem}" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
-                
+
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Content="Nazwa parametru:" Width="120" HorizontalContentAlignment="Right"></Label>
-                    <TextBox Name="OptionName" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Content="Nazwa parametru:" Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14"></Label>
+                    <TextBox Name="OptionName" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
-                
+
                 <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="5">
-                    <Button Name="CreateOption" Content="Zapisz" Height="40" Width="120"></Button>
+                    <Button Name="CreateOption" Content="Zapisz" Height="40" Width="120" VerticalContentAlignment="Center" FontSize="14"></Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel DockPanel.Dock="Right">
-                <Label DockPanel.Dock="Top">Parametry produktu:</Label>
-                <Button DockPanel.Dock="Bottom" Content="Usuń opcję" cal:Message.Attach="[Click]=[Action RemoveOption(Options.SelectedItem)]"/>
-                <ListBox Name="Options" DisplayMemberPath="OptionName" DockPanel.Dock="Top"></ListBox>
+                <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Parametry produktu:</Label>
+                <Button DockPanel.Dock="Bottom" Content="Usuń opcję" cal:Message.Attach="[Click]=[Action RemoveOption(Options.SelectedItem)]" Height="40" Width="120" HorizontalAlignment="Right" FontSize="14" Margin="0 5 0 0"/>
+                <ListBox Name="Options" DisplayMemberPath="OptionName" DockPanel.Dock="Top" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

@@ -19,8 +19,8 @@
         }
 
         public int BoxID { get; set; }
-        public Int16 AddressRow { get; set; }
-        public Int16 AddressCol { get; set; }
+        public byte AddressRow { get; set; }
+        public byte AddressCol { get; set; }
 
 
         //[ForeignKey("ProductSKU")]

@@ -67,6 +67,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _productName = value;
                 NotifyOfPropertyChange(() => ProductName);
+                NotifyOfPropertyChange(() => CanCreateProduct);
             }
         }
 
@@ -83,10 +84,19 @@ namespace StorageBox.Additions.ViewModels
 
         public void CreateProduct()
         {
-            _productService.Create(ProductName, ProductDescription, CategoriesSelectedItem, ImageFileName);
-            ProductName = "";
-            ProductDescription = "";
-            Products = _productService.GetAll();
+            if (ProductName != "") {
+
+                _productService.Create(ProductName, ProductDescription, CategoriesSelectedItem, ImageFileName);
+                ProductName = "";
+                ProductDescription = "";
+                ImageFileName = "";
+                Products = _productService.Get(CategoriesSelectedItem);
+            }
+        }
+
+        public bool CanCreateProduct
+        {
+            get { return ((ProductName != "") && (CategoriesSelectedItem != null)); }
         }
 
         public BindableCollection<Product> Products

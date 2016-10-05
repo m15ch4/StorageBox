@@ -10,29 +10,29 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Kategoria:</Label>
-                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right"  Height="35" VerticalContentAlignment="Center" FontSize="14" >Kategoria:</Label>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" SelectedItem="{Binding CategoriesSelectedItem}" Width="200"  Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Produkt:</Label>
-                    <ComboBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right"  Height="35" VerticalContentAlignment="Center" FontSize="14">Produkt:</Label>
+                    <ComboBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Opcja:</Label>
-                    <ComboBox Name="Options" DisplayMemberPath="OptionName" SelectedItem="{Binding OptionsSelectedItem}" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Opcja:</Label>
+                    <ComboBox Name="Options" DisplayMemberPath="OptionName" SelectedItem="{Binding OptionsSelectedItem}" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Wartość opcji:</Label>
-                    <TextBox Name="OptionValueName" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Wartość opcji:</Label>
+                    <TextBox Name="OptionValueName" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateOptionValue" Content="Dodaj opcję" Height="40" Width="120"></Button>
+                    <Button Name="CreateOptionValue" Content="Dodaj opcję" Height="40" Width="120" FontSize="14"></Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel>
-                <Label DockPanel.Dock="Top" Margin="5">Wartości opcji:</Label>
-                <Button DockPanel.Dock="Bottom" Content="Kasuj wartość opcji" Margin="5" />
-                <ListBox Name="OptionValues" DisplayMemberPath="ValueName" DockPanel.Dock="Top" Margin="5">
+                <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Wartości opcji:</Label>
+                <Button DockPanel.Dock="Bottom" Content="Kasuj wartość opcji" Height="35" VerticalContentAlignment="Center" FontSize="14" Margin="0 5 0 0" />
+                <ListBox Name="OptionValues" DisplayMemberPath="ValueName" DockPanel.Dock="Top" FontSize="14">
                     
                 </ListBox>
             </DockPanel>

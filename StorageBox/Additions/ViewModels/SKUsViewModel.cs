@@ -24,6 +24,7 @@ namespace StorageBox.Additions.ViewModels
         private ICategoryService _categoryService;
         private BindableCollection<Category> _categories;
         private Category _categoriesSelectedItem;
+        private int _threshold;
 
         public SKUsViewModel(ICategoryService categoryService, IProductSKUService productSKUService, IProductService productService)
         {
@@ -39,6 +40,7 @@ namespace StorageBox.Additions.ViewModels
         {
             base.OnActivate();
             Categories = _categoryService.GetAll();
+            SKU = "";
             //Products = _productService.GetAll();
             //SKUs = _productSKUService.GetAll();
         }
@@ -61,6 +63,7 @@ namespace StorageBox.Additions.ViewModels
                 _categoriesSelectedItem = value;
                 Products = _productService.Get(_categoriesSelectedItem);
                 NotifyOfPropertyChange(() => CategoriesSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateSKU);
             }
         }
 
@@ -84,6 +87,7 @@ namespace StorageBox.Additions.ViewModels
                 _productsSelectedItem = value;
                 SKUs = _productSKUService.Get(_productsSelectedItem);
                 NotifyOfPropertyChange(() => ProductsSelectedItem);
+                NotifyOfPropertyChange(() => CanCreateSKU);
             }
         }
 
@@ -94,6 +98,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _sku = value;
                 NotifyOfPropertyChange(() => SKU);
+                NotifyOfPropertyChange(() => CanCreateSKU);
             }
         }
 
@@ -107,6 +112,16 @@ namespace StorageBox.Additions.ViewModels
             }
         }
 
+        public int Threshold
+        {
+            get { return _threshold; }
+            set
+            {
+                _threshold = value;
+                NotifyOfPropertyChange(() => Threshold);
+            }
+        }
+
         public void CreateSKU()
         {
             if (SKU != "")
@@ -115,11 +130,17 @@ namespace StorageBox.Additions.ViewModels
                 {
                     Price = "0";
                 }
-                _productSKUService.Create(SKU, ProductsSelectedItem, Price);
+                _productSKUService.Create(SKU, ProductsSelectedItem, Price, Threshold);
                 SKU = "";
                 Price = "";
-                SKUs = _productSKUService.GetAll();
+                SKUs = _productSKUService.Get(ProductsSelectedItem);
             }
+        }
+
+
+        public bool CanCreateSKU
+        {
+            get { return ((CategoriesSelectedItem != null) && (ProductsSelectedItem != null) && (SKU != "")); }
         }
 
         public BindableCollection<ProductSKU> SKUs

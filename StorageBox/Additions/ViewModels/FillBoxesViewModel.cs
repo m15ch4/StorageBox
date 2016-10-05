@@ -61,6 +61,7 @@ namespace StorageBox.Additions.ViewModels
                 _categoriesSelectedItem = value;
                 Products = _productService.Get(_categoriesSelectedItem);
                 NotifyOfPropertyChange(() => CategoriesSelectedItem);
+                NotifyOfPropertyChange(() => CanFillSingle);
             }
         }
 
@@ -82,6 +83,7 @@ namespace StorageBox.Additions.ViewModels
                 _productsSelectedItem = value;
                 SKUs = _productSKUService.Get(_productsSelectedItem);
                 NotifyOfPropertyChange(() => ProductsSelectedItem);
+                NotifyOfPropertyChange(() => CanFillSingle);
             }
         }
 
@@ -102,6 +104,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _skusSelectedItem = value;
                 NotifyOfPropertyChange(() => SKUsSelectedItem);
+                NotifyOfPropertyChange(() => CanFillSingle);
             }
         }
 
@@ -125,7 +128,7 @@ namespace StorageBox.Additions.ViewModels
             }
         }
 
-        public void FillSingle(ProductSKU productSKU, int row, int column)
+        public void FillSingle(ProductSKU productSKU, byte row, byte column)
         {
             if (_boxService.Get(row, column).Status == Status.Empty)
             {
@@ -134,6 +137,11 @@ namespace StorageBox.Additions.ViewModels
                     Boxes = _boxService.GetAll();
                 }
             }
+        }
+
+        public bool CanFillSingle
+        {
+            get { return ((CategoriesSelectedItem != null) && (ProductsSelectedItem != null) && (SKUsSelectedItem != null) && (Boxes2SelectedItem != null)); }
         }
 
         public void EmptySingle(Box box)
@@ -173,6 +181,7 @@ namespace StorageBox.Additions.ViewModels
                 Row = _boxes2SelectedItem.AddressRow.ToString();
                 Column = _boxes2SelectedItem.AddressCol.ToString();
                 NotifyOfPropertyChange(() => Boxes2SelectedItem);
+                NotifyOfPropertyChange(() => CanFillSingle);
             }
         }
     }

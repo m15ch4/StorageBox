@@ -16,6 +16,7 @@ namespace StorageBox.Models
         public string LastName { get; set; }
         public string Password { get; set; }
         public string RFID { get; set; }
+        public bool IsActive { get; set; }
 
         public virtual SBRole Role { get; set; }
 

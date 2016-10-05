@@ -10,30 +10,30 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False" Width="330">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Kategoria:</Label>
-                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" Width="200" SelectedItem="{Binding CategoriesSelectedItem}"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Kategoria:</Label>
+                    <ComboBox Name="Categories" DisplayMemberPath="CategoryName" Width="200" SelectedItem="{Binding CategoriesSelectedItem}" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Produkt:</Label>
-                    <ComboBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Produkt:</Label>
+                    <ComboBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Parametr / Wartość:</Label>
-                    <ComboBox Name="Options" DisplayMemberPath="OptionName" SelectedItem="{Binding OptionsSelectedItem}" Width="100"></ComboBox>
-                    <ComboBox Name="OptionValues" DisplayMemberPath="ValueName" SelectedItem="{Binding OptionValuesSelectedItem}" Width="100"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Parametr / Wartość:</Label>
+                    <ComboBox Name="Options" DisplayMemberPath="OptionName" SelectedItem="{Binding OptionsSelectedItem}" Width="100" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
+                    <ComboBox Name="OptionValues" DisplayMemberPath="ValueName" SelectedItem="{Binding OptionValuesSelectedItem}" Width="100" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">SKU:</Label>
-                    <ComboBox Name="ProductSKUs" DisplayMemberPath="Sku" SelectedItem="{Binding ProductSKUsSelectedItem}" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">SKU:</Label>
+                    <ComboBox Name="ProductSKUs" DisplayMemberPath="Sku" SelectedItem="{Binding ProductSKUsSelectedItem}" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                    <Button Name="CreateSKUValue" Height="40" Width="120">Powiąż</Button>
+                    <Button Name="CreateSKUValue" Height="40" Width="120" FontSize="14">Powiąż</Button>
                 </StackPanel>
             </DockPanel>
             <DockPanel>
-                <Label DockPanel.Dock="Top">Powiązania</Label>
-                <Button DockPanel.Dock="Bottom" Content="Usuń powiązanie"></Button>
-                <ListBox Name="SKUValues" DisplayMemberPath="Description" DockPanel.Dock="Top"></ListBox>
+                <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Powiązania</Label>
+                <Button DockPanel.Dock="Bottom" Content="Usuń powiązanie" Height="40" Margin="0 5 0 0" HorizontalAlignment="Right" Width="120"></Button>
+                <ListBox Name="SKUValues" DisplayMemberPath="Description" DockPanel.Dock="Top" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

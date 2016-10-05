@@ -12,34 +12,34 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Left" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Wiersz:</Label>
-                    <TextBox Name="Row" Width="200" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right"  Height="35" VerticalContentAlignment="Center" FontSize="14">Wiersz:</Label>
+                    <TextBox Name="Row" Width="200" PreviewTextInput="NumberValidationTextBox"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Kolumna:</Label>
-                    <TextBox Name="Column" Width="200" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Kolumna:</Label>
+                    <TextBox Name="Column" Width="200" PreviewTextInput="NumberValidationTextBox"  Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Rozmiar:</Label>
-                    <ComboBox Name="BoxSizes" DisplayMemberPath="BoxSizeName" SelectedItem="{Binding BoxSizesSelectedItem}" Width="200"></ComboBox>
+                    <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">Rozmiar:</Label>
+                    <ComboBox Name="BoxSizes" DisplayMemberPath="BoxSizeName" SelectedItem="{Binding BoxSizesSelectedItem}" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></ComboBox>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateBox" Content="Dodaj skrzynkę" Height="40" Width="120"></Button>
+                    <Button Name="CreateBox" Content="Dodaj skrzynkę" Height="40" Width="120" FontSize="14"></Button>
                 </StackPanel>
 
                 
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                    <Button Name="CreateBoxSize" Content="Dodaj rozmiar skrzynki" HorizontalAlignment="Right" Height="40" Width="140"></Button>
+                    <Button Name="CreateBoxSize" Content="Dodaj rozmiar skrzynki" HorizontalAlignment="Right" Height="40" Width="160" FontSize="14"></Button>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5">
-                    <Label Width="120" HorizontalContentAlignment="Right">Rozmiar skrzynki:</Label>
-                    <TextBox Name="BoxSizeName" Width="200" VerticalContentAlignment="Center"></TextBox>
+                    <Label Width="120" HorizontalContentAlignment="Right"  Height="35" VerticalContentAlignment="Center" FontSize="14">Rozmiar skrzynki:</Label>
+                    <TextBox Name="BoxSizeName" Width="200" Height="35" VerticalContentAlignment="Center" FontSize="14"></TextBox>
                 </StackPanel>
             </DockPanel>
             <DockPanel>
-                <Label DockPanel.Dock="Top">Skrzynki</Label>
-                <Button DockPanel.Dock="Bottom" Content="Usuń skrzynkę" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action RemoveBox(Boxes.SelectedItem)]"></Button>
-                <ListBox Name="Boxes" DisplayMemberPath="DisplayName"></ListBox>
+                <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Skrzynki</Label>
+                <Button DockPanel.Dock="Bottom" Content="Usuń skrzynkę" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action RemoveBox(Boxes.SelectedItem)]" Width="120" Height="40" FontSize="14" Margin="0 5 0 0"></Button>
+                <ListBox Name="Boxes" DisplayMemberPath="DisplayName" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

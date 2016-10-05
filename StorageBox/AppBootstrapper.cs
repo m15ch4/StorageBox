@@ -44,8 +44,10 @@ namespace StorageBox {
             container.PerRequest<IAddition, BoxesViewModel>();
             container.PerRequest<IAddition, FillBoxesViewModel>();
             container.PerRequest<IAddition, UsersViewModel>();
+            container.PerRequest<IAddition, TasksViewModel>();
 
             container.PerRequest<IDialog, ProcessOrderViewModel>();
+            container.PerRequest<IDialog, ConfirmItemViewModel>();
 
             container.PerRequest<ICategoryService, CategoryService>();
             container.PerRequest<IProductService, ProductService>();

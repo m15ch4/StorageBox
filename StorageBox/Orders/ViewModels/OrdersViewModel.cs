@@ -23,15 +23,18 @@
         private Product _productsSelectedItem;
         private IProductSKUService _productSKUService;
         private IProductVariantService _productVariantService;
-        private BindableCollection<ProductVariant> _productVariants;
         private ProductVariant _productsVariantSelectedItem = null;
         private BindableCollection<WishListItem> _orderQueue = new BindableCollection<WishListItem>();
         private WishListItem _orderQueueSelectedItem;
         private IWindowManager _windowManager;
         private IBoxService _boxService;
         private ISBTaskService _sbTaskService;
+        private BindableCollection<ProductSKU> _productSKUs;
+        private ProductSKU _productSKUsSelectedItem;
+        private IShell _shell;
+        private IEventAggregator _eventAggregator;
 
-        public OrdersViewModel(IWindowManager windowManager, ICategoryService categoryService, IProductService productService, IProductSKUService productSKUService, IProductVariantService productVariantService, IBoxService boxService, ISBTaskService sbTaskService)
+        public OrdersViewModel(IWindowManager windowManager, IEventAggregator eventAggregator, ICategoryService categoryService, IProductService productService, IProductSKUService productSKUService, IProductVariantService productVariantService, IBoxService boxService, ISBTaskService sbTaskService)
         {
             _windowManager = windowManager;
             _categoryService = categoryService;
@@ -40,6 +43,7 @@
             _productVariantService = productVariantService;
             _boxService = boxService;
             _sbTaskService = sbTaskService;
+            _eventAggregator = eventAggregator;
 
             _categories = _categoryService.GetAll();
             if (_categories.Count > 0)
@@ -51,7 +55,7 @@
         override protected void OnActivate()
         {
             _categories = _categoryService.GetAll();
-            CategoriesSelectedItem = Categories[0];
+            CategoriesSelectedItem = null;
         }
         public BindableCollection<Category> Categories
         {
@@ -77,8 +81,9 @@
                 catch
                 {
                     Trace.WriteLine("Wyjątek w CategoriesSelectedItem");
+                    Products = null;
                 }
-                ProductVariants = null;
+                ProductSKUs = null;
 
             }
         }
@@ -104,37 +109,34 @@
                 NotifyOfPropertyChange(() => ProductImage);
                 try
                 {
-                    ProductVariants = _productVariantService.Get(_productsSelectedItem);
+                    ProductSKUs = _productSKUService.Get(_productsSelectedItem);
                 }
                 catch
                 {
                     Trace.WriteLine("Wyjątek w ProductsSelectedItem");
-                    ProductVariants = null;
+                    ProductSKUs = null;
                 }
             }
         }
 
-
-        public BindableCollection<ProductVariant> ProductVariants
+        public BindableCollection<ProductSKU> ProductSKUs
         {
-            get { return _productVariants; }
+            get { return _productSKUs; }
             set
             {
-                _productVariants = value;
-                NotifyOfPropertyChange(() => ProductVariants);
-                NotifyOfPropertyChange(() => CanAddToQueue);
+                _productSKUs = value;
+                NotifyOfPropertyChange(() => ProductSKUs);
             }
         }
 
-
-        public ProductVariant ProductsVariantSelectedItem
+        public ProductSKU ProductSKUsSelectedItem
         {
-            get { return _productsVariantSelectedItem; }
+            get { return _productSKUsSelectedItem; }
             set
             {
-                _productsVariantSelectedItem = value;
-                NotifyOfPropertyChange(() => ProductsVariantSelectedItem);
-                NotifyOfPropertyChange(() => CanAddToQueue);
+                _productSKUsSelectedItem = value;
+                NotifyOfPropertyChange(() => ProductSKUsSelectedItem);
+                NotifyOfPropertyChange(() => CanAddToWishList);
             }
         }
 
@@ -153,34 +155,59 @@
         }
 
         // ORDER: AddToWishList
-        public void AddToWishList(ProductVariant productVariant)
+        public void AddToWishList(ProductSKU productSKU)
         {
-            if (ProductsVariantSelectedItem != null)
+            int inBoxCount = _boxService.Count(productSKU);
+            WishListItem wishListItem = null;
+            wishListItem = OrderQueue.SingleOrDefault(i => i.ProductSKU.ProductSKUID == productSKU.ProductSKUID);
+            if (wishListItem == null)
             {
-                int inBoxCount = _boxService.Count(_productsVariantSelectedItem.ProductSKU);
-                WishListItem wishListItem = null;
-                wishListItem = OrderQueue.SingleOrDefault(i => i._productVariant.ProductSKU.ProductSKUID == _productsVariantSelectedItem.ProductSKU.ProductSKUID);
-                if (wishListItem == null)
+                wishListItem = new WishListItem();
+                wishListItem.ProductSKU = productSKU;
+                wishListItem.Count = 0;
+                //wishListItem.Count = 1;
+                OrderQueue.Add(wishListItem);
+            }
+            else
+            {
+                //wishListItem.Count += 1;
+            }
+
+            if (inBoxCount > wishListItem.Count)
+            {
+                wishListItem.Count += 1;
+            }
+
+            NotifyOfPropertyChange(() => wishListItem.WishListItemCountDescription);
+            NotifyOfPropertyChange(() => OrderQueue);
+            NotifyOfPropertyChange(() => CanOrder);
+            NotifyOfPropertyChange(() => CanAddToWishList);
+        }
+
+        public bool CanAddToWishList
+        {
+            get {
+                bool availability = false;
+                bool stillAvailable = false;
+
+                if (ProductSKUsSelectedItem != null)
                 {
-                    wishListItem = new WishListItem();
-                    wishListItem.ProductVariant = _productsVariantSelectedItem;
-                    wishListItem.Count = 0;
-                    //wishListItem.Count = 1;
-                    OrderQueue.Add(wishListItem);
-                }
-                else
-                {
-                    //wishListItem.Count += 1;
+                    availability = _boxService.Count(ProductSKUsSelectedItem) != 0;
+
+                    WishListItem wishListItem = OrderQueue.SingleOrDefault(i => i.ProductSKU.ProductSKUID == ProductSKUsSelectedItem.ProductSKUID);
+                    if (wishListItem == null)
+                    {
+                        stillAvailable = true;
+                    }
+                    else
+                    {
+                        stillAvailable = (wishListItem.Count < _boxService.Count(ProductSKUsSelectedItem));
+                    }
                 }
 
-                if (inBoxCount > wishListItem.Count)
-                {
-                    wishListItem.Count += 1;
-                }
+                bool selected = _productSKUsSelectedItem != null;
 
-                NotifyOfPropertyChange(() => wishListItem.WishListItemDescription);
-                NotifyOfPropertyChange(() => OrderQueue);
-                NotifyOfPropertyChange(() => CanOrder);
+                return (availability && selected && stillAvailable);
             }
         }
 
@@ -192,7 +219,7 @@
                 if (OrderQueueSelectedItem.Count > 1)
                 {
                     OrderQueueSelectedItem.Count -= 1;
-                    NotifyOfPropertyChange(() => OrderQueueSelectedItem.WishListItemDescription);
+                    NotifyOfPropertyChange(() => OrderQueueSelectedItem.WishListItemCountDescription);
                 }
                 else
                 {
@@ -214,6 +241,7 @@
         {
             get { return _productsVariantSelectedItem != null; }
         }
+
 
 
         // TODO: tutaj trzeba zmienić żeby wartości budował na podstawie wishlist 
@@ -277,15 +305,32 @@
             dynamic mysettings = new ExpandoObject();
             mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             //mysettings.ResizeMode = ResizeMode.NoResize;
-           // mysettings.WindowStyle = WindowStyle.None;
-           // mysettings.ShowInTaskbar = false;
+            // mysettings.WindowStyle = WindowStyle.None;
+            // mysettings.ShowInTaskbar = false;
 
-            _windowManager.ShowDialog(new ProcessOrderViewModel(OrderQueue, _boxService, _sbTaskService),null,mysettings);
+            ProcessOrderViewModel processOrderViewModel = new ProcessOrderViewModel(_windowManager, _eventAggregator, OrderQueue, _boxService, _sbTaskService);
+            var dialog_result = _windowManager.ShowDialog(processOrderViewModel,null,mysettings);
+            if (dialog_result)
+            {
+                CategoriesSelectedItem = null;
+                OrderQueue.Clear();
+
+            }
         }
 
         public bool CanOrder
         {
             get { return (OrderQueue.Count != 0); }
+        }
+
+        public IShell Shell
+        {
+            get { return _shell; }
+            set
+            {
+                _shell = value;
+                NotifyOfPropertyChange(() => Shell);
+            }
         }
 
     }

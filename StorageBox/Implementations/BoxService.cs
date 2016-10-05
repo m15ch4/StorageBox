@@ -22,7 +22,7 @@ namespace StorageBox.Implementations
             return productSKU.Boxes.Count();
         }
 
-        public void CreateBox(short row, short column, BoxSize boxSize)
+        public void CreateBox(byte row, byte column, BoxSize boxSize)
         {
             Box box = new Models.Box() { AddressRow = row, AddressCol = column, BoxSize = boxSize, Status = Status.Empty };
             _context.Boxes.Add(box);
@@ -66,7 +66,7 @@ namespace StorageBox.Implementations
             }
         }
 
-        public bool FillSingle(ProductSKU productSKU, int row, int column)
+        public bool FillSingle(ProductSKU productSKU, byte row, byte column)
         {
             Box box = Get(row, column);
             if (box != null)
@@ -76,7 +76,7 @@ namespace StorageBox.Implementations
             return false;
         }
 
-        public Box Get(int row, int column)
+        public Box Get(byte row, byte column)
         {
             Box box = _context.Boxes.Where(b => (b.AddressRow == row) && (b.AddressCol == column)).SingleOrDefault();
             return box;

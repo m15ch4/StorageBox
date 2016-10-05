@@ -21,7 +21,7 @@ namespace StorageBox.Implementations
         {
             try
             {
-                SBUser sbuser = new Models.SBUser() { UserName = userName, FirstName = firstName, LastName = lastName, Password = password, RFID = rfid, Role = sbRole };
+                SBUser sbuser = new Models.SBUser() { UserName = userName, FirstName = firstName, LastName = lastName, Password = password, RFID = rfid, Role = sbRole, IsActive=true };
                 _context.SBUsers.Add(sbuser);
                 _context.SaveChanges();
                 return true;
@@ -43,6 +43,12 @@ namespace StorageBox.Implementations
             return new BindableCollection<SBUser>(sbusers);
         }
 
+        public BindableCollection<SBUser> GetAllActive()
+        {
+            List<SBUser> sbusers = _context.SBUsers.Where(u => u.IsActive == true).ToList();
+            return new BindableCollection<SBUser>(sbusers);
+        }
+
         public BindableCollection<SBRole> GetAllRoles()
         {
             List<SBRole> sbroles = _context.SBRoles.ToList();
@@ -56,7 +62,9 @@ namespace StorageBox.Implementations
 
         public void RemoveUser(SBUser sbuser)
         {
-            _context.SBUsers.Remove(sbuser);
+            sbuser.IsActive = false;
+            sbuser.RFID = "";
+            //_context.SBUsers.Remove(sbuser);
             _context.SaveChanges();
         }
     }

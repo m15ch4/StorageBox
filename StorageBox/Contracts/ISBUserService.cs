@@ -13,6 +13,7 @@ namespace StorageBox.Contracts
         SBUser Get(string username);
         SBUser GetByRFID(string rfid);
         BindableCollection<SBUser> GetAll();
+        BindableCollection<SBUser> GetAllActive();
         void RemoveUser(SBUser sbuser);
 
         bool Create(string userName, string firstName, string lastName, string password, string rfid, SBRole sbRole);

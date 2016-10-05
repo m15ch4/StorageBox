@@ -77,5 +77,11 @@
             Title = "Użytkownicy";
             ActivateItem(Items[8]);
         }
+
+        public void Tasks()
+        {
+            Title = "Zadania";
+            ActivateItem(Items[9]);
+        }
     }
 }
