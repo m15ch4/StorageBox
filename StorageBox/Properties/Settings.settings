@@ -10,5 +10,23 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=DESKTOP-V2912UT\SQLEXPRESS;Initial Catalog=StorageBoxDB;Persist Security Info=True;User ID=SBUser;Password=P@ssw0rd</Value>
     </Setting>
+    <Setting Name="PLCComPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM6</Value>
+    </Setting>
+    <Setting Name="ServiceEmail" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EmailPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SMTPServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RecipientEmail" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Demo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

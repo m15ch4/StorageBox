@@ -35,7 +35,7 @@ namespace StorageBox.Models
         public DateTime? DateAdded { get; set; }
         public DateTime? DateStarted { get; set; }
         public DateTime? DateEnded { get; set; }
-        public bool IsValid { get; set; }
+        public bool? IsValid { get; set; }
 
         public virtual Box Box { get; set; }
         public virtual ProductSKU ProductSKU { get; set; }
@@ -127,24 +127,30 @@ namespace StorageBox.Models
         {
             get
             {
-                BitmapImage statusImage;
-                switch (SBTaskStatus)
+                BitmapImage statusImage = new BitmapImage();
+                try
                 {
-                    case SBTaskStatus.Queued:
-                        statusImage = new BitmapImage(new Uri("E:/queued.png"));
-                        break;
-                    case SBTaskStatus.Running:
-                        statusImage = new BitmapImage(new Uri("E:/running.jpg"));
-                        break;
-                    case SBTaskStatus.Completed:
-                        statusImage = new BitmapImage(new Uri("E:/completed.png"));
-                        break;
-                    case SBTaskStatus.Failed:
-                        statusImage = new BitmapImage(new Uri("E:/failed.png"));
-                        break;
-                    default:
-                        statusImage = new BitmapImage();
-                        break;
+                    switch (SBTaskStatus)
+                    {
+                        case SBTaskStatus.Queued:
+                            statusImage = new BitmapImage(new Uri(new Uri(AppDomain.CurrentDomain.BaseDirectory), "Images/queued.png"));
+                            break;
+                        case SBTaskStatus.Running:
+                            statusImage = new BitmapImage(new Uri(new Uri(AppDomain.CurrentDomain.BaseDirectory), "Images/running.jpg"));
+                            break;
+                        case SBTaskStatus.Completed:
+                            statusImage = new BitmapImage(new Uri(new Uri(AppDomain.CurrentDomain.BaseDirectory), "Images/completed.png"));
+                            break;
+                        case SBTaskStatus.Failed:
+                            statusImage = new BitmapImage(new Uri(new Uri(AppDomain.CurrentDomain.BaseDirectory), "Images/failed.png"));
+                            break;
+                        default:
+                            statusImage = new BitmapImage();
+                            break;
+                    }
+                } catch
+                {
+
                 }
                 return statusImage;
             }

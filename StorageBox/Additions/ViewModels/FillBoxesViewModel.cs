@@ -135,6 +135,8 @@ namespace StorageBox.Additions.ViewModels
                 if (_boxService.FillSingle(productSKU, row, column))
                 {
                     Boxes = _boxService.GetAll();
+                    
+                    Boxes2 = _boxService.GetAll();
                 }
             }
         }

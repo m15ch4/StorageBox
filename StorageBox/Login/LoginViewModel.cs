@@ -29,8 +29,6 @@ namespace StorageBox.Login
         {
             _authenticateService = authenticateService;
 
-            //CONFIGURE SerialPort
-            //start backgroundworker - rfid
             try
             {
                 Console.WriteLine("Trying start rfid");
@@ -45,13 +43,11 @@ namespace StorageBox.Login
                 _serialPort.ReadTimeout = 500;
                 _serialPort.WriteTimeout = 500;
 
-                //_serialPort.Open();
-                //_continue = true;
-
                 _bw.WorkerReportsProgress = false;
                 _bw.WorkerSupportsCancellation = false;
                 _bw.DoWork += new DoWorkEventHandler(ReadRFID);
-                //_bw.RunWorkerAsync();
+
+                Console.WriteLine("End of LoginViewModel constructor");
             }
             catch
             {
@@ -60,19 +56,29 @@ namespace StorageBox.Login
             }
         }
 
+
+        //protected override void OnActivate()
+        //{
+        //    //base.OnActivate();
+        //}
+
         override protected void OnActivate()
         {
+            base.OnActivate();
+            Console.WriteLine("Begin onActivate loginviewmodel *");
             try
             {
+                Console.WriteLine("Begin onActivate loginviewmodel **");
                 if (_serialPort.IsOpen == false)
                 {
                     _serialPort.Open();
                     _continue = true;
                     _bw.RunWorkerAsync();
+                    Console.WriteLine("End of OnActivate (loginViewmodel)");
                 }
                 else
                 {
-                    //_bw.RunWorkerAsync();
+                    Console.WriteLine("else **");
                 }
             }
             catch

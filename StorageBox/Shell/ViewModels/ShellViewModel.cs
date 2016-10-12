@@ -17,8 +17,11 @@ namespace StorageBox.Shell.ViewModels
             DisplayName = "StorageBox ver. 2.0";
 
             Items.AddRange(workspaces);
+            //Console.WriteLine("After Items.AddRange(workspaces);");
             ActivateItem(Items[0]);
+            //Console.WriteLine("After ActivateItem(Items[0]);");
             ((LoginViewModel)Items[0]).Shell = this;
+            //Console.WriteLine("End of shellviewmodel constructor");
         }
 
         public override void CanClose(Action<bool> callback)

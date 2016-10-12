@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.IO.Ports;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -117,14 +119,14 @@ namespace StorageBox.Orders.Dialogs
 
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
-            //System.Windows.Threading.Dispatcher.Run();
+
             BackgroundWorker worker = sender as BackgroundWorker;
 
             Thread readThread = new Thread(Read);
             _serialPort = new SerialPort();
 
             _serialPort = new SerialPort();
-            _serialPort.PortName = "COM6";
+            _serialPort.PortName = Properties.Settings.Default.PLCComPort;
             _serialPort.BaudRate = 9600;
             _serialPort.DataBits = 8;
             _serialPort.Parity = Parity.None;
@@ -134,113 +136,329 @@ namespace StorageBox.Orders.Dialogs
             _serialPort.ReadTimeout = 500;
             _serialPort.WriteTimeout = 500;
 
-            try
+
+            if (Properties.Settings.Default.Demo == false)
             {
-                // UNCOMMENT !!!!!!!!!!!!!!!
-                //_serialPort.Open();
-                _continue = true;
-                _nextCommand = true;
-                // UNCOMMENT !!!!!!!!!!!!!!!
-                //readThread.Start();
-
-                byte[] toSend = { 71, 79, 0, 0, 0, 0, 0, 0 };
-
-                int progress = 0;
-
-                foreach (SBTask sbtask in SBTasks)
+                try
                 {
-                    if ((worker.CancellationPending == true))
+                    // UNCOMMENT !!!!!!!!!!!!!!!
+                    _serialPort.Open();
+                    _continue = true;
+                    _nextCommand = true;
+                    // UNCOMMENT !!!!!!!!!!!!!!!
+                    readThread.Start();
+
+                    byte[] toSend = { 71, 79, 0, 0, 0, 0, 0, 0 };
+
+                    int progress = 0;
+
+                    foreach (SBTask sbtask in SBTasks)
                     {
-                        e.Cancel = true;
-                        break;
-                    }
-                    else
-                    {
-                        // COMMENT !!!!!!!!!!!!!!!
-                        response[0] = 0;
-                        response[1] = 0;
-                        response[2] = 0;
-                        response[3] = 0;
-                        response[4] = 0;
-                        response[5] = 0;
-                        response[6] = 0;
-                        response[7] = 0;
-                        // Update Task status and set DateStarted
-                        _sbTaskService.SetRunning(sbtask);
-                        progress++;
-                        //perform long running task
-                        // send command to plc (command code, row, column)
-                        // recieve response
-                        // wait for report that the door has opened - success
-                        toSend[3] = sbtask.Box.AddressRow;
-                        toSend[5] = sbtask.Box.AddressCol;
-                        toSend[7] = Convert.ToByte(sbtask.Box.BoxSize.BoxSizeID);
-
-                        // UNCOMMENT !!!!!!!!!!!!!!!
-                        //_serialPort.Write(toSend, 0, 8);
-                        Console.WriteLine("Sending: " + BitConverter.ToString(toSend));
-                        // UNCOMMENT !!!!!!!!!!!!!!!
-                        //_nextCommand = false;
-
-                        Console.WriteLine("Command sent.");
-
-                        Thread.Sleep(2000);
-
-                        while (!_nextCommand)
+                        if ((worker.CancellationPending == true))
                         {
-
-                        }
-                        if ((response[0] == 'E') && (response[1] == 'R'))
-                        {
-                            _sbTaskService.SetFailed(sbtask);
+                            e.Cancel = true;
+                            break;
                         }
                         else
                         {
-                            _sbTaskService.SetCompleted(sbtask);
-                            _boxService.Empty(sbtask.Box);
+                            // COMMENT !!!!!!!!!!!!!!!
+                            //response[0] = 0;
+                            //response[1] = 0;
+                            //response[2] = 0;
+                            //response[3] = 0;
+                            //response[4] = 0;
+                            //response[5] = 0;
+                            //response[6] = 0;
+                            //response[7] = 0;
+                            // Update Task status and set DateStarted
+                            _sbTaskService.SetRunning(sbtask);
+                            progress++;
+                            //perform long running task
+                            // send command to plc (command code, row, column)
+                            // recieve response
+                            // wait for report that the door has opened - success
+                            toSend[3] = sbtask.Box.AddressRow;
+                            toSend[5] = sbtask.Box.AddressCol;
+                            toSend[7] = Convert.ToByte(sbtask.Box.BoxSize.BoxSizeID);
+
+                            // UNCOMMENT !!!!!!!!!!!!!!!
+                            _serialPort.Write(toSend, 0, 8);
+                            Console.WriteLine("Sending: " + BitConverter.ToString(toSend));
+                            // UNCOMMENT !!!!!!!!!!!!!!!
+                            _nextCommand = false;
+
+                            Console.WriteLine("Command sent.");
+
+                            Thread.Sleep(2000);
+
+                            while (!_nextCommand)
+                            {
+
+                            }
+                            if ((response[0] == 'E') && (response[1] == 'R'))
+                            {
+                                _sbTaskService.SetFailed(sbtask);
+                            }
+                            else
+                            {
+                                _sbTaskService.SetCompleted(sbtask);
+                                _boxService.Empty(sbtask.Box);
 
 
-                            _eventAggregator.PublishOnUIThread(sbtask);
-                            //dynamic mysettings = new ExpandoObject();
-                            //mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                                _eventAggregator.PublishOnUIThread(sbtask);
+                                //dynamic mysettings = new ExpandoObject();
+                                //mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
-                            //var dialog_result = _windowManager.ShowDialog(new ConfirmItemViewModel(), null, mysettings);
-                            //if (dialog_result)
-                            //{
-                            //    Trace.WriteLine("CONFIRMED");
-                            //}
-                            //else
-                            //{
-                            //    Trace.WriteLine("NOT CONFIRMED");
-                            //}
+                                //var dialog_result = _windowManager.ShowDialog(new ConfirmItemViewModel(), null, mysettings);
+                                //if (dialog_result)
+                                //{
+                                //    Trace.WriteLine("CONFIRMED");
+                                //}
+                                //else
+                                //{
+                                //    Trace.WriteLine("NOT CONFIRMED");
+                                //}
+                            }
+
+
+
+                            //.SBTaskStatusImage = new BitmapImage(new Uri("E:/completed.png"));
+                            //NotifyOfPropertyChange(() => sbtask.SBTaskStatusImage);
+                            //NotifyOfPropertyChange(() => SBTasks);
+
+                            //char c = toSend[0];
+                            //int i = (int)c;
+                            //toSend[0]++;
+                            //toSend[0] = (char)i;
+                            //byte[] response = new byte[8];
+                            //int bytesRead = _serialPort.Read(response, 0, 8);
+                            //Trace.WriteLine(BitConverter.ToString(response));
+                            //SBTasks.Remove(sbtask);
+                            worker.ReportProgress((int)(progress * 100.0 / SBTasks.Count));
                         }
-
-                        //.SBTaskStatusImage = new BitmapImage(new Uri("E:/completed.png"));
-                        //NotifyOfPropertyChange(() => sbtask.SBTaskStatusImage);
-                        //NotifyOfPropertyChange(() => SBTasks);
-
-                        //char c = toSend[0];
-                        //int i = (int)c;
-                        //toSend[0]++;
-                        //toSend[0] = (char)i;
-                        //byte[] response = new byte[8];
-                        //int bytesRead = _serialPort.Read(response, 0, 8);
-                        //Trace.WriteLine(BitConverter.ToString(response));
-                        //SBTasks.Remove(sbtask);
-                        worker.ReportProgress((int)(progress * 100.0 / SBTasks.Count));
                     }
-                }
 
-                _continue = false;
-                // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
-                //readThread.Join();
-                // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
-                //_serialPort.Close();
+                    _continue = false;
+                    // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
+                    readThread.Join();
+                    // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
+                    _serialPort.Close();
+
+                    //SEND EMAIL
+
+                    List<ProductSKU> underThreshold = _sbTaskService.taskedSKUs(SBTasks).Where(s => s.Threshold != 0).Where(s => s.Threshold >= s.Boxes.Count).ToList();
+
+                    if (underThreshold.Count > 0)
+                    {
+
+                        SmtpClient smtpClient = new SmtpClient();
+                        NetworkCredential basicCredential =
+                            new NetworkCredential(Properties.Settings.Default.ServiceEmail, Properties.Settings.Default.EmailPassword);
+                        MailMessage message = new MailMessage();
+                        MailAddress fromAddress = new MailAddress(Properties.Settings.Default.ServiceEmail);
+
+                        smtpClient.Host = Properties.Settings.Default.SMTPServer;
+                        smtpClient.UseDefaultCredentials = false;
+                        smtpClient.Credentials = basicCredential;
+                        //smtpClient.EnableSsl = true;
+
+                        message.From = fromAddress;
+                        message.Subject = "Powiadomienie o wyczerpywanych zasobach";
+                        //Set IsBodyHtml to true means you can send HTML email.
+                        message.IsBodyHtml = true;
+
+                        message.Body = "<h1>Powiadomienie</h1>";
+                        message.Body += "<ul>";
+                        foreach (ProductSKU productsku in underThreshold)
+                        {
+                            message.Body += "<li>" + productsku.Product.ProductName + " [" + productsku.Sku + "] - Dostępnych: " + productsku.Boxes.Count + "</li>";
+                        }
+                        message.Body += "</ul>";
+
+                        message.To.Add(Properties.Settings.Default.RecipientEmail);
+
+                        Trace.WriteLine("Sending...");
+
+                        try
+                        {
+                            smtpClient.Send(message);
+                            Trace.WriteLine("Sent.");
+                        }
+                        catch (Exception ex)
+                        {
+                            //Error, could not send the message
+                            Trace.Write(ex.Message);
+                        }
+                    }
+
+                }
+                catch
+                {
+                    Trace.WriteLine("Błąd połączenia ze sterownikiem PLC.");
+
+                }
             }
-            catch
+            else
             {
-                Trace.WriteLine("Błąd połączenia ze sterownikiem PLC.");
-                
+                ////// start demo
+                try
+                {
+                    // UNCOMMENT !!!!!!!!!!!!!!!
+                    //_serialPort.Open();
+                    _continue = true;
+                    _nextCommand = true;
+                    // UNCOMMENT !!!!!!!!!!!!!!!
+                    //readThread.Start();
+
+                    byte[] toSend = { 71, 79, 0, 0, 0, 0, 0, 0 };
+
+                    int progress = 0;
+
+                    foreach (SBTask sbtask in SBTasks)
+                    {
+                        if ((worker.CancellationPending == true))
+                        {
+                            e.Cancel = true;
+                            break;
+                        }
+                        else
+                        {
+                            // COMMENT !!!!!!!!!!!!!!!
+                            //response[0] = 0;
+                            //response[1] = 0;
+                            //response[2] = 0;
+                            //response[3] = 0;
+                            //response[4] = 0;
+                            //response[5] = 0;
+                            //response[6] = 0;
+                            //response[7] = 0;
+                            // Update Task status and set DateStarted
+                            _sbTaskService.SetRunning(sbtask);
+                            progress++;
+                            //perform long running task
+                            // send command to plc (command code, row, column)
+                            // recieve response
+                            // wait for report that the door has opened - success
+                            toSend[3] = sbtask.Box.AddressRow;
+                            toSend[5] = sbtask.Box.AddressCol;
+                            toSend[7] = Convert.ToByte(sbtask.Box.BoxSize.BoxSizeID);
+
+                            // UNCOMMENT !!!!!!!!!!!!!!!
+                            //_serialPort.Write(toSend, 0, 8);
+                            Console.WriteLine("Sending: " + BitConverter.ToString(toSend));
+                            // UNCOMMENT !!!!!!!!!!!!!!!
+                            //_nextCommand = false;
+
+                            Console.WriteLine("Command sent.");
+
+                            //Thread.Sleep(2000);
+
+                            while (!_nextCommand)
+                            {
+
+                            }
+                            if ((response[0] == 'E') && (response[1] == 'R'))
+                            {
+                                _sbTaskService.SetFailed(sbtask);
+                            }
+                            else
+                            {
+                                _sbTaskService.SetCompleted(sbtask);
+                                _boxService.Empty(sbtask.Box);
+
+                                Console.WriteLine("Sending Message");
+                                _eventAggregator.PublishOnUIThread(sbtask);
+                                //dynamic mysettings = new ExpandoObject();
+                                //mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+                                //var dialog_result = _windowManager.ShowDialog(new ConfirmItemViewModel(), null, mysettings);
+                                //if (dialog_result)
+                                //{
+                                //    Trace.WriteLine("CONFIRMED");
+                                //}
+                                //else
+                                //{
+                                //    Trace.WriteLine("NOT CONFIRMED");
+                                //}
+                            }
+
+
+
+                            //.SBTaskStatusImage = new BitmapImage(new Uri("E:/completed.png"));
+                            //NotifyOfPropertyChange(() => sbtask.SBTaskStatusImage);
+                            //NotifyOfPropertyChange(() => SBTasks);
+
+                            //char c = toSend[0];
+                            //int i = (int)c;
+                            //toSend[0]++;
+                            //toSend[0] = (char)i;
+                            //byte[] response = new byte[8];
+                            //int bytesRead = _serialPort.Read(response, 0, 8);
+                            //Trace.WriteLine(BitConverter.ToString(response));
+                            //SBTasks.Remove(sbtask);
+                            worker.ReportProgress((int)(progress * 100.0 / SBTasks.Count));
+                        }
+                    }
+
+                    _continue = false;
+                    // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
+                    //readThread.Join();
+                    // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
+                    //_serialPort.Close();
+
+                    //SEND EMAIL
+
+                    List<ProductSKU> underThreshold = _sbTaskService.taskedSKUs(SBTasks).Where(s => s.Threshold != 0).Where(s => s.Threshold >= s.Boxes.Count).ToList();
+
+                    if (underThreshold.Count > 0)
+                    {
+
+                        SmtpClient smtpClient = new SmtpClient();
+                        NetworkCredential basicCredential =
+                            new NetworkCredential(Properties.Settings.Default.ServiceEmail, Properties.Settings.Default.EmailPassword);
+                        MailMessage message = new MailMessage();
+                        MailAddress fromAddress = new MailAddress(Properties.Settings.Default.ServiceEmail);
+
+                        smtpClient.Host = Properties.Settings.Default.SMTPServer;
+                        smtpClient.UseDefaultCredentials = false;
+                        smtpClient.Credentials = basicCredential;
+                        //smtpClient.EnableSsl = true;
+
+                        message.From = fromAddress;
+                        message.Subject = "Powiadomienie o wyczerpywanych zasobach";
+                        //Set IsBodyHtml to true means you can send HTML email.
+                        message.IsBodyHtml = true;
+
+                        message.Body = "<h1>Powiadomienie</h1>";
+                        message.Body += "<ul>";
+                        foreach (ProductSKU productsku in underThreshold)
+                        {
+                            message.Body += "<li>" + productsku.Product.ProductName + " [" + productsku.Sku + "] - Dostępnych: " + productsku.Boxes.Count + "</li>";
+                        }
+                        message.Body += "</ul>";
+
+                        message.To.Add(Properties.Settings.Default.RecipientEmail);
+
+                        Trace.WriteLine("Sending...");
+
+                        try
+                        {
+                            smtpClient.Send(message);
+                            Trace.WriteLine("Sent.");
+                        }
+                        catch (Exception ex)
+                        {
+                            //Error, could not send the message
+                            Trace.Write(ex.Message);
+                        }
+                    }
+
+                }
+                catch
+                {
+                    Trace.WriteLine("Błąd podczas wykonywania programu demo.");
+                }
+                ////// koniec demo
             }
 
         }
@@ -290,8 +508,11 @@ namespace StorageBox.Orders.Dialogs
         public void Handle(SBTask sbtask)
         {
             Trace.WriteLine("Message recieved");
-            bool result = OpenConfirmDialog();
-            _sbTaskService.SetValid(sbtask, result);
+            if (sbtask.IsValid == null)
+            {
+                bool result = OpenConfirmDialog();
+                _sbTaskService.SetValid(sbtask, result);
+            }
         }
     }
 }

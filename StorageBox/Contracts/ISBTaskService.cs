@@ -16,5 +16,6 @@ namespace StorageBox.Contracts
         void SetRunning(SBTask sbtask);
         void SetFailed(SBTask sbtask);
         void SetValid(SBTask sbtask, bool isvalid);
+        List<ProductSKU> taskedSKUs(BindableCollection<SBTask> sbtasks);
     }
 }

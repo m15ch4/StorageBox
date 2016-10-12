@@ -314,7 +314,7 @@
             {
                 CategoriesSelectedItem = null;
                 OrderQueue.Clear();
-
+                NotifyOfPropertyChange(() => CanOrder);
             }
         }
 

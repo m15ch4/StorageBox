@@ -83,5 +83,11 @@
             Title = "Zadania";
             ActivateItem(Items[9]);
         }
+
+        public void Settings()
+        {
+            Title = "Ustawienia";
+            ActivateItem(Items[10]);
+        }
     }
 }

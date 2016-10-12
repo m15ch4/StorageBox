@@ -21,8 +21,15 @@ namespace StorageBox.Implementations
 
         public void Delete(Category category)
         {
-            _context.Categories.Remove(category);
-            _context.SaveChanges();
+            try
+            {
+                _context.Categories.Remove(category);
+                _context.SaveChanges();
+            }
+            catch
+            {
+
+            }
         }
 
         public BindableCollection<Category> GetAll()

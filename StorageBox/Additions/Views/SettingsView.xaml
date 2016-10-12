@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="StorageBox.Additions.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StorageBox.Additions.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="365.716" d:DesignWidth="633.225">
+    <Grid>
+        <DockPanel LastChildFill="False">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <Label FontSize="16" Margin="0 0 10 0" Width="220">Port komunikacyjny (PLC):</Label>
+                <TextBox Name="PLCComPort" FontSize="16" Width="180" VerticalContentAlignment="Center">COM0</TextBox>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0 10 0 0">
+                <Label FontSize="16" Margin="0 0 10 0" Width="220">Adres email (nadawcy):</Label>
+                <TextBox Name="ServiceEmail" FontSize="16" Width="180" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0 10 0 0">
+                <Label FontSize="16" Margin="0 0 10 0" Width="220">Hasło do skrzynki:</Label>
+                <TextBox Name="EmailPassword" FontSize="16" Width="180" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0 10 0 0">
+                <Label FontSize="16" Margin="0 0 10 0" Width="220">Serwer SMTP:</Label>
+                <TextBox Name="SMTPServer" FontSize="16" Width="180" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0 10 0 0">
+                <Label FontSize="16" Margin="0 0 10 0" Width="220">Adres email (odbiorca):</Label>
+                <TextBox Name="RecipientEmail" FontSize="16" Width="180" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                <Button Name="SaveSettings" Content="Zapisz ustawienia" Height="40" FontSize="16" Width="140"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</UserControl>

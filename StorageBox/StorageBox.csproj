@@ -120,6 +120,7 @@
     <Compile Include="Additions\ViewModels\OptionsViewModel.cs" />
     <Compile Include="Additions\ViewModels\OptionValuesViewModel.cs" />
     <Compile Include="Additions\ViewModels\ProductsViewModel.cs" />
+    <Compile Include="Additions\ViewModels\SettingsViewModel.cs" />
     <Compile Include="Additions\ViewModels\SKUsViewModel.cs" />
     <Compile Include="Additions\ViewModels\SKUValueViewModel.cs" />
     <Compile Include="Additions\ViewModels\TasksViewModel.cs" />
@@ -144,6 +145,9 @@
     </Compile>
     <Compile Include="Additions\Views\ProductsView.xaml.cs">
       <DependentUpon>ProductsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Additions\Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Additions\Views\SKUsView.xaml.cs">
       <DependentUpon>SKUsView.xaml</DependentUpon>
@@ -246,6 +250,10 @@
     <Compile Include="Migrations\201610052040593_Modified ProductSKU. Added Threshold field.Designer.cs">
       <DependentUpon>201610052040593_Modified ProductSKU. Added Threshold field.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610080815386_Prevent display another confirm window.cs" />
+    <Compile Include="Migrations\201610080815386_Prevent display another confirm window.Designer.cs">
+      <DependentUpon>201610080815386_Prevent display another confirm window.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Box.cs" />
     <Compile Include="Models\BoxSize.cs" />
@@ -282,7 +290,6 @@
     </Compile>
     <Compile Include="Shell\Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="StorageBoxDBDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -346,6 +353,9 @@
     <EmbeddedResource Include="Migrations\201610052040593_Modified ProductSKU. Added Threshold field.resx">
       <DependentUpon>201610052040593_Modified ProductSKU. Added Threshold field.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610080815386_Prevent display another confirm window.resx">
+      <DependentUpon>201610080815386_Prevent display another confirm window.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -372,7 +382,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\StorageBox.ico" />
+    <Resource Include="Images\StorageBox.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Additions\Views\AddCategoryView.xaml">
@@ -400,6 +412,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Additions\Views\ProductsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Additions\Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -438,14 +454,26 @@
     <Page Include="Shell\Views\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\completed.png" />
-    <Resource Include="Images\failed.png" />
-    <Resource Include="Images\queued.png" />
-    <Resource Include="Images\running.jpg" />
+    <Resource Include="Images\completed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\failed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\queued.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\running.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Texam.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

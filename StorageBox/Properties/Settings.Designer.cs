@@ -33,5 +33,77 @@ namespace StorageBox.Properties {
                 return ((string)(this["StorageBoxDBConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM6")]
+        public string PLCComPort {
+            get {
+                return ((string)(this["PLCComPort"]));
+            }
+            set {
+                this["PLCComPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ServiceEmail {
+            get {
+                return ((string)(this["ServiceEmail"]));
+            }
+            set {
+                this["ServiceEmail"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EmailPassword {
+            get {
+                return ((string)(this["EmailPassword"]));
+            }
+            set {
+                this["EmailPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SMTPServer {
+            get {
+                return ((string)(this["SMTPServer"]));
+            }
+            set {
+                this["SMTPServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RecipientEmail {
+            get {
+                return ((string)(this["RecipientEmail"]));
+            }
+            set {
+                this["RecipientEmail"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Demo {
+            get {
+                return ((bool)(this["Demo"]));
+            }
+            set {
+                this["Demo"] = value;
+            }
+        }
     }
 }

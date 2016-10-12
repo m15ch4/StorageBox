@@ -12,10 +12,11 @@
         <DockPanel LastChildFill="True">
             <Border BorderBrush="DarkGray" BorderThickness="1" DockPanel.Dock="Left" SnapsToDevicePixels="True" Margin="5,0,5,5" CornerRadius="5">
                 <Border.Background>
-                    <ImageBrush ImageSource="e:\txm_ex_2.jpg"/>
+                    <ImageBrush ImageSource="/StorageBox;component/Images/Texam.jpg"/>
                 </Border.Background>
 
-                <Border HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="1" CornerRadius="10" Background="#FFB9B9B9" Opacity="0.9">
+
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True" BorderBrush="Black" BorderThickness="1" CornerRadius="10" Background="#FFB9B9B9" Opacity="0.9">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="5" Opacity="0.4"/>
                     </Border.Effect>

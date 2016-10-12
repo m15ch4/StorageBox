@@ -87,5 +87,18 @@ namespace StorageBox.Implementations
             sbtask.IsValid = isvalid;
             _context.SaveChanges();
         }
+
+        public List<ProductSKU> taskedSKUs(BindableCollection<SBTask> sbtasks)
+        {
+            List<ProductSKU> result = new List<ProductSKU>();
+            foreach (SBTask sbtask in sbtasks)
+            {
+                if (!result.Contains(sbtask.ProductSKU))
+                {
+                    result.Add(sbtask.ProductSKU);
+                }
+            }
+            return result;
+        }
     }
 }

@@ -45,5 +45,7 @@ namespace StorageBox.Implementations
             _context.ProductSKUS.Remove(sku);
             _context.SaveChanges();
         }
+
+
     }
 }
