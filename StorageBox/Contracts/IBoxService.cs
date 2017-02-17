@@ -14,6 +14,7 @@ namespace StorageBox.Contracts
         Box Get(byte row, byte column);
         ICollection<Box> Get(ProductSKU productSKU);
         IEnumerable<Box> Get(ProductSKU productSKU, int numberOfRecords);
+        BindableCollection<Box> GetEmpty();
         bool Reserve(Box box);
         bool Fill(Box box, ProductSKU productSKU);
         bool Empty(Box box);

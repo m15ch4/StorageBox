@@ -33,7 +33,7 @@
             <DockPanel DockPanel.Dock="Right">
                 <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Parametry produktu:</Label>
                 <Button DockPanel.Dock="Bottom" Content="Usuń opcję" cal:Message.Attach="[Click]=[Action RemoveOption(Options.SelectedItem)]" Height="40" Width="120" HorizontalAlignment="Right" FontSize="14" Margin="0 5 0 0"/>
-                <ListBox Name="Options" DisplayMemberPath="OptionName" DockPanel.Dock="Top" FontSize="14"></ListBox>
+                <ListBox Name="Options" SelectedItem="{Binding OptionsSelectedItem}" DisplayMemberPath="OptionName" DockPanel.Dock="Top" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

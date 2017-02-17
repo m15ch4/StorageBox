@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StorageBox.Additions.ViewModels
 {
@@ -22,6 +23,7 @@ namespace StorageBox.Additions.ViewModels
         private string _productDescription;
         private BindableCollection<Product> _products;
         private string _imageFileName;
+        private Product _productsSelectedItem;
 
         public ProductsViewModel(IProductService productService, ICategoryService categoryService)
         {
@@ -57,6 +59,7 @@ namespace StorageBox.Additions.ViewModels
                 _categoriesSelectedItem = value;
                 Products = _productService.Get(_categoriesSelectedItem);
                 NotifyOfPropertyChange(() => CategoriesSelectedItem);
+                NotifyOfPropertyChange(() => CanRemoveProduct);
             }
         }
 
@@ -86,11 +89,19 @@ namespace StorageBox.Additions.ViewModels
         {
             if (ProductName != "") {
 
-                _productService.Create(ProductName, ProductDescription, CategoriesSelectedItem, ImageFileName);
-                ProductName = "";
-                ProductDescription = "";
-                ImageFileName = "";
-                Products = _productService.Get(CategoriesSelectedItem);
+                try
+                {
+                    _productService.Create(ProductName, ProductDescription, CategoriesSelectedItem, ImageFileName);
+                    MessageBox.Show("Dodano produkt: " + ProductName, "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ProductName = "";
+                    ProductDescription = "";
+                    ImageFileName = "";
+                    Products = _productService.Get(CategoriesSelectedItem);
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+                {
+                    MessageBox.Show("Nie dodano nowego produktu. Spróbuj ponownie.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -126,6 +137,36 @@ namespace StorageBox.Additions.ViewModels
                 ImageFileName = fileDialog.FileName;
         }
 
+        public Product ProductsSelectedItem
+        {
+            get { return _productsSelectedItem; }
+            set
+            {
+                _productsSelectedItem = value;
+                NotifyOfPropertyChange(() => ProductsSelectedItem);
+            }
+        }
+
+        public bool CanRemoveProduct
+        {
+            get
+            {
+                return (ProductsSelectedItem != null);
+            }
+        }
+        public void RemoveProduct(Product product)
+        {
+            try
+            {
+                _productService.Remove(product);
+                Products = _productService.GetAll();
+                MessageBox.Show("Usunięto wybrany produkt: " + product.ProductName, "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                MessageBox.Show("Nie usunięto wybranego produktu. Prawdopodobną przyczyną są istniejące odwołania do tego produktu.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
     }
 }

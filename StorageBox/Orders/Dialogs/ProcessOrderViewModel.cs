@@ -121,6 +121,7 @@ namespace StorageBox.Orders.Dialogs
         {
 
             BackgroundWorker worker = sender as BackgroundWorker;
+            int _rTimeout_ms = 10000;
 
             Thread readThread = new Thread(Read);
             _serialPort = new SerialPort();
@@ -131,9 +132,9 @@ namespace StorageBox.Orders.Dialogs
             _serialPort.DataBits = 8;
             _serialPort.Parity = Parity.None;
             _serialPort.StopBits = StopBits.One;
-            _serialPort.Handshake = Handshake.XOnXOff;
+            _serialPort.Handshake = Handshake.RequestToSend;
 
-            _serialPort.ReadTimeout = 500;
+            _serialPort.ReadTimeout = _rTimeout_ms;
             _serialPort.WriteTimeout = 500;
 
 
@@ -143,10 +144,12 @@ namespace StorageBox.Orders.Dialogs
                 {
                     // UNCOMMENT !!!!!!!!!!!!!!!
                     _serialPort.Open();
+                    _serialPort.DiscardInBuffer();
+                    _serialPort.DiscardOutBuffer();
                     _continue = true;
                     _nextCommand = true;
-                    // UNCOMMENT !!!!!!!!!!!!!!!
-                    readThread.Start();
+                    // UNCOMMENT jeśli ma być osobny wątek !!!!!!!!!!!!!!!
+                    //readThread.Start();
 
                     byte[] toSend = { 71, 79, 0, 0, 0, 0, 0, 0 };
 
@@ -154,6 +157,8 @@ namespace StorageBox.Orders.Dialogs
 
                     foreach (SBTask sbtask in SBTasks)
                     {
+                        _serialPort.DiscardInBuffer();
+                        _serialPort.DiscardOutBuffer();
                         if ((worker.CancellationPending == true))
                         {
                             e.Cancel = true;
@@ -189,59 +194,61 @@ namespace StorageBox.Orders.Dialogs
 
                             Console.WriteLine("Command sent.");
 
-                            Thread.Sleep(2000);
+                            // Zakomentowano 11.02.2017 r.
+                            //Thread.Sleep(2000);
 
-                            while (!_nextCommand)
+                            // Oczekiwanie na potwierdzenie przez 10 sek.
+                            /*
+                            int waitcounter = 0;
+                            while ((waitcounter * _rTimeout_ms) <= 10000) {
+                                try
+                                {
+                                    if (_serialPort.BytesToRead == 8)
+                                    {
+                                        int bytesRead = _serialPort.Read(response, 0, 8);
+                                        Console.WriteLine(BitConverter.ToString(response) + " " + bytesRead);
+                                        _nextCommand = true;
+                                        break;
+                                    }
+                                }
+                                catch (TimeoutException) {
+                                    waitcounter++;
+                                }
+                            }
+                            */
+
+                            try
                             {
+                                int bytesRead = _serialPort.Read(response, 0, 8);
+                                if ((response[0] == 'E') && (response[1] == 'R'))
+                                {
+                                    _sbTaskService.SetFailed(sbtask);
+                                }
+                                else
+                                {
+                                    _sbTaskService.SetCompleted(sbtask);
+                                    _boxService.Empty(sbtask.Box);
+
+
+                                    _eventAggregator.PublishOnUIThread(sbtask);
+                                }
 
                             }
-                            if ((response[0] == 'E') && (response[1] == 'R'))
-                            {
+                            catch (TimeoutException){
+                                Console.WriteLine("*** Timeout");
                                 _sbTaskService.SetFailed(sbtask);
                             }
-                            else
-                            {
-                                _sbTaskService.SetCompleted(sbtask);
-                                _boxService.Empty(sbtask.Box);
 
-
-                                _eventAggregator.PublishOnUIThread(sbtask);
-                                //dynamic mysettings = new ExpandoObject();
-                                //mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
-                                //var dialog_result = _windowManager.ShowDialog(new ConfirmItemViewModel(), null, mysettings);
-                                //if (dialog_result)
-                                //{
-                                //    Trace.WriteLine("CONFIRMED");
-                                //}
-                                //else
-                                //{
-                                //    Trace.WriteLine("NOT CONFIRMED");
-                                //}
-                            }
-
-
-
-                            //.SBTaskStatusImage = new BitmapImage(new Uri("E:/completed.png"));
-                            //NotifyOfPropertyChange(() => sbtask.SBTaskStatusImage);
-                            //NotifyOfPropertyChange(() => SBTasks);
-
-                            //char c = toSend[0];
-                            //int i = (int)c;
-                            //toSend[0]++;
-                            //toSend[0] = (char)i;
-                            //byte[] response = new byte[8];
-                            //int bytesRead = _serialPort.Read(response, 0, 8);
-                            //Trace.WriteLine(BitConverter.ToString(response));
-                            //SBTasks.Remove(sbtask);
                             worker.ReportProgress((int)(progress * 100.0 / SBTasks.Count));
                         }
                     }
 
                     _continue = false;
                     // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
-                    readThread.Join();
+                    //readThread.Join();
                     // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
+                    _serialPort.DiscardInBuffer();
+                    _serialPort.DiscardOutBuffer();
                     _serialPort.Close();
 
                     //SEND EMAIL
@@ -463,6 +470,29 @@ namespace StorageBox.Orders.Dialogs
 
         }
 
+        private Boolean readWithTimeout(int timeOut_s)
+        {
+            int waitcounter = 0;
+            while ((waitcounter * 500) <= (1000 * timeOut_s))
+            {
+                try
+                {
+                    if (_serialPort.BytesToRead == 8)
+                    {
+                        int bytesRead = _serialPort.Read(response, 0, 8);
+                        Console.WriteLine(BitConverter.ToString(response) + " " + bytesRead);
+                        _nextCommand = true;
+                        break;
+                    }
+                }
+                catch (TimeoutException)
+                {
+                    waitcounter++;
+                }
+            }
+            return true;
+        }
+
         public static void Read()
         {
             
@@ -473,7 +503,7 @@ namespace StorageBox.Orders.Dialogs
                     if (_serialPort.BytesToRead == 8)
                     {
                         int bytesRead = _serialPort.Read(response, 0, 8);
-                        //Console.WriteLine(new string(response) + " " + bytesRead);
+                        Console.WriteLine(BitConverter.ToString(response) + " " + bytesRead);
                         _nextCommand = true;
                     }
                 }

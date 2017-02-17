@@ -41,8 +41,8 @@
             </DockPanel>
             <DockPanel DockPanel.Dock="Right" >
                 <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Produkty:</Label>
-                <Button DockPanel.Dock="Bottom" Content="Usuń produkt" Margin="0 5 0 0" HorizontalAlignment="Right" Width="120" Height="40" VerticalContentAlignment="Center" FontSize="14"></Button>
-                <ListBox Name="Products" DisplayMemberPath="ProductName" VerticalContentAlignment="Center" FontSize="14">
+                <Button cal:Message.Attach="[Click]=[Action RemoveProduct(Products.SelectedItem)]" DockPanel.Dock="Bottom" Content="Usuń produkt" Margin="0 5 0 0" HorizontalAlignment="Right" Width="120" Height="40" VerticalContentAlignment="Center" FontSize="14"></Button>
+                <ListBox Name="Products" DisplayMemberPath="ProductName" SelectedItem="{Binding ProductsSelectedItem}" VerticalContentAlignment="Center" FontSize="14">
 
                 </ListBox>
             </DockPanel>

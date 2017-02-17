@@ -14,9 +14,16 @@ namespace StorageBox.Implementations
         }
         public void Add(string categoryName)
         {
-            Category category = new Category() { CategoryName = categoryName };
-            _context.Categories.Add(category);
-            _context.SaveChanges();
+            try
+            {
+                Category category = new Category() { CategoryName = categoryName };
+                _context.Categories.Add(category);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
         public void Delete(Category category)
@@ -26,9 +33,9 @@ namespace StorageBox.Implementations
                 _context.Categories.Remove(category);
                 _context.SaveChanges();
             }
-            catch
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
             {
-
+                throw e;
             }
         }
 

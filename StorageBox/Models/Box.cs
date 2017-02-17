@@ -40,16 +40,49 @@
         {
             get
             {
-                string displayName = "Wiersz: " + AddressRow + ", Kolumna: " + AddressCol;
+                string displayName = "Wiersz: " + AddressRow + ", Kolumna: " + AddressCol + ", Rozmiar: " + BoxSize.BoxSizeName;
+                
+                return displayName;
+            }
+        }
+
+        public string DisplayContent
+        {
+            get
+            {
+                string displayContent = "";
                 if (Status == Status.Full)
                 {
-                    displayName += ", [" + ProductSKU.Product.ProductName + "]";
+                    displayContent = ProductSKU.Product.ProductName + " [" + ProductSKU.Sku + "]" + " -> " + ProductSKU.SKUOptionsDescription;
                 }
                 else
                 {
-                    displayName += ", [Empty]";
+                    displayContent = "<Pusta>";
                 }
-                return displayName;
+
+                return displayContent;
+            }
+        }
+
+        public System.Windows.Media.Brush ForegroundColor
+        {
+            get
+            {
+                if (Status == Status.Full)
+                    return System.Windows.Media.Brushes.Black;
+                else
+                    return System.Windows.Media.Brushes.Red;
+            }
+        }
+
+        public System.Windows.Media.Brush BackgroundColor
+        {
+            get
+            {
+                if (Status == Status.Full)
+                    return System.Windows.Media.Brushes.LightGreen;
+                else
+                    return System.Windows.Media.Brushes.Yellow;
             }
         }
     }

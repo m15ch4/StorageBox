@@ -123,5 +123,11 @@ namespace StorageBox.Implementations
             _context.Boxes.Remove(box);
             _context.SaveChanges();
         }
+
+        public BindableCollection<Box> GetEmpty()
+        {
+            List<Box> boxes = _context.Boxes.Where(b => b.Status == Status.Empty).ToList();
+            return new BindableCollection<Box>(boxes);
+        }
     }
 }

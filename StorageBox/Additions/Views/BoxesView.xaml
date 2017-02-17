@@ -39,7 +39,18 @@
             <DockPanel>
                 <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Skrzynki</Label>
                 <Button DockPanel.Dock="Bottom" Content="Usuń skrzynkę" HorizontalAlignment="Right" cal:Message.Attach="[Click]=[Action RemoveBox(Boxes.SelectedItem)]" Width="120" Height="40" FontSize="14" Margin="0 5 0 0"></Button>
-                <ListBox Name="Boxes" DisplayMemberPath="DisplayName" FontSize="14"></ListBox>
+                <ListBox Name="Boxes" FontSize="14">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border HorizontalAlignment="Stretch"  Background="{Binding Path=BackgroundColor}">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding DisplayName}" FontSize="14" FontWeight="Bold" Foreground="{Binding Path=ForegroundColor}"/>
+                                    <TextBlock Text="{Binding DisplayContent}" FontSize="12" Foreground="{Binding Path=ForegroundColor}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

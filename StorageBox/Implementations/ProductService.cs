@@ -5,6 +5,7 @@ using StorageBox.Models;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 
 namespace StorageBox.Implementations
 {
@@ -52,11 +53,17 @@ namespace StorageBox.Implementations
                 catch
                 { }
             }
-           
 
-            Product product = new Product() { ProductName = productName, ProductDescription = productDescription, Category = category, ProductImageContent=imageData };
-            _context.Products.Add(product);
-            _context.SaveChanges();
+            try
+            {
+                Product product = new Product() { ProductName = productName, ProductDescription = productDescription, Category = category, ProductImageContent = imageData };
+                _context.Products.Add(product);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
         public BindableCollection<Product> Get(Category category)
@@ -69,6 +76,20 @@ namespace StorageBox.Implementations
         {
             List<Product> productList = _context.Products.ToList();
             return new BindableCollection<Product>(productList);
+        }
+
+
+        public void Remove(Product product)
+        {
+            try
+            {
+                _context.Products.Remove(product);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
     }
 }

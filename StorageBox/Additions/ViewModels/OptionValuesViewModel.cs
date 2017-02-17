@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StorageBox.Additions.ViewModels
 {
@@ -24,6 +25,7 @@ namespace StorageBox.Additions.ViewModels
         private ICategoryService _categoryService;
         private BindableCollection<Category> _categories;
         private Category _categoriesSelectedItem;
+        private OptionValue _optionValuesSelectedItem;
 
         public OptionValuesViewModel(ICategoryService categoryService, IOptionValueService optionValueService, IOptionService optionService, IProductService productService)
         {
@@ -38,6 +40,7 @@ namespace StorageBox.Additions.ViewModels
             base.OnActivate();
             Categories = _categoryService.GetAll();
             OptionValueName = "";
+            //CategoriesSelectedItem = null;
             //Products = _productService.GetAll();
             //Options = _optionService.GetAll();
             //OptionValues = _optionValueService.GetAll();
@@ -84,6 +87,8 @@ namespace StorageBox.Additions.ViewModels
                 Options = _optionService.Get(_productsSelectedItem);
                 NotifyOfPropertyChange(() => ProductsSelectedItem);
                 NotifyOfPropertyChange(() => Options);
+                //dodałem 01.02.2017r.
+                //NotifyOfPropertyChange(() => OptionValues);
                 NotifyOfPropertyChange(() => CanCreateOptionValue);
             }
         }
@@ -104,8 +109,9 @@ namespace StorageBox.Additions.ViewModels
             set
             {
                 _optionsSelectedItem = value;
-                NotifyOfPropertyChange(() => OptionsSelectedItem);
                 OptionValues = _optionValueService.Get(OptionsSelectedItem);
+                NotifyOfPropertyChange(() => OptionsSelectedItem);
+                
                 NotifyOfPropertyChange(() => CanCreateOptionValue);
             }
         }
@@ -142,5 +148,38 @@ namespace StorageBox.Additions.ViewModels
                 NotifyOfPropertyChange(() => OptionValues);
             }
         }
+
+        public OptionValue OptionValuesSelectedItem
+        {
+            get { return _optionValuesSelectedItem; }
+            set
+            {
+                _optionValuesSelectedItem = value;
+                NotifyOfPropertyChange(() => OptionValuesSelectedItem);
+                NotifyOfPropertyChange(() => CanRemoveOptionValue);
+            }
+        }
+
+        public bool CanRemoveOptionValue
+        {
+            get { return (OptionValuesSelectedItem != null); }
+        }
+        public void RemoveOptionValue(OptionValue optionValue)
+        {
+            if (optionValue != null)
+            {
+                try
+                {
+                    _optionValueService.Remove(optionValue);
+                    OptionValues = _optionValueService.Get(OptionsSelectedItem);
+                    MessageBox.Show("Usunięto wybrany element.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+                {
+                    MessageBox.Show("Nie usunięto wybranego elementu. Prawdopodobną przyczyną są istniejące odwołania.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
     }
 }

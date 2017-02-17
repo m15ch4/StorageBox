@@ -8,6 +8,6 @@ namespace StorageBox.Contracts
         BindableCollection<Product> Get(Category category);
         BindableCollection<Product> GetAll();
         void Create(string productName, string productDescription, Category category, string imagePath);
-
+        void Remove(Product product);
     }
 }

@@ -26,14 +26,31 @@ namespace StorageBox.Implementations
 
         public BindableCollection<OptionValue> Get(Option option)
         {
-            List<OptionValue> optionValues = _context.OptionValues.Where(ov => ov.OptionID == option.OptionID).ToList();
-            return new BindableCollection<OptionValue>(optionValues);
+            if (option != null)
+            {
+                List<OptionValue> optionValues = _context.OptionValues.Where(ov => ov.OptionID == option.OptionID).ToList();
+                return new BindableCollection<OptionValue>(optionValues);
+            }
+            else return null;
         }
 
         public BindableCollection<OptionValue> GetAll()
         {
             List<OptionValue> optionValues = _context.OptionValues.ToList();
             return new BindableCollection<OptionValue>(optionValues);
+        }
+
+        public void Remove(OptionValue optionValue)
+        {
+            try
+            {
+                _context.OptionValues.Remove(optionValue);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
     }
 }

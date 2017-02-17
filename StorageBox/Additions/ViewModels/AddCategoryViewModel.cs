@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StorageBox.Additions.ViewModels
 {
@@ -17,6 +18,12 @@ namespace StorageBox.Additions.ViewModels
         private string _categoryName;
         private Category _categoriesSelecteItem;
 
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            CategoryName = "";
+        }
+
         public AddCategoryViewModel(ICategoryService categoryService)
         {
             _categoryService = categoryService;
@@ -25,9 +32,17 @@ namespace StorageBox.Additions.ViewModels
 
         public void AddCategory(string categoryName)
         {
-            _categoryService.Add(categoryName);
-            Categories = _categoryService.GetAll();
-            CategoryName = null;
+            try
+            {
+                _categoryService.Add(categoryName);
+                Categories = _categoryService.GetAll();
+                CategoryName = null;
+                MessageBox.Show("Utworzono nową kategorię: " + categoryName, "Utworzono", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                MessageBox.Show("Nie dodano nowego produktu. Spróbuj ponownie.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public bool CanAddCategory
@@ -52,6 +67,7 @@ namespace StorageBox.Additions.ViewModels
             {
                 _categoryName = value;
                 NotifyOfPropertyChange(() => CategoryName);
+                NotifyOfPropertyChange(() => CanAddCategory);
             }
         }
 
@@ -62,15 +78,30 @@ namespace StorageBox.Additions.ViewModels
             {
                 _categoriesSelecteItem = value;
                 NotifyOfPropertyChange(() => CategoriesSelectedItem);
+                NotifyOfPropertyChange(() => CanDeleteCategory);
             }
+        }
+
+        public bool CanDeleteCategory
+        {
+            get { return (CategoriesSelectedItem != null);  }
         }
 
         public void DeleteCategory(Category category)
         {
             if (_categoriesSelecteItem != null)
             {
-                _categoryService.Delete(_categoriesSelecteItem);
-                Categories.Remove(_categoriesSelecteItem);
+                try
+                {
+                    var categoryName = _categoriesSelecteItem.CategoryName;
+                    _categoryService.Delete(_categoriesSelecteItem);
+                    Categories.Remove(_categoriesSelecteItem);
+                    MessageBox.Show("Usunięto wybraną kategorię: " + categoryName, "Usunięto", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+                {
+                    MessageBox.Show("Nie usunięto kategorii. Sprawdź czy nie istnieją obiekty zależne od wybranej kategorii.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

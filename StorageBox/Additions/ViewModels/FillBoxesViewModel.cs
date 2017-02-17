@@ -26,6 +26,7 @@ namespace StorageBox.Additions.ViewModels
         private string _row;
         private string _column;
         private BindableCollection<Box> _boxes;
+        private BindableCollection<Box> _emptyBoxes;
         private Box _boxes2SelectedItem;
 
         public FillBoxesViewModel(IBoxService boxService, ICategoryService categoryService, IProductService productService, IProductSKUService productSKUService)
@@ -41,6 +42,7 @@ namespace StorageBox.Additions.ViewModels
             base.OnActivate();
             Categories = _categoryService.GetAll();
             Boxes = _boxService.GetAll();
+            Boxes2 = _boxService.GetEmpty();
         }
 
         public BindableCollection<Category> Categories
@@ -135,8 +137,9 @@ namespace StorageBox.Additions.ViewModels
                 if (_boxService.FillSingle(productSKU, row, column))
                 {
                     Boxes = _boxService.GetAll();
-                    
-                    Boxes2 = _boxService.GetAll();
+
+                    Boxes2SelectedItem = null;
+                    Boxes2 = _boxService.GetEmpty();
                 }
             }
         }
@@ -150,6 +153,7 @@ namespace StorageBox.Additions.ViewModels
         {
             _boxService.Empty(box);
             Boxes = _boxService.GetAll();
+            Boxes2 = _boxService.GetEmpty();
         }
 
         public BindableCollection<Box> Boxes
@@ -165,10 +169,10 @@ namespace StorageBox.Additions.ViewModels
 
         public BindableCollection<Box> Boxes2
         {
-            get { return _boxes; }
+            get { return _emptyBoxes; }
             set
             {
-                _boxes = value;
+                _emptyBoxes = value;
                 NotifyOfPropertyChange(() => Boxes2);
                 NotifyOfPropertyChange(() => Boxes);
             }
@@ -180,8 +184,16 @@ namespace StorageBox.Additions.ViewModels
             set
             {
                 _boxes2SelectedItem = value;
-                Row = _boxes2SelectedItem.AddressRow.ToString();
-                Column = _boxes2SelectedItem.AddressCol.ToString();
+                if (_boxes2SelectedItem != null)
+                {
+                    Row = _boxes2SelectedItem.AddressRow.ToString();
+                    Column = _boxes2SelectedItem.AddressCol.ToString();
+                }
+                else
+                {
+                    Row = "";
+                    Column = "";
+                }
                 NotifyOfPropertyChange(() => Boxes2SelectedItem);
                 NotifyOfPropertyChange(() => CanFillSingle);
             }

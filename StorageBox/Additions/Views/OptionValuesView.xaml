@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StorageBox.Additions.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="406.478" d:DesignWidth="625.183">
     <Grid>
@@ -31,8 +32,8 @@
             </DockPanel>
             <DockPanel>
                 <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Wartości opcji:</Label>
-                <Button DockPanel.Dock="Bottom" Content="Kasuj wartość opcji" Height="35" VerticalContentAlignment="Center" FontSize="14" Margin="0 5 0 0" />
-                <ListBox Name="OptionValues" DisplayMemberPath="ValueName" DockPanel.Dock="Top" FontSize="14">
+                <Button cal:Message.Attach="[Click]=[Action RemoveOptionValue(OptionValues.SelectedItem)]" DockPanel.Dock="Bottom" Content="Kasuj wartość opcji" Height="35" VerticalContentAlignment="Center" HorizontalAlignment="Right" FontSize="14" Margin="0 5 0 0" />
+                <ListBox Name="OptionValues" DisplayMemberPath="ValueName" SelectedItem="{Binding OptionValuesSelectedItem}" DockPanel.Dock="Top" FontSize="14">
                     
                 </ListBox>
             </DockPanel>

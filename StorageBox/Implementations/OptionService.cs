@@ -20,9 +20,16 @@ namespace StorageBox.Implementations
 
         public void Create(string optionName, int ProductID, Product product)
         {
-            Option option = new Option() { OptionName = optionName, ProductID = product.ProductID, Product = product };
-            _context.Options.Add(option);
-            _context.SaveChanges();
+            try
+            {
+                Option option = new Option() { OptionName = optionName, ProductID = product.ProductID, Product = product };
+                _context.Options.Add(option);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
         public BindableCollection<Option> Get(Product product)
@@ -43,8 +50,11 @@ namespace StorageBox.Implementations
 
         public void Remove(Option option)
         {
-            _context.Options.Remove(option);
-            _context.SaveChanges();
+            if (option != null)
+            {
+                _context.Options.Remove(option);
+                _context.SaveChanges();
+            }
         }
     }
 }
