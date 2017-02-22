@@ -15,13 +15,13 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Typ zadania" Binding="{Binding SBTaskTypeDescription}" Width="80"/>
                     <DataGridTextColumn Header="Status zadania" Binding="{Binding SBTaskStatusDescriptionPL}" Width="100"/>
-                    <DataGridTextColumn Header="Nazwa kategorii" Binding="{Binding ProductSKU.Product.Category.CategoryName}" Width="120"/>
-                    <DataGridTextColumn Header="Nazwa produktu" Binding="{Binding ProductSKU.Product.ProductName}" Width="140"/>
-                    <DataGridTextColumn Header="SKU" Binding="{Binding ProductSKU.Sku}" Width="80" />
+                    <DataGridTextColumn Header="Nazwa kategorii" Binding="{Binding CategoryName}" Width="120"/>
+                    <DataGridTextColumn Header="Nazwa produktu" Binding="{Binding ProductName}" Width="140"/>
+                    <DataGridTextColumn Header="SKU" Binding="{Binding SKU}" Width="80" />
                     <DataGridTextColumn Header="Data utworzenia" Binding="{Binding DateAdded}" Width="140"/>
                     <DataGridTextColumn Header="Data rozpoczęcia przetwarzania" Binding="{Binding DateStarted}" Width="140"/>
                     <DataGridTextColumn Header="Data zakończenia przetwarzania" Binding="{Binding DateEnded}" Width="140"/>
-                    <DataGridTextColumn Header="Nazwa użytkownika" Binding="{Binding SBUser.DisplayName}" Width="160"/>
+                    <DataGridTextColumn Header="Nazwa użytkownika" Binding="{Binding UserName}" Width="160"/>
                     <DataGridTextColumn Header="Poprawny przedmiot" Binding="{Binding IsValidDescription}" Width="120" />
                 </DataGrid.Columns>
             </DataGrid>

@@ -37,7 +37,11 @@ namespace StorageBox.Implementations
                         DateAdded = DateTime.Now,
                         ProductSKU = wishListItem.ProductSKU,
                         Box = boxes.ElementAt(i),
-                        SBUser = UserSession.sbuser
+                        SBUser = UserSession.sbuser,
+                        CategoryName = wishListItem.ProductSKU.Product.Category.CategoryName,
+                        ProductName = wishListItem.ProductSKU.Product.ProductName,
+                        SKU = wishListItem.ProductSKU.Sku,
+                        UserName = UserSession.sbuser != null ? UserSession.sbuser.UserName : ""
                     };
 
                     _context.SBTasks.Add(sbTask);

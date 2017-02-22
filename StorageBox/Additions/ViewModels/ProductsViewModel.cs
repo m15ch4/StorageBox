@@ -92,11 +92,12 @@ namespace StorageBox.Additions.ViewModels
                 try
                 {
                     _productService.Create(ProductName, ProductDescription, CategoriesSelectedItem, ImageFileName);
+                    Products = _productService.Get(CategoriesSelectedItem);
                     MessageBox.Show("Dodano produkt: " + ProductName, "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
                     ProductName = "";
                     ProductDescription = "";
                     ImageFileName = "";
-                    Products = _productService.Get(CategoriesSelectedItem);
+                    
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException e)
                 {

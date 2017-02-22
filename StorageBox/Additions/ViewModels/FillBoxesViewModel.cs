@@ -140,6 +140,8 @@ namespace StorageBox.Additions.ViewModels
 
                     Boxes2SelectedItem = null;
                     Boxes2 = _boxService.GetEmpty();
+                    if (Boxes2.Count != 0)
+                        Boxes2SelectedItem = Boxes2.First();
                 }
             }
         }

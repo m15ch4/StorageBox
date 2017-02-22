@@ -38,7 +38,7 @@
             <DockPanel>
                 <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">SKU:</Label>
                 <Button DockPanel.Dock="Bottom" cal:Message.Attach="[Click]=[Action RemoveSKU(SKUs.SelectedItem)]" Height="40" VerticalContentAlignment="Center" FontSize="14" Margin="0 5 0 0" HorizontalAlignment="Right" Width="120">Usuń SKU</Button>
-                <ListBox Name="SKUs" DisplayMemberPath="Sku" DockPanel.Dock="Top" SelectedItem="{Binding SKUsSelectedItem}" FontSize="14"></ListBox>
+                <ListBox Name="SKUs" DisplayMemberPath="SKUDescription" DockPanel.Dock="Top" SelectedItem="{Binding SKUsSelectedItem}" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

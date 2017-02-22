@@ -40,9 +40,18 @@
         {
             get
             {
-                string displayName = "Wiersz: " + AddressRow + ", Kolumna: " + AddressCol + ", Rozmiar: " + BoxSize.BoxSizeName;
+                string displayName = "";
+                try
+                {
+                    displayName = "Wiersz: " + AddressRow + ", Kolumna: " + AddressCol + ", Rozmiar: " + BoxSize.BoxSizeName;
+                    return displayName;
+                }
+                catch (System.NullReferenceException)
+                {
+                    return "Niezidentyfikowany";
+                }
                 
-                return displayName;
+                
             }
         }
 
@@ -53,7 +62,14 @@
                 string displayContent = "";
                 if (Status == Status.Full)
                 {
-                    displayContent = ProductSKU.Product.ProductName + " [" + ProductSKU.Sku + "]" + " -> " + ProductSKU.SKUOptionsDescription;
+                    try
+                    {
+                        displayContent = ProductSKU.Product.ProductName + " [" + ProductSKU.Sku + "]" + " -> " + ProductSKU.SKUOptionsDescription;
+                    }
+                    catch (System.NullReferenceException)
+                    {
+                        displayContent = "Niezidentyfikowany produkt";
+                    }
                 }
                 else
                 {

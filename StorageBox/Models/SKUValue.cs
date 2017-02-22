@@ -29,7 +29,16 @@
 
         public string Description
         {
-            get { return ProductSKU.Product.ProductName + ": " + ProductSKU.Sku + " " + Option.OptionName + " " + OptionValue.ValueName; }
+            get {
+                try
+                {
+                    return ProductSKU.Product.ProductName + ": " + ProductSKU.Sku + " " + Option.OptionName + " " + OptionValue.ValueName;
+                }
+                catch
+                {
+                    return "Błędne powiązanie";
+                }
+            }
             
         }
     }

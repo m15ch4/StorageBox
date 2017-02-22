@@ -19,9 +19,16 @@ namespace StorageBox.Implementations
 
         public void Create(Option option, int productID, string valueName)
         {
-            OptionValue optionValue = new OptionValue() { Option = option, ProductID = productID, ValueName = valueName };
-            _context.OptionValues.Add(optionValue);
-            _context.SaveChanges();
+            try
+            {
+                OptionValue optionValue = new OptionValue() { Option = option, ProductID = productID, ValueName = valueName };
+                _context.OptionValues.Add(optionValue);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
         public BindableCollection<OptionValue> Get(Option option)

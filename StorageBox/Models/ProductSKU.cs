@@ -35,7 +35,7 @@
 
         public string SKUDescription
         {
-            get { return "<" + Sku + ">"; }
+            get { return "<" + Sku + ">, Cena: " + Price + ", Próg powiadamiania: " + Threshold; }
         }
 
         public string SKUOptionsDescription
@@ -66,5 +66,6 @@
                 return "Dostępność: " + Boxes.Count.ToString();
             }
         }
+
     }
 }

@@ -129,9 +129,17 @@ namespace StorageBox.Additions.ViewModels
 
         public void CreateOptionValue()
         {
-            _optionValueService.Create(OptionsSelectedItem, ProductsSelectedItem.ProductID, OptionValueName);
-            OptionValueName = "";
-            OptionValues = _optionValueService.Get(OptionsSelectedItem);
+            try
+            {
+                _optionValueService.Create(OptionsSelectedItem, ProductsSelectedItem.ProductID, OptionValueName);
+                OptionValueName = "";
+                OptionValues = _optionValueService.Get(OptionsSelectedItem);
+                MessageBox.Show("Dodano wartość opcji.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                MessageBox.Show("Nie dodano nowej wartości opcji.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public bool CanCreateOptionValue

@@ -22,27 +22,29 @@
         private IProductService _productService;
         private Product _productsSelectedItem;
         private IProductSKUService _productSKUService;
-        private IProductVariantService _productVariantService;
-        private ProductVariant _productsVariantSelectedItem = null;
+        //private IProductVariantService _productVariantService;
+        //private ProductVariant _productsVariantSelectedItem = null;
         private BindableCollection<WishListItem> _orderQueue = new BindableCollection<WishListItem>();
         private WishListItem _orderQueueSelectedItem;
         private IWindowManager _windowManager;
         private IBoxService _boxService;
         private ISBTaskService _sbTaskService;
+        private IEMailService _emailService;
         private BindableCollection<ProductSKU> _productSKUs;
         private ProductSKU _productSKUsSelectedItem;
         private IShell _shell;
         private IEventAggregator _eventAggregator;
 
-        public OrdersViewModel(IWindowManager windowManager, IEventAggregator eventAggregator, ICategoryService categoryService, IProductService productService, IProductSKUService productSKUService, IProductVariantService productVariantService, IBoxService boxService, ISBTaskService sbTaskService)
+        public OrdersViewModel(IWindowManager windowManager, IEventAggregator eventAggregator, ICategoryService categoryService, IProductService productService, IProductSKUService productSKUService, IProductVariantService productVariantService, IBoxService boxService, ISBTaskService sbTaskService, IEMailService emailService)
         {
             _windowManager = windowManager;
             _categoryService = categoryService;
             _productService = productService;
             _productSKUService = productSKUService;
-            _productVariantService = productVariantService;
+            //_productVariantService = productVariantService;
             _boxService = boxService;
             _sbTaskService = sbTaskService;
+            _emailService = emailService;
             _eventAggregator = eventAggregator;
 
             _categories = _categoryService.GetAll();
@@ -80,7 +82,6 @@
                 }
                 catch
                 {
-                    Trace.WriteLine("Wyjątek w CategoriesSelectedItem");
                     Products = null;
                 }
                 ProductSKUs = null;
@@ -113,7 +114,6 @@
                 }
                 catch
                 {
-                    Trace.WriteLine("Wyjątek w ProductsSelectedItem");
                     ProductSKUs = null;
                 }
             }
@@ -237,10 +237,10 @@
         }
 
 
-        public bool CanAddToQueue
-        {
-            get { return _productsVariantSelectedItem != null; }
-        }
+        //public bool CanAddToQueue
+        //{
+        //    get { return _productsVariantSelectedItem != null; }
+        //}
 
 
 
@@ -308,7 +308,7 @@
             // mysettings.WindowStyle = WindowStyle.None;
             // mysettings.ShowInTaskbar = false;
 
-            ProcessOrderViewModel processOrderViewModel = new ProcessOrderViewModel(_windowManager, _eventAggregator, OrderQueue, _boxService, _sbTaskService);
+            ProcessOrderViewModel processOrderViewModel = new ProcessOrderViewModel(_windowManager, _eventAggregator, OrderQueue, _boxService, _sbTaskService, _emailService);
             var dialog_result = _windowManager.ShowDialog(processOrderViewModel,null,mysettings);
             if (dialog_result)
             {

@@ -24,9 +24,9 @@ namespace StorageBox.Implementations
                 _context.SKUValues.Add(skuValue);
                 _context.SaveChanges();
             }
-            catch
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
             {
-
+                throw e;
             }
         }
 
@@ -39,8 +39,30 @@ namespace StorageBox.Implementations
 
         public BindableCollection<SKUValue> Get(Product product)
         {
-            List<SKUValue> skuValues = _context.SKUValues.Where(sv => sv.ProductID == product.ProductID).ToList();
-            return new BindableCollection<SKUValue>(skuValues);
+            try
+            {
+                List<SKUValue> skuValues = _context.SKUValues.Where(sv => sv.ProductID == product.ProductID).ToList();
+                return new BindableCollection<SKUValue>(skuValues);
+            }
+            catch
+            {
+                Console.Write("Exception: SKUValueService.Get(Product product");
+                List<SKUValue> skuValues = _context.SKUValues.ToList();
+                return new BindableCollection<SKUValue>(skuValues);
+            }
+        }
+
+        public void Remove(SKUValue skuValue)
+        {
+            try
+            {
+                _context.SKUValues.Remove(skuValue);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
     }
 }

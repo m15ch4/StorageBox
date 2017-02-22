@@ -13,5 +13,6 @@ namespace StorageBox.Contracts
         void Create(int productID, int productSKUID, int optionID, int optionValueID);
         BindableCollection<SKUValue> GetAll();
         BindableCollection<SKUValue> Get(Product product);
+        void Remove(SKUValue skuValue);
     }
 }

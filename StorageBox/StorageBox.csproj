@@ -165,14 +165,17 @@
     <Compile Include="Contracts\IBoxService.cs" />
     <Compile Include="Contracts\ICategoryService.cs" />
     <Compile Include="Contracts\IAuthenticationService.cs" />
+    <Compile Include="Contracts\IEMailService.cs" />
     <Compile Include="Contracts\IOptionService.cs" />
     <Compile Include="Contracts\IOptionValueService.cs" />
     <Compile Include="Contracts\IProductService.cs" />
     <Compile Include="Contracts\IProductSKUService.cs" />
     <Compile Include="Contracts\IProductVariantService.cs" />
+    <Compile Include="Contracts\ISBTaskProcessor.cs" />
     <Compile Include="Contracts\ISBTaskService.cs" />
     <Compile Include="Contracts\ISBUserService.cs" />
     <Compile Include="Contracts\ISKUValueService.cs" />
+    <Compile Include="Exceptions\ErrorMessageException.cs" />
     <Compile Include="Framework\IAddition.cs" />
     <Compile Include="Framework\IDialog.cs" />
     <Compile Include="Framework\IMyDBContext.cs" />
@@ -182,11 +185,14 @@
     <Compile Include="Implementations\BoxService.cs" />
     <Compile Include="Implementations\CategoryService.cs" />
     <Compile Include="Implementations\AuthenticateService.cs" />
+    <Compile Include="Implementations\DemoSBTaskProcessor.cs" />
+    <Compile Include="Implementations\EMailService.cs" />
     <Compile Include="Implementations\OptionService.cs" />
     <Compile Include="Implementations\OptionValueService.cs" />
     <Compile Include="Implementations\ProductService.cs" />
     <Compile Include="Implementations\ProductSKUService.cs" />
     <Compile Include="Implementations\ProductVariantService.cs" />
+    <Compile Include="Implementations\RealSBTaskProcessor.cs" />
     <Compile Include="Implementations\SBTaskService.cs" />
     <Compile Include="Implementations\SBUserService.cs" />
     <Compile Include="Implementations\SKUValueService.cs" />
@@ -253,6 +259,10 @@
     <Compile Include="Migrations\201610080815386_Prevent display another confirm window.cs" />
     <Compile Include="Migrations\201610080815386_Prevent display another confirm window.Designer.cs">
       <DependentUpon>201610080815386_Prevent display another confirm window.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702181917022_Zmodyfikowano model sbtask aby nie mial zaleznosci od innych modeli.cs" />
+    <Compile Include="Migrations\201702181917022_Zmodyfikowano model sbtask aby nie mial zaleznosci od innych modeli.Designer.cs">
+      <DependentUpon>201702181917022_Zmodyfikowano model sbtask aby nie mial zaleznosci od innych modeli.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Box.cs" />
@@ -355,6 +365,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610080815386_Prevent display another confirm window.resx">
       <DependentUpon>201610080815386_Prevent display another confirm window.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702181917022_Zmodyfikowano model sbtask aby nie mial zaleznosci od innych modeli.resx">
+      <DependentUpon>201702181917022_Zmodyfikowano model sbtask aby nie mial zaleznosci od innych modeli.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

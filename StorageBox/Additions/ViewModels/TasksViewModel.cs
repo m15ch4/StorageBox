@@ -60,9 +60,9 @@ namespace StorageBox.Additions.ViewModels
                 {
                     var sbTaskTypeDescription = sbtask.SBTaskTypeDescription;
                     var sbTaskStatusDescription = sbtask.SBTaskStatusDescription;
-                    var category = sbtask.ProductSKU.Product.Category.CategoryName;
-                    var product = sbtask.ProductSKU.Product.ProductName;
-                    var sku = sbtask.ProductSKU.Sku;
+                    var category = sbtask.CategoryName;
+                    var product = sbtask.ProductName;
+                    var sku = sbtask.SKU;
                     var dateAdded = sbtask.DateAdded.ToString();
                     var dateStarted = sbtask.DateStarted.ToString();
                     var dateEnded = sbtask.DateEnded.ToString();

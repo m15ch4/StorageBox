@@ -36,9 +36,16 @@ namespace StorageBox.Models
         public DateTime? DateStarted { get; set; }
         public DateTime? DateEnded { get; set; }
         public bool? IsValid { get; set; }
+        public string CategoryName { get; set; }
+        public string ProductName { get; set; }
+        public string SKU { get; set; }
+        public string UserName { get; set; }
 
+        [NotMapped]
         public virtual Box Box { get; set; }
+        [NotMapped]
         public virtual ProductSKU ProductSKU { get; set; }
+        [NotMapped]
         public virtual SBUser SBUser { get; set; }
 
 

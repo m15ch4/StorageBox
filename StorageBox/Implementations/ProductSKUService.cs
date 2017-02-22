@@ -19,9 +19,16 @@ namespace StorageBox.Implementations
 
         public void Create(string SKU, Product product, string price, int threshold)
         {
-            ProductSKU productSKU = new ProductSKU() { Sku = SKU, Product = product, Price = price, Threshold = threshold };
-            _context.ProductSKUS.Add(productSKU);
-            _context.SaveChanges();
+            try
+            {
+                ProductSKU productSKU = new ProductSKU() { Sku = SKU, Product = product, Price = price, Threshold = threshold };
+                _context.ProductSKUS.Add(productSKU);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
         public BindableCollection<ProductSKU> Get(Product product)
@@ -42,8 +49,15 @@ namespace StorageBox.Implementations
 
         public void Remove(ProductSKU sku)
         {
-            _context.ProductSKUS.Remove(sku);
-            _context.SaveChanges();
+            try
+            {
+                _context.ProductSKUS.Remove(sku);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
 

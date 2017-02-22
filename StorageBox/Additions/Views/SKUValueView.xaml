@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StorageBox.Additions.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="365.217" d:DesignWidth="558.863">
     <Grid>
@@ -32,8 +33,8 @@
             </DockPanel>
             <DockPanel>
                 <Label DockPanel.Dock="Top" Height="35" VerticalContentAlignment="Center" FontSize="14">Powiązania</Label>
-                <Button DockPanel.Dock="Bottom" Content="Usuń powiązanie" Height="40" Margin="0 5 0 0" HorizontalAlignment="Right" Width="120"></Button>
-                <ListBox Name="SKUValues" DisplayMemberPath="Description" DockPanel.Dock="Top" FontSize="14"></ListBox>
+                <Button cal:Message.Attach="[Click]=[Action RemoveSKUValue(SKUValues.SelectedItem)]" DockPanel.Dock="Bottom" Content="Usuń powiązanie" Height="40" Margin="0 5 0 0" HorizontalAlignment="Right" Width="120"></Button>
+                <ListBox Name="SKUValues" DisplayMemberPath="Description" SelectedItem="{Binding SKUValuesSelectedItem}" DockPanel.Dock="Top" FontSize="14"></ListBox>
             </DockPanel>
         </DockPanel>
     </Grid>

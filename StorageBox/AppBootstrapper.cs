@@ -61,6 +61,7 @@ namespace StorageBox {
             container.PerRequest<IOptionValueService, OptionValueService>();
             container.PerRequest<ISKUValueService, SKUValueService>();
             container.PerRequest<ISBUserService, SBUserService>();
+            container.PerRequest<IEMailService, EMailService>();
         }
 
         protected override object GetInstance(Type service, string key) {

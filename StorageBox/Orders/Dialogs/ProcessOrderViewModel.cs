@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using StorageBox.Contracts;
+using StorageBox.Exceptions;
 using StorageBox.Framework;
+using StorageBox.Implementations;
 using StorageBox.Models;
 using System;
 using System.Collections.Generic;
@@ -19,13 +21,14 @@ using System.Windows.Media.Imaging;
 
 namespace StorageBox.Orders.Dialogs
 {
-    public class ProcessOrderViewModel : Screen, IDialog, IHandle<SBTask>
+    public class ProcessOrderViewModel : Screen, IDialog, IHandle<SBTask>, IHandle<int>
     {
         private BackgroundWorker _bw = new BackgroundWorker();
         private BindableCollection<WishListItem> _orderQueue; 
         private IBoxService _boxService;
         private BindableCollection<SBTask> _sbTasks;
         private ISBTaskService _sbTaskService;
+        private IEMailService _emailService;
         private string _tbProgress;
 
         static bool _continue;
@@ -35,21 +38,22 @@ namespace StorageBox.Orders.Dialogs
         private IWindowManager _windowManager;
         private IEventAggregator _eventAggregator;
 
-        public ProcessOrderViewModel(IWindowManager windowManager, IEventAggregator eventAggregator, BindableCollection<WishListItem> orderQueue, IBoxService boxService, ISBTaskService sbTaskService)
+        public ProcessOrderViewModel(IWindowManager windowManager, IEventAggregator eventAggregator, BindableCollection<WishListItem> orderQueue, IBoxService boxService, ISBTaskService sbTaskService, IEMailService emailService)
         {
             _orderQueue = orderQueue;
             _boxService = boxService;
             _sbTaskService = sbTaskService;
+            _emailService = emailService;
             _windowManager = windowManager;
-            _eventAggregator = eventAggregator;
 
+            _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
 
             SBTasks = _sbTaskService.CreateSBTasks(orderQueue, boxService);
 
             _bw.WorkerReportsProgress = true;
             _bw.WorkerSupportsCancellation = true;
-            _bw.DoWork += new DoWorkEventHandler(bw_DoWork);
+            _bw.DoWork += new DoWorkEventHandler(bw_DoWork2);
             _bw.ProgressChanged += new ProgressChangedEventHandler(bw_ProgressChanged);
             _bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
             _bw.RunWorkerAsync();
@@ -115,17 +119,13 @@ namespace StorageBox.Orders.Dialogs
             return dialog_result;
         }
 
-
-
-        private void bw_DoWork(object sender, DoWorkEventArgs e)
+        private void bw_DoWork2(object sender, DoWorkEventArgs e)
         {
+            // Prepare tasks passed as argument
+            BindableCollection<SBTask> tasksToProcess = e.Argument as BindableCollection<SBTask>;
 
-            BackgroundWorker worker = sender as BackgroundWorker;
-            int _rTimeout_ms = 10000;
-
-            Thread readThread = new Thread(Read);
-            _serialPort = new SerialPort();
-
+            // Prepare serial port
+            // Speed 9600, Data bits 8, Parity none, Stop bits 1, Handshake RTS
             _serialPort = new SerialPort();
             _serialPort.PortName = Properties.Settings.Default.PLCComPort;
             _serialPort.BaudRate = 9600;
@@ -134,382 +134,50 @@ namespace StorageBox.Orders.Dialogs
             _serialPort.StopBits = StopBits.One;
             _serialPort.Handshake = Handshake.RequestToSend;
 
-            _serialPort.ReadTimeout = _rTimeout_ms;
-            _serialPort.WriteTimeout = 500;
-
-
+            ISBTaskProcessor sbTaskProcessor;
             if (Properties.Settings.Default.Demo == false)
-            {
-                try
-                {
-                    // UNCOMMENT !!!!!!!!!!!!!!!
-                    _serialPort.Open();
-                    _serialPort.DiscardInBuffer();
-                    _serialPort.DiscardOutBuffer();
-                    _continue = true;
-                    _nextCommand = true;
-                    // UNCOMMENT jeśli ma być osobny wątek !!!!!!!!!!!!!!!
-                    //readThread.Start();
-
-                    byte[] toSend = { 71, 79, 0, 0, 0, 0, 0, 0 };
-
-                    int progress = 0;
-
-                    foreach (SBTask sbtask in SBTasks)
-                    {
-                        _serialPort.DiscardInBuffer();
-                        _serialPort.DiscardOutBuffer();
-                        if ((worker.CancellationPending == true))
-                        {
-                            e.Cancel = true;
-                            break;
-                        }
-                        else
-                        {
-                            // COMMENT !!!!!!!!!!!!!!!
-                            //response[0] = 0;
-                            //response[1] = 0;
-                            //response[2] = 0;
-                            //response[3] = 0;
-                            //response[4] = 0;
-                            //response[5] = 0;
-                            //response[6] = 0;
-                            //response[7] = 0;
-                            // Update Task status and set DateStarted
-                            _sbTaskService.SetRunning(sbtask);
-                            progress++;
-                            //perform long running task
-                            // send command to plc (command code, row, column)
-                            // recieve response
-                            // wait for report that the door has opened - success
-                            toSend[3] = sbtask.Box.AddressRow;
-                            toSend[5] = sbtask.Box.AddressCol;
-                            toSend[7] = Convert.ToByte(sbtask.Box.BoxSize.BoxSizeID);
-
-                            // UNCOMMENT !!!!!!!!!!!!!!!
-                            _serialPort.Write(toSend, 0, 8);
-                            Console.WriteLine("Sending: " + BitConverter.ToString(toSend));
-                            // UNCOMMENT !!!!!!!!!!!!!!!
-                            _nextCommand = false;
-
-                            Console.WriteLine("Command sent.");
-
-                            // Zakomentowano 11.02.2017 r.
-                            //Thread.Sleep(2000);
-
-                            // Oczekiwanie na potwierdzenie przez 10 sek.
-                            /*
-                            int waitcounter = 0;
-                            while ((waitcounter * _rTimeout_ms) <= 10000) {
-                                try
-                                {
-                                    if (_serialPort.BytesToRead == 8)
-                                    {
-                                        int bytesRead = _serialPort.Read(response, 0, 8);
-                                        Console.WriteLine(BitConverter.ToString(response) + " " + bytesRead);
-                                        _nextCommand = true;
-                                        break;
-                                    }
-                                }
-                                catch (TimeoutException) {
-                                    waitcounter++;
-                                }
-                            }
-                            */
-
-                            try
-                            {
-                                int bytesRead = _serialPort.Read(response, 0, 8);
-                                if ((response[0] == 'E') && (response[1] == 'R'))
-                                {
-                                    _sbTaskService.SetFailed(sbtask);
-                                }
-                                else
-                                {
-                                    _sbTaskService.SetCompleted(sbtask);
-                                    _boxService.Empty(sbtask.Box);
-
-
-                                    _eventAggregator.PublishOnUIThread(sbtask);
-                                }
-
-                            }
-                            catch (TimeoutException){
-                                Console.WriteLine("*** Timeout");
-                                _sbTaskService.SetFailed(sbtask);
-                            }
-
-                            worker.ReportProgress((int)(progress * 100.0 / SBTasks.Count));
-                        }
-                    }
-
-                    _continue = false;
-                    // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
-                    //readThread.Join();
-                    // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
-                    _serialPort.DiscardInBuffer();
-                    _serialPort.DiscardOutBuffer();
-                    _serialPort.Close();
-
-                    //SEND EMAIL
-
-                    List<ProductSKU> underThreshold = _sbTaskService.taskedSKUs(SBTasks).Where(s => s.Threshold != 0).Where(s => s.Threshold >= s.Boxes.Count).ToList();
-
-                    if (underThreshold.Count > 0)
-                    {
-
-                        SmtpClient smtpClient = new SmtpClient();
-                        NetworkCredential basicCredential =
-                            new NetworkCredential(Properties.Settings.Default.ServiceEmail, Properties.Settings.Default.EmailPassword);
-                        MailMessage message = new MailMessage();
-                        MailAddress fromAddress = new MailAddress(Properties.Settings.Default.ServiceEmail);
-
-                        smtpClient.Host = Properties.Settings.Default.SMTPServer;
-                        smtpClient.UseDefaultCredentials = false;
-                        smtpClient.Credentials = basicCredential;
-                        //smtpClient.EnableSsl = true;
-
-                        message.From = fromAddress;
-                        message.Subject = "Powiadomienie o wyczerpywanych zasobach";
-                        //Set IsBodyHtml to true means you can send HTML email.
-                        message.IsBodyHtml = true;
-
-                        message.Body = "<h1>Powiadomienie</h1>";
-                        message.Body += "<ul>";
-                        foreach (ProductSKU productsku in underThreshold)
-                        {
-                            message.Body += "<li>" + productsku.Product.ProductName + " [" + productsku.Sku + "] - Dostępnych: " + productsku.Boxes.Count + "</li>";
-                        }
-                        message.Body += "</ul>";
-
-                        message.To.Add(Properties.Settings.Default.RecipientEmail);
-
-                        Trace.WriteLine("Sending...");
-
-                        try
-                        {
-                            smtpClient.Send(message);
-                            Trace.WriteLine("Sent.");
-                        }
-                        catch (Exception ex)
-                        {
-                            //Error, could not send the message
-                            Trace.Write(ex.Message);
-                        }
-                    }
-
-                }
-                catch
-                {
-                    Trace.WriteLine("Błąd połączenia ze sterownikiem PLC.");
-
-                }
-            }
+                sbTaskProcessor = new RealSBTaskProcessor(_sbTaskService, _eventAggregator);
             else
-            {
-                ////// start demo
-                try
-                {
-                    // UNCOMMENT !!!!!!!!!!!!!!!
-                    //_serialPort.Open();
-                    _continue = true;
-                    _nextCommand = true;
-                    // UNCOMMENT !!!!!!!!!!!!!!!
-                    //readThread.Start();
+                sbTaskProcessor = new DemoSBTaskProcessor(_sbTaskService, _eventAggregator);
 
-                    byte[] toSend = { 71, 79, 0, 0, 0, 0, 0, 0 };
-
-                    int progress = 0;
-
-                    foreach (SBTask sbtask in SBTasks)
-                    {
-                        if ((worker.CancellationPending == true))
-                        {
-                            e.Cancel = true;
-                            break;
-                        }
-                        else
-                        {
-                            // COMMENT !!!!!!!!!!!!!!!
-                            //response[0] = 0;
-                            //response[1] = 0;
-                            //response[2] = 0;
-                            //response[3] = 0;
-                            //response[4] = 0;
-                            //response[5] = 0;
-                            //response[6] = 0;
-                            //response[7] = 0;
-                            // Update Task status and set DateStarted
-                            _sbTaskService.SetRunning(sbtask);
-                            progress++;
-                            //perform long running task
-                            // send command to plc (command code, row, column)
-                            // recieve response
-                            // wait for report that the door has opened - success
-                            toSend[3] = sbtask.Box.AddressRow;
-                            toSend[5] = sbtask.Box.AddressCol;
-                            toSend[7] = Convert.ToByte(sbtask.Box.BoxSize.BoxSizeID);
-
-                            // UNCOMMENT !!!!!!!!!!!!!!!
-                            //_serialPort.Write(toSend, 0, 8);
-                            Console.WriteLine("Sending: " + BitConverter.ToString(toSend));
-                            // UNCOMMENT !!!!!!!!!!!!!!!
-                            //_nextCommand = false;
-
-                            Console.WriteLine("Command sent.");
-
-                            //Thread.Sleep(2000);
-
-                            while (!_nextCommand)
-                            {
-
-                            }
-                            if ((response[0] == 'E') && (response[1] == 'R'))
-                            {
-                                _sbTaskService.SetFailed(sbtask);
-                            }
-                            else
-                            {
-                                _sbTaskService.SetCompleted(sbtask);
-                                _boxService.Empty(sbtask.Box);
-
-                                Console.WriteLine("Sending Message");
-                                _eventAggregator.PublishOnUIThread(sbtask);
-                                //dynamic mysettings = new ExpandoObject();
-                                //mysettings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
-                                //var dialog_result = _windowManager.ShowDialog(new ConfirmItemViewModel(), null, mysettings);
-                                //if (dialog_result)
-                                //{
-                                //    Trace.WriteLine("CONFIRMED");
-                                //}
-                                //else
-                                //{
-                                //    Trace.WriteLine("NOT CONFIRMED");
-                                //}
-                            }
-
-
-
-                            //.SBTaskStatusImage = new BitmapImage(new Uri("E:/completed.png"));
-                            //NotifyOfPropertyChange(() => sbtask.SBTaskStatusImage);
-                            //NotifyOfPropertyChange(() => SBTasks);
-
-                            //char c = toSend[0];
-                            //int i = (int)c;
-                            //toSend[0]++;
-                            //toSend[0] = (char)i;
-                            //byte[] response = new byte[8];
-                            //int bytesRead = _serialPort.Read(response, 0, 8);
-                            //Trace.WriteLine(BitConverter.ToString(response));
-                            //SBTasks.Remove(sbtask);
-                            worker.ReportProgress((int)(progress * 100.0 / SBTasks.Count));
-                        }
-                    }
-
-                    _continue = false;
-                    // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
-                    //readThread.Join();
-                    // UNCOMMENT !!!!!!!!!!!!!!!!!!!!!!!!
-                    //_serialPort.Close();
-
-                    //SEND EMAIL
-
-                    List<ProductSKU> underThreshold = _sbTaskService.taskedSKUs(SBTasks).Where(s => s.Threshold != 0).Where(s => s.Threshold >= s.Boxes.Count).ToList();
-
-                    if (underThreshold.Count > 0)
-                    {
-
-                        SmtpClient smtpClient = new SmtpClient();
-                        NetworkCredential basicCredential =
-                            new NetworkCredential(Properties.Settings.Default.ServiceEmail, Properties.Settings.Default.EmailPassword);
-                        MailMessage message = new MailMessage();
-                        MailAddress fromAddress = new MailAddress(Properties.Settings.Default.ServiceEmail);
-
-                        smtpClient.Host = Properties.Settings.Default.SMTPServer;
-                        smtpClient.UseDefaultCredentials = false;
-                        smtpClient.Credentials = basicCredential;
-                        //smtpClient.EnableSsl = true;
-
-                        message.From = fromAddress;
-                        message.Subject = "Powiadomienie o wyczerpywanych zasobach";
-                        //Set IsBodyHtml to true means you can send HTML email.
-                        message.IsBodyHtml = true;
-
-                        message.Body = "<h1>Powiadomienie</h1>";
-                        message.Body += "<ul>";
-                        foreach (ProductSKU productsku in underThreshold)
-                        {
-                            message.Body += "<li>" + productsku.Product.ProductName + " [" + productsku.Sku + "] - Dostępnych: " + productsku.Boxes.Count + "</li>";
-                        }
-                        message.Body += "</ul>";
-
-                        message.To.Add(Properties.Settings.Default.RecipientEmail);
-
-                        Trace.WriteLine("Sending...");
-
-                        try
-                        {
-                            smtpClient.Send(message);
-                            Trace.WriteLine("Sent.");
-                        }
-                        catch (Exception ex)
-                        {
-                            //Error, could not send the message
-                            Trace.Write(ex.Message);
-                        }
-                    }
-
-                }
-                catch
-                {
-                    Trace.WriteLine("Błąd podczas wykonywania programu demo.");
-                }
-                ////// koniec demo
-            }
-
-        }
-
-        private Boolean readWithTimeout(int timeOut_s)
-        {
-            int waitcounter = 0;
-            while ((waitcounter * 500) <= (1000 * timeOut_s))
+            foreach (SBTask sbtask in SBTasks)
             {
                 try
                 {
-                    if (_serialPort.BytesToRead == 8)
-                    {
-                        int bytesRead = _serialPort.Read(response, 0, 8);
-                        Console.WriteLine(BitConverter.ToString(response) + " " + bytesRead);
-                        _nextCommand = true;
-                        break;
-                    }
+                    sbTaskProcessor.process(sbtask);
+                    Trace.WriteLine("################### Tutaj mnie nie powinno być w przypadku kodu błędu");
+                    _boxService.Empty(sbtask.Box);
+                    // Pauza 1s dająca czas sterownikowi PLC na przygotowanie do przyjęcia komendy
+                    Thread.Sleep(1000);
                 }
-                catch (TimeoutException)
+                catch (ErrorMessageException ex)
                 {
-                    waitcounter++;
+                    Trace.WriteLine("################## Error message recieved " + ex.Message);
+                    _eventAggregator.PublishOnUIThread(1);
+                    break;
                 }
+                catch (TimeoutException ex)
+                {
+                    Trace.WriteLine("##################[RealSBTaskPocessor.process] Timeout Exception: ");
+                    _eventAggregator.PublishOnUIThread(2);
+                    break;
+                }
+                catch (Exception)
+                {
+                    Trace.WriteLine("##################Problem z otwarciem portu szeregowego: " + _serialPort.PortName);
+                    _eventAggregator.PublishOnUIThread(3);
+                    break;
+                }
+
             }
-            return true;
+            // Prepare data and send availability warning email.
+            List<ProductSKU> underThreshold = _sbTaskService.taskedSKUs(SBTasks).Where(s => s.Threshold != 0).Where(s => s.Threshold >= s.Boxes.Count).ToList();
+            _emailService.sendAvailabilityWarning(underThreshold);
+
+            Thread.Sleep(100);
+            CloseDialog();
         }
 
-        public static void Read()
-        {
-            
-            while (_continue)
-            {
-                try
-                {
-                    if (_serialPort.BytesToRead == 8)
-                    {
-                        int bytesRead = _serialPort.Read(response, 0, 8);
-                        Console.WriteLine(BitConverter.ToString(response) + " " + bytesRead);
-                        _nextCommand = true;
-                    }
-                }
-                catch (TimeoutException) { }
-            }
-        }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -543,6 +211,27 @@ namespace StorageBox.Orders.Dialogs
                 bool result = OpenConfirmDialog();
                 _sbTaskService.SetValid(sbtask, result);
             }
+        }
+
+        public void Handle(int message)
+        {
+            string messageText = "";
+            switch (message)
+            {
+                // Error message
+                case 1:
+                    messageText = "Wystąpił problem z przetwarzaniem zamówienia. Odebrano kod błędu. Proces został przerwany";
+                    break;
+                // Timeout
+                case 2:
+                    messageText = "Wystąpił problem z przetwarzaniem zamówienia. Upłynął limit czasu oczekiwania na realizację zamówienia. Proces został przerwany";
+                    break;
+                // General exception (error opening port)
+                case 3:
+                    messageText = "Wystąpił problem z przetwarzaniem zamówienia. Problem z komunikacją ze sterownikiem PLC. Proces został przerwany";
+                    break;
+            }
+            MessageBox.Show(messageText, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

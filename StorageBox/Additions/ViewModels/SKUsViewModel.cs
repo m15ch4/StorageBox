@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StorageBox.Additions.ViewModels
 {
@@ -130,10 +131,18 @@ namespace StorageBox.Additions.ViewModels
                 {
                     Price = "0";
                 }
-                _productSKUService.Create(SKU, ProductsSelectedItem, Price, Threshold);
-                SKU = "";
-                Price = "";
-                SKUs = _productSKUService.Get(ProductsSelectedItem);
+                try
+                {
+                    _productSKUService.Create(SKU, ProductsSelectedItem, Price, Threshold);
+                    SKUs = _productSKUService.Get(ProductsSelectedItem);
+                    MessageBox.Show("Utworzono nowe SKU: " + SKU, "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                    SKU = "";
+                    Price = "";
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+                {
+                    MessageBox.Show("Nie dodano nowego produktu. Spróbuj ponownie.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -163,12 +172,24 @@ namespace StorageBox.Additions.ViewModels
             }
         }
 
+        public bool CanRemoveSKU
+        {
+            get { return (SKUsSelectedItem != null); }
+        }
         public void RemoveSKU(ProductSKU sku)
         {
-            if (sku != null)
+            try
             {
-                _productSKUService.Remove(sku);
-                SKUs = _productSKUService.GetAll();
+                if (sku != null)
+                {
+                    _productSKUService.Remove(sku);
+                    SKUs = _productSKUService.Get(ProductsSelectedItem);
+                    MessageBox.Show("Usunięto wybrane SKU.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                MessageBox.Show("Nie usunięto wybranego elementu. Sprawdź czy element nie jest wykorzystywany.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

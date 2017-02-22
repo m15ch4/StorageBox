@@ -24,9 +24,16 @@ namespace StorageBox.Implementations
 
         public void CreateBox(byte row, byte column, BoxSize boxSize)
         {
-            Box box = new Models.Box() { AddressRow = row, AddressCol = column, BoxSize = boxSize, Status = Status.Empty };
-            _context.Boxes.Add(box);
-            _context.SaveChanges();
+            try
+            {
+                Box box = new Models.Box() { AddressRow = row, AddressCol = column, BoxSize = boxSize, Status = Status.Empty };
+                _context.Boxes.Add(box);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
         public void CreateBoxSize(string boxSizeName)
@@ -120,8 +127,15 @@ namespace StorageBox.Implementations
 
         public void Remove(Box box)
         {
-            _context.Boxes.Remove(box);
-            _context.SaveChanges();
+            try
+            {
+                _context.Boxes.Remove(box);
+                _context.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
         public BindableCollection<Box> GetEmpty()

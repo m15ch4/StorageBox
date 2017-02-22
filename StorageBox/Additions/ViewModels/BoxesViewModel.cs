@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StorageBox.Additions.ViewModels
 {
@@ -19,6 +20,7 @@ namespace StorageBox.Additions.ViewModels
         private string _row;
         private string _column;
         private BindableCollection<Box> _boxes;
+        private Box _boxesSelectedItem;
 
         public BoxesViewModel(IBoxService boxService)
         {
@@ -82,12 +84,20 @@ namespace StorageBox.Additions.ViewModels
             byte r = Convert.ToByte(Row);
             byte c = Convert.ToByte(Column);
 
-            if (_boxService.Get(Convert.ToByte(Row), Convert.ToByte(Column)) == null)
+            try
             {
-                _boxService.CreateBox(r, c, BoxSizesSelectedItem);
-                Boxes = _boxService.GetAll();
-                Row = "";
-                Column = "";
+                if (_boxService.Get(Convert.ToByte(Row), Convert.ToByte(Column)) == null)
+                {
+                    _boxService.CreateBox(r, c, BoxSizesSelectedItem);
+                    Boxes = _boxService.GetAll();
+                    Row = "";
+                    Column = "";
+                    MessageBox.Show("Dodano nową skrzynkę.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                MessageBox.Show("Nie dodano nowej skrzynki.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -127,10 +137,34 @@ namespace StorageBox.Additions.ViewModels
             }
         }
 
+        public Box BoxesSelectedItem
+        {
+            get { return _boxesSelectedItem; }
+            set
+            {
+                _boxesSelectedItem = value;
+                NotifyOfPropertyChange(() => BoxesSelectedItem);
+                NotifyOfPropertyChange(() => CanRemoveBox);
+            }
+        }
+
+        public bool CanRemoveBox
+        {
+            get { return (BoxesSelectedItem != null); }
+        }
+
         public void RemoveBox(Box box)
         {
-            _boxService.Remove(box);
-            Boxes = _boxService.GetAll();
+            try
+            {
+                _boxService.Remove(box);
+                Boxes = _boxService.GetAll();
+                MessageBox.Show("Usunięto wybraną skrzynkę.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                MessageBox.Show("Nie usunięto skrzynki. Opróżnij skrzynkę i spróbuj ponownie.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

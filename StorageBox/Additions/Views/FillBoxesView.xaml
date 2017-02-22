@@ -21,7 +21,7 @@
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
                     <Label Width="120" HorizontalContentAlignment="Right" Height="35" VerticalContentAlignment="Center" FontSize="14">SKU:</Label>
-                    <ComboBox Width="200" Name="SKUs" SelectedItem="{Binding SKUsSelectedItem}" Height="35" VerticalContentAlignment="Center" FontSize="14">
+                    <ComboBox Width="200" Name="SKUs" SelectedItem="{Binding SKUsSelectedItem}" Height="45" VerticalContentAlignment="Center" FontSize="14">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <Border HorizontalAlignment="Stretch"  Background="{Binding Path=BackgroundColor}">

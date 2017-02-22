@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StorageBox.Additions.ViewModels
 {
@@ -29,6 +30,7 @@ namespace StorageBox.Additions.ViewModels
         private ProductSKU _productSKUsSelectedItem;
         private ISKUValueService _skuValueService;
         private BindableCollection<SKUValue> _skuValues;
+        private SKUValue _skuValuesSelectedItem;
 
         public SKUValueViewModel(ICategoryService categoryService, IProductService productService, IProductSKUService productSKUService, IOptionService optionService, IOptionValueService optionValueService, ISKUValueService skuValueService)
         {
@@ -175,8 +177,16 @@ namespace StorageBox.Additions.ViewModels
 
         public void CreateSKUValue()
         {
-            _skuValueService.Create(ProductsSelectedItem.ProductID, ProductSKUsSelectedItem.ProductSKUID, OptionsSelectedItem.OptionID, OptionValuesSelectedItem.OptionValueID);
-            SKUValues = _skuValueService.Get(ProductsSelectedItem);
+            try
+            {
+                _skuValueService.Create(ProductsSelectedItem.ProductID, ProductSKUsSelectedItem.ProductSKUID, OptionsSelectedItem.OptionID, OptionValuesSelectedItem.OptionValueID);
+                SKUValues = _skuValueService.Get(ProductsSelectedItem);
+                MessageBox.Show("Utworzono nowe połączenie SKU z wartością opcji.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+            {
+                MessageBox.Show("Nie dodano nowego połączenia SKU z wartością opcji. Spróbuj ponownie.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public bool CanCreateSKUValue
@@ -191,6 +201,41 @@ namespace StorageBox.Additions.ViewModels
             {
                 _skuValues = value;
                 NotifyOfPropertyChange(() => SKUValues);
+            }
+        }
+
+
+        public SKUValue SKUValuesSelectedItem
+        {
+            get
+            {
+                return _skuValuesSelectedItem;
+            }
+            set
+            {
+                _skuValuesSelectedItem = value;
+                NotifyOfPropertyChange(() => SKUValuesSelectedItem);
+                NotifyOfPropertyChange(() => CanRemoveSKUValue);
+            }
+        }
+        public bool CanRemoveSKUValue
+        {
+            get { return (SKUValuesSelectedItem != null); }
+        }
+        public void RemoveSKUValue(SKUValue skuValue)
+        {
+            if (skuValue != null)
+            {
+                try
+                {
+                    _skuValueService.Remove(skuValue);
+                    SKUValues = _skuValueService.Get(ProductsSelectedItem);
+                    MessageBox.Show("Usunięto wybrane powiązanie SKU - wartość opcji. ", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException e)
+                {
+                    MessageBox.Show("Nie usunięto wybranego powiązania SKU - wartość opcji. Prawdopodobną przyczyną są istniejące odwołania do tego elementu.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

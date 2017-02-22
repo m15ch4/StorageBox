@@ -10,6 +10,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StorageBox.Login
 {
@@ -29,62 +30,42 @@ namespace StorageBox.Login
         {
             _authenticateService = authenticateService;
 
-            try
-            {
-                Console.WriteLine("Trying start rfid");
-                _serialPort = new SerialPort();
-                _serialPort.PortName = "COM3";
-                _serialPort.BaudRate = 9600;
-                _serialPort.DataBits = 8;
-                _serialPort.Parity = Parity.None;
-                _serialPort.StopBits = StopBits.One;
-                _serialPort.Handshake = Handshake.XOnXOff;
+            _serialPort = new SerialPort();
+            _serialPort.PortName = "COM3";
+            _serialPort.BaudRate = 9600;
+            _serialPort.DataBits = 8;
+            _serialPort.Parity = Parity.None;
+            _serialPort.StopBits = StopBits.One;
+            _serialPort.Handshake = Handshake.XOnXOff;
 
-                _serialPort.ReadTimeout = 500;
-                _serialPort.WriteTimeout = 500;
+            _serialPort.ReadTimeout = 500;
+            _serialPort.WriteTimeout = 500;
 
-                _bw.WorkerReportsProgress = false;
-                _bw.WorkerSupportsCancellation = false;
-                _bw.DoWork += new DoWorkEventHandler(ReadRFID);
-
-                Console.WriteLine("End of LoginViewModel constructor");
-            }
-            catch
-            {
-                Console.WriteLine("Problem z komunikacją z RFID (LoginViewModel.constructor).");
-                Trace.WriteLine("Problem z komunikacją z RFID (LoginViewModel constructor).");
-            }
+            _bw.WorkerReportsProgress = false;
+            _bw.WorkerSupportsCancellation = false;
+            _bw.DoWork += new DoWorkEventHandler(ReadRFID);
         }
 
-
-        //protected override void OnActivate()
-        //{
-        //    //base.OnActivate();
-        //}
 
         override protected void OnActivate()
         {
             base.OnActivate();
-            Console.WriteLine("Begin onActivate loginviewmodel *");
             try
             {
-                Console.WriteLine("Begin onActivate loginviewmodel **");
                 if (_serialPort.IsOpen == false)
                 {
                     _serialPort.Open();
                     _continue = true;
                     _bw.RunWorkerAsync();
-                    Console.WriteLine("End of OnActivate (loginViewmodel)");
                 }
                 else
                 {
-                    Console.WriteLine("else **");
+                    Console.WriteLine("---------------> Tutaj nigdy nie powinienem trafić ---------------");
                 }
             }
             catch
             {
-                Console.WriteLine("Problem z komunikacją z RFID (LoginViewModel.OnActivate).");
-                Trace.WriteLine("Problem z komunikacją z RFID (LoginViewModel.OnActivate).");
+                MessageBox.Show("Wystąpił problem podczas inicjalizacji czytnika RFID. Skontaktuj się z serwisem.", "Problem", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -151,7 +132,6 @@ namespace StorageBox.Login
             {
                 UserName = "";
                 Password = "";
-                Trace.WriteLine("Bad username or password");
             }
         }
 
@@ -196,11 +176,6 @@ namespace StorageBox.Login
                         _continue = false;
                         Shell.Orders();
                     }
-                    //if (array[0] == 0x7c)
-                    //{
-                    //    Shell.Orders();
-                    //}
-                    //array clear
                     array[0] = 0;
                 }
                 catch (TimeoutException) { }
